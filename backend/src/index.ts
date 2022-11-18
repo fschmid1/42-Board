@@ -4,12 +4,14 @@ import { registerAuthHandler } from './handlers/auth.handler';
 import { router as postRouter } from './handlers/post.handler';
 import { router as commentsRouter } from './handlers/comments.handler';
 import session from 'express-session';
+import cors from 'cors';
 var cookieParser = require('cookie-parser');
 
 import { PORT, DB_URL } from './vars.global';
 
 const app = express();
 
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -17,6 +19,7 @@ app.use(
     secret: 'fkdisjkfijIDUHaundsais',
     resave: false,
     saveUninitialized: true,
+
     cookie: { secure: false }
   })
 );
