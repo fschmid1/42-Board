@@ -1,45 +1,40 @@
 <script>
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
+  import Post from './lib/Post.svelte'
+//   import Searchbar from './lib/Searchbar.svelte'
+
+  import { onMount } from "svelte";
+  const endpoint = "";
+  let posts = ["Haskell", "Lisp", "Clojure", "Julia", "Rust", "Elixir"];
+  onMount(() => {
+    fetch(endpoint)
+	.then(response => response.json())
+	.then(result => posts = result)
+  });
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer"> 
-      <img src="/vite.svg" class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer"> 
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+	<div class="header">
 
-  <div class="card">
-    <Counter />
-  </div>
+	</div>
+	<div class="masongrid">
+		{#each posts as post}
+			<Post content={post} />
+		{/each}
+	</div>
+	<div class="footer">
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+	</div>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+	.masongrid {
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+	margin: 0 auto;
+	grid-gap: 10px;
+	background-color: #fff;
+	color: #ddd;
+	}
 </style>
