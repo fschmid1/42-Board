@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 export let votes = 0;
 const dec = () => {
     votes -= 1

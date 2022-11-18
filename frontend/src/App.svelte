@@ -1,6 +1,4 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import Counter from './lib/Counter.svelte'
   import Post from './lib/Post.svelte'
   import Searchbar from './lib/Searchbar.svelte'
   import Filter from './lib/Filter.svelte'
@@ -13,7 +11,6 @@
   const authLoginEndpoint = "http://localhost:8080/auth/login";
   const apiBaseEndpoint = "http://localhost:8080/";
 	
-  let posts = ["Haskell", "Lisp", "Clojure", "Julia", "Rust", "Elixir"];
 
   onMount(async () => {
 		try {
@@ -31,9 +28,6 @@
 			console.log(error);
 		}
   });
-  function handleClick() {
-		location.replace('http://localhost:8080/auth/login');
-	}
 </script>
 
 <main>
@@ -50,9 +44,6 @@
 		{/each}
 	</div>
 	<div class="footer">
-		<button on:click={handleClick}>
-			Click me
-		</button>
 	</div>
 </main>
 

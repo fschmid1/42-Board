@@ -1,18 +1,14 @@
-<script>
+<script lang="ts">
   import Reactions from './Reactions.svelte'
   import Tags from './Tags.svelte'
   import Reply from './Reply.svelte'
   import Vote from './Vote.svelte'
+  import type { Post } from '../interfaces/post.interface';
 	// let heading = fetch();
-  export let post = {"name" : "Without Title",
-					 "content": "This is the content.",
-  					 "votesScore": 0,
-					 "tags": [],
-					 "reactions": [],
-					 "comments": [],
-					 "user": {}};
+  export let post: Post;
 </script>
-  
+
+{#if post}
 <div class="post">
 	<Vote votes={post.votesScore}/>
 	<h3 class="phead">{post.name}</h3>
@@ -23,6 +19,7 @@
 	</div>
 	<Reply />
 </div>
+{/if}
  
 <style>
   .post {
