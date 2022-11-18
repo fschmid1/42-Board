@@ -52,6 +52,7 @@ const postSchema = new Schema<IPost>({
   reactions: { type: [reactionSchema], default: [] },
   comments: { type: [commentsSchema], default: [] },
   user: { type: userSchema, required: true },
+  tags: { type: [String], default: [] },
   ts: {
     type: Number,
     default: createTs

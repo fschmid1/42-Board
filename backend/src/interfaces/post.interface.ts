@@ -6,6 +6,7 @@ export interface Post {
   _id?: string;
   name: string;
   votes: Vote[];
+  tags: string[];
   reactions: Reaction[];
   comments: Comment[];
   user: User;
