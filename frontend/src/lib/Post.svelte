@@ -11,7 +11,7 @@
 {#if post}
 <div class="post">
 	<div class="head">
-		<Vote votes={post.votesScore}/>
+	<Vote votes={post.votesScore} postId={post._id}/>
 		<h3 class="phead">{post.name}</h3>
 		<Tags tags={post.tags} />
 	</div>

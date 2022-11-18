@@ -1,22 +1,43 @@
 <script lang="ts">
-export let votes = 0;
-const dec = () => {
-    votes -= 1
-  }
-const inc = () => {
-    votes += 1
-  }
+    import { apiBaseEndpoint } from "../variables";
+		import { postStore} from '../stores'
+
+
+	export let votes = 0;
+	export let postId;
+
+	const doVote = async (up: boolean) => {
+		const res = await fetch(apiBaseEndpoint + 'vote/posts',
+		{
+			headers: {
+      			'Accept': 'application/json',
+      			'Content-Type': 'application/json'
+    		},
+			method: 'POST',
+			body: JSON.stringify({
+				_id: postId,
+				up
+			}),
+			credentials: "include",
+		});
+		let index = $postStore.findIndex(el => el._id == postId)
+		$postStore[index] = await res.json();
+	}
+
+	const voteUp = () => doVote(true);
+	const voteDown = () => doVote(false);
 </script>
   
 <div class="vote">
-	<button on:click={inc}>
+	<button on:click={voteUp}>
 		∧
 	</button>
 	<span>{votes}</span>
-	<button on:click={dec}>
+	<button on:click={voteDown}>
 		∨
 	</button>
 </div>
+
  
 <style>
   .vote {

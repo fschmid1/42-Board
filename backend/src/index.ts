@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { registerAuthHandler } from './handlers/auth.handler';
 import { router as postRouter } from './handlers/post.handler';
 import { router as commentsRouter } from './handlers/comments.handler';
+import { router as voteRouter } from './handlers/vote.handler';
 import session from 'express-session';
 import cors from 'cors';
 const cookieParser = require('cookie-parser');
@@ -27,6 +28,7 @@ app.use(
 registerAuthHandler(app);
 app.use('/posts', postRouter);
 app.use('/comments', commentsRouter);
+app.use('/vote', voteRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);

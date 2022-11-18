@@ -17,12 +17,7 @@ const reactionSchema: any = {
 };
 
 const votesSchema: any = {
-  text: { type: String, required: true },
-  votesScore: { type: Number, default: 0 },
-  ts: {
-    type: Number,
-    default: createTs
-  },
+  up: Boolean,
   user: userSchema
 };
 
