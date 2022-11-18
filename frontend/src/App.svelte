@@ -7,6 +7,27 @@
   import { onMount } from "svelte";
   const endpoint = "";
   let posts = ["Haskell", "Lisp", "Clojure", "Julia", "Rust", "Elixir"];
+  let postobs = [{"name" : "Haskell",
+					 "content": "(λx.x am pure)(I)",
+  					 "votesScore": 15,
+					 "tags": ["workshop", "rfc", "blaBlah!"],
+					 "reactions": [{"emote" : "🦄"}, {"emote" : "εїз"}],
+					 "comments": [],
+					 "user": {}},
+				 {"name" : "Lisp",
+					 "content": "Trust in the Recursion",
+  					 "votesScore": 10,
+					 "tags": ["workshop"],
+					 "reactions": [],
+					 "comments": [],
+					 "user": {}},
+				 {"name" : "Rust",
+					 "content": "I'll be your designated driver tonight",
+  					 "votesScore": 0,
+					 "tags": [],
+					 "reactions": [{"emote" : "🦄"}],
+					 "comments": [],
+					 "user": {}},]
   onMount(() => {
     fetch(endpoint)
 	.then(response => response.json())
@@ -23,8 +44,8 @@
 
 	</div>
 	<div class="masongrid">
-		{#each posts as post}
-			<Post content={post} />
+		{#each postobs as post}
+			<Post post={post} />
 		{/each}
 	</div>
 	<div class="footer">
@@ -41,7 +62,10 @@
 	margin: 0 auto;
 	grid-gap: 10px;
 	background-color: #fff;
-	color: #ddd;
+	color: #eee;
+	}
+	main {
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	}
 </style>
 
