@@ -1,11 +1,15 @@
-<script>
+<script lang="ts">
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
   import Post from './lib/Post.svelte'
 //   import Searchbar from './lib/Searchbar.svelte'
 
   import { onMount } from "svelte";
-  const endpoint = "";
+  import { userStore } from './stores';
+
+  const authStatusEndpoint = "http://localhost:8080/auth/status";
+  const authLoginEndpoint = "http://localhost:8080/auth/login";
+	
   let posts = ["Haskell", "Lisp", "Clojure", "Julia", "Rust", "Elixir"];
   let postobs = [{"name" : "Haskell",
 					 "content": "(λx.x am pure)(I)",
@@ -28,12 +32,19 @@
 					 "reactions": [{"emote" : "🦄"}],
 					 "comments": [],
 					 "user": {}},]
-  onMount(() => {
-    fetch(endpoint)
-	.then(response => response.json())
-	.then(result => posts = result)
-  });
 
+  onMount(async () => {
+		try {
+			const response  = await fetch(authStatusEndpoint, { credentials: "include"});
+			
+			if (response.status === 401) {
+				location.replace(authLoginEndpoint);
+			}
+			userStore.set(await response.json());
+		} catch (error) {
+			console.log(error);
+		}
+  });
   function handleClick() {
 		location.replace('http://localhost:8080/auth/login');
 	}
