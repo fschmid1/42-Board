@@ -5,7 +5,7 @@ import { router as postRouter } from './handlers/post.handler';
 import { router as commentsRouter } from './handlers/comments.handler';
 import session from 'express-session';
 import cors from 'cors';
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 
 import { PORT, DB_URL } from './vars.global';
 
