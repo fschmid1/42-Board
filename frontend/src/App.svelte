@@ -97,7 +97,7 @@
 		grid-template-columns: 33% 33% 33%;
 		width: 100%;
 		grid-gap: 10px;
-		background-color: #fff;
+		background-color: transparent;
 		color: #eee;
 	}
 	main {

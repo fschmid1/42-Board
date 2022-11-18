@@ -20,8 +20,11 @@ const inc = () => {
  
 <style>
   .vote {
-	display: block;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
   }
+
   button {
 	padding: 0;
   }

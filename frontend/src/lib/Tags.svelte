@@ -21,6 +21,7 @@ export let tags = [];
 	border-radius: 9px;
 	padding: 0 2px 0 5px;
 	margin: 0 0.2rem;
+	align-self: flex-start;
   }
   .tag::before {
 	content: "#";
