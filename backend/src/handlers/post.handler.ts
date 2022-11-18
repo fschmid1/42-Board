@@ -8,7 +8,11 @@ router.use('/', isAuthenticated);
 
 router.get('/', async (req, res, next) => {
   try {
-    res.send(await Post.find().sort({ votesScore: -1 }));
+    if (req.query.sortByTs) {
+      res.send(await Post.find().sort({ ts: -1 }));
+    } else {
+      res.send(await Post.find().sort({ votesScore: -1 }));
+    }
   } catch (error) {
     next(error);
   }

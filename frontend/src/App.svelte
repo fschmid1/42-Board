@@ -7,24 +7,31 @@
   import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint } from './variables'
 
   import { onMount } from "svelte";
-  import { postStore, userStore } from './stores';
+  import { filterStore, postStore, userStore } from './stores';
 
   onMount(async () => {
 		try {
 			let response  = await fetch(authStatusEndpoint, { credentials: "include"});
 
-			postStore.subscribe(data => (console.log(data)))
+			filterStore.subscribe(filter => fetchPosts(filter));
 			
 			if (response.status === 401) {
 				location.replace(authLoginEndpoint);
 			}
 			userStore.set(await response.json());
-			response = await fetch(apiBaseEndpoint + 'posts', { credentials: "include"});
-			postStore.set(await response.json());
 		} catch (error) {
 			console.log(error);
 		}
   });
+
+	async function fetchPosts(filter?: string) {
+		let url = apiBaseEndpoint + 'posts';
+		if (filter && filter == 'ts') {
+			url += '?sortByTs=1'
+		}
+		const response = await fetch(url, { credentials: "include"});
+		postStore.set(await response.json());
+	}
 	
 	let selection;
 	let name = "";
@@ -37,21 +44,22 @@
 	}
 	
 	async function submit() {
-	const res = await fetch(apiBaseEndpoint + 'posts',
-		{
-			headers: {
-      			'Accept': 'application/json',
-      			'Content-Type': 'application/json'
-    		},
-			method: 'POST',
-			body: JSON.stringify({
-				name,
-				content,
-				tags
-			}),
-			credentials: "include",
-		});
-	$postStore = [...$postStore, await res.json()];
+		let url = apiBaseEndpoint + 'posts';
+		const res = await fetch(url,
+			{
+				headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json'
+					},
+				method: 'POST',
+				body: JSON.stringify({
+					name,
+					content,
+					tags
+				}),
+				credentials: "include",
+			});
+		$postStore = [...$postStore, await res.json()];
 	}
 </script>
 
