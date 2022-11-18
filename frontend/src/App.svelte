@@ -89,7 +89,7 @@
   padding: 2em;
   justify-content: space-between;
   }
-  .serachfilter {
+  .searchnfilter {
     display:flex;
   }
 
