@@ -1,6 +1,7 @@
 export interface User {
   _id: string;
   username: string;
+  intraId: string;
   displayName: string;
   name: {
     familyName: string;
@@ -9,5 +10,5 @@ export interface User {
   profileUrl: string;
   email: string;
   phoneNumber: string;
-  photos: string;
+  photo: string;
 }
