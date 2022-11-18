@@ -7,6 +7,7 @@ export interface Comment {
   text: string;
   user: User;
   votes: Vote[];
+  votesScore: number;
   reactions: Reaction[];
   replies: Comment[];
 }

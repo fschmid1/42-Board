@@ -18,6 +18,7 @@ const reactionSchema: any = {
 
 const votesSchema: any = {
   text: { type: String, required: true },
+  votesScore: { type: Number, default: 0 },
   ts: {
     type: Number,
     default: createTs
@@ -48,7 +49,9 @@ const commentsSchema: any = {
 
 const postSchema = new Schema<IPost>({
   name: { type: String, required: true },
+  content: { type: String, required: true },
   votes: { type: [votesSchema], default: [] },
+  votesScore: { type: Number, default: 0 },
   reactions: { type: [reactionSchema], default: [] },
   comments: { type: [commentsSchema], default: [] },
   user: { type: userSchema, required: true },

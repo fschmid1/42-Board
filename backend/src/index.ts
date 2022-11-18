@@ -1,6 +1,8 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import { registerAuthHandler } from './handlers/auth.handler';
+import { router as postRouter } from './handlers/post.handler';
+import { router as commentsRouter } from './handlers/comments.handler';
 import session from 'express-session';
 var cookieParser = require('cookie-parser');
 
@@ -20,6 +22,13 @@ app.use(
 );
 
 registerAuthHandler(app);
+app.use('/posts', postRouter);
+app.use('/comments', commentsRouter);
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err);
+  res.status(err.status ?? 500).send(err.error ?? 'Something went wrong');
+});
 
 app.listen(Number(PORT), async () => {
   if (!DB_URL) {
