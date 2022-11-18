@@ -1,4 +1,4 @@
-export const userSchema = {
+export const userSchema: any = {
   _id: { type: String, required: true },
   username: { type: String, required: true },
   displayName: { type: String, required: true },

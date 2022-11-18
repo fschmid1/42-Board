@@ -7,16 +7,16 @@ const createTs = () => {
   return new Date().getTime();
 };
 
-const reactionSchema = {
+const reactionSchema: any = {
   emote: { type: String, required: true },
   ts: {
     type: Number,
     default: createTs
   },
-  user: userSchema
+  user: { type: userSchema, required: true }
 };
 
-const commentsSchema = {
+const votesSchema: any = {
   text: { type: String, required: true },
   ts: {
     type: Number,
@@ -25,25 +25,37 @@ const commentsSchema = {
   user: userSchema
 };
 
-const votesSchema = {
+const repliesSchema: any = {
   text: { type: String, required: true },
+  votes: { type: [votesSchema], default: [] },
   ts: {
     type: Number,
     default: createTs
   },
-  user: userSchema
+  user: { type: userSchema, required: true }
+};
+
+const commentsSchema: any = {
+  text: { type: String, required: true },
+  votes: { type: [votesSchema], default: [] },
+  ts: {
+    type: Number,
+    default: createTs
+  },
+  replies: { type: [repliesSchema], default: [] },
+  user: { type: userSchema, required: true }
 };
 
 const postSchema = new Schema<IPost>({
   name: { type: String, required: true },
-  votes: { type: Number, default: 0 },
+  votes: { type: [votesSchema], default: [] },
   reactions: { type: [reactionSchema], default: [] },
-  comments: {type.}
-  user: userSchema,
+  comments: { type: [commentsSchema], default: [] },
+  user: { type: userSchema, required: true },
   ts: {
     type: Number,
     default: createTs
   }
 });
 
-const User = model<IPost>('User', postSchema);
+export const Post = model<IPost>('Post', postSchema);
