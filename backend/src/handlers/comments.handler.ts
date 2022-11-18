@@ -44,7 +44,7 @@ router.patch('/', async (req, res, next) => {
     const data = {
       text: req.body.text
     };
-    await Post.updateOne({ _id: post._id, 'comments.ts': req.body.ts }, data);
+    await Post.updateOne({ _id: post._id, 'comments.ts': req.body.ts }, { $set: { 'comments.$': data } });
     res.send({ success: true });
   } catch (error) {
     next(error);

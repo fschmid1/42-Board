@@ -45,7 +45,7 @@ router.post('/', async (req, res, next) => {
 
 router.patch('/', async (req, res, next) => {
   try {
-    let post = await Post.findOne({ _id: req.body._id });
+    let post = await Post.findOne({ _id: req.body._id, user: req.user });
     if (!post)
       throw {
         status: 400,
@@ -54,8 +54,7 @@ router.patch('/', async (req, res, next) => {
     const data = {
       name: req.body.name,
       content: req.body.content,
-      tags: req.body.tags,
-      _id: post._id
+      tags: req.body.tags
     };
     await Post.updateOne({ _id: post._id }, data);
     res.send({ ...post.toObject(), ...data });
