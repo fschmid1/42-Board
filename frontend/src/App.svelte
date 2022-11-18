@@ -4,14 +4,10 @@
   import Searchbar from './lib/Searchbar.svelte'
   import Filter from './lib/Filter.svelte'
   import Settings from './lib/Settings.svelte'
+  import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint } from './variables'
 
   import { onMount } from "svelte";
   import { postStore, userStore } from './stores';
-
-  const authStatusEndpoint = "http://localhost:8080/auth/status";
-  const authLoginEndpoint = "http://localhost:8080/auth/login";
-  const apiBaseEndpoint = "http://localhost:8080/";
-	
 
   onMount(async () => {
 		try {
@@ -72,17 +68,17 @@
 			<Post post={post} />
 		{/each}
 	</div>
-	<button on:click={()=>getModal().open()}>
+	<button on:click={()=>getModal('add_post').open()}>
 		+
 	</button>
 
-	<Modal>
+	<Modal id="add_post">
 		Want to write a new post?
 		<textarea bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?"></textarea>
 		<textarea bind:value={content} cols="35" rows="4" name="text" id="body" placeholder="What is it exactly about?"></textarea>
 		<button on:click={() => {
 			submit()
-			getModal().close(1)}}>
+			getModal('add_post').close(1)}}>
 			Submit
 		</button>
 		
