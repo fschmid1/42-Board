@@ -35,7 +35,7 @@
 </script>
 
 {#if post}
-<div class="post" on:click={() => getModal('bigpost').open()}>
+<div class="post" on:click={() => getModal('bigpost' + post.name).open()}>
 	<div class="head">
 		<Vote votes={post.votesScore} postId={post._id}/>
 		<h3 class="phead">{post.name}</h3>
@@ -46,48 +46,52 @@
 		<Reactions reactions={post.reactions} />
 	</div>
 	<div class="bottom">
-		<button on:click={()=>getModal('add_comment').open()}>
+		<button on:click={()=>getModal('add_comment' + post._id).open()}>
 			<Reply />
 		</button>
 
-		<Modal id="add_comment">
+		<Modal id={"add_comment" + post._id}>
 			Want to write a new comment?
 			<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
 			<button on:click={() => {
 				submit()
-				getModal('add_comment').close(1)}}>
+				getModal('add_comment' + post._id).close(1)}}>
 				Submit
 			</button>
 		</Modal>
 	</div>
 </div>
 
-<Modal id="bigpost">
-	<Vote votes={post.votesScore}/>
+{/if}
+
+<Modal id={"bigpost" + post.name}>
+	<Vote votes={post.votesScore} postId={post._id}/>
 	<h3 class="phead">{post.name}</h3>
 	<p class="content">{post.content}</p>
 	<div class="reac_tags">
 		<Reactions reactions={post.reactions} />
 		<Tags tags={post.tags} />
 	</div>
-	<button on:click={()=>getModal('add_comment').open()}>
+	<button on:click={()=>getModal('add_comment' + post._id).open()}>
 		<Reply />
 	</button>
 
-	<!-- <Comments comments={post.comments}/> -->
-
-	<Modal id="add_comment">
+	<Modal id={"add_comment" + post._id}>
 		Want to write a new comment?
 		<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
 		<button on:click={() => {
 			submit()
-			getModal('add_comment').close(1)}}>
+			getModal('add_comment' + post._id).close(1)}}>
 			Submit
 		</button>
 	</Modal>
-</Modal>
 
-{/if}
+	<!-- <Comments comments={post.comments} postId={post._id}/> -->
+	{#each post.comments as comment}
+		<!-- <Vote votes={comment.votesScore} postId={post._id}/> -->
+		<p>{comment.text}</p>
+	{/each}
+</Modal>
  
 <style>
   .post {
