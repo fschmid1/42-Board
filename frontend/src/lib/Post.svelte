@@ -4,7 +4,7 @@
   import Reply from './Reply.svelte'
   import Vote from './Vote.svelte'
   import type { Post } from '../interfaces/post.interface';
-	// let heading = fetch();
+
   export let post: Post;
 </script>
 
@@ -30,6 +30,6 @@
 	font-size: 1rem;
   }
   .reac_tags {
-	display: flex;
+		display: flex;
   }
 </style>

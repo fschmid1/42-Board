@@ -93,20 +93,22 @@
 
 <style>
 	.masongrid {
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
-	margin: 0 auto;
-	grid-gap: 10px;
-	background-color: #fff;
-	color: #eee;
+		display: grid;
+		grid-template-columns: 33% 33% 33%;
+		width: 100%;
+		grid-gap: 10px;
+		background-color: #fff;
+		color: #eee;
 	}
 	main {
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		width: 80%;
+		margin: 0 auto;
 	}
   .header {
-  display: flex;
-  padding: 2em;
-  justify-content: space-between;
+		display: flex;
+		padding: 2em;
+		justify-content: space-between;
   }
   .searchnfilter {
     display:flex;
