@@ -1,12 +1,14 @@
 <script lang="ts">
+    import { filterStore } from "../stores";
+
+    export let selected = 'votes'
 
 </script>
 
 <p>Filter by</p>
-
-<select>
-    <option>Vote</option>
-    <option>New</option>
+<select bind:value={selected} on:change="{() => filterStore.set(selected) }">>
+    <option value="votes">Vote</option>
+    <option value="ts">New</option>
 </select>
 
 <style>

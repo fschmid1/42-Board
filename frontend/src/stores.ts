@@ -5,3 +5,5 @@ import type { User } from './interfaces/user.interface';
 export const userStore = writable<User>(null);
 
 export const postStore = writable<Post[]>([]);
+
+export const filterStore = writable<string>(null);
