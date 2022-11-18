@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Modal,{getModal} from './lib/Modal.svelte'
   import Post from './lib/Post.svelte'
   import Searchbar from './lib/Searchbar.svelte'
   import Filter from './lib/Filter.svelte'
@@ -28,6 +29,34 @@
 			console.log(error);
 		}
   });
+	
+	let selection;
+	let name = "";
+	let content = "";
+	let tags = [""];
+	
+	// Callback function provided to the `open` function, it receives the value given to the `close` function call, or `undefined` if the Modal was closed with escape or clicking the X, etc.
+	function setSelection(res){
+		selection = res;
+	}
+	
+	async function submit() {
+	const res = await fetch(apiBaseEndpoint + 'posts',
+		{
+			headers: {
+      			'Accept': 'application/json',
+      			'Content-Type': 'application/json'
+    		},
+			method: 'POST',
+			body: JSON.stringify({
+				name,
+				content,
+				tags
+			}),
+			credentials: "include",
+		});
+	$postStore = [...$postStore, await res.json()];
+	}
 </script>
 
 <main>
@@ -43,6 +72,21 @@
 			<Post post={post} />
 		{/each}
 	</div>
+	<button on:click={()=>getModal().open()}>
+		+
+	</button>
+
+	<Modal>
+		Want to write a new post?
+		<textarea bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?"></textarea>
+		<textarea bind:value={content} cols="35" rows="4" name="text" id="body" placeholder="What is it exactly about?"></textarea>
+		<button on:click={() => {
+			submit()
+			getModal().close(1)}}>
+			Submit
+		</button>
+		
+	</Modal>
 	<div class="footer">
 	</div>
 </main>
@@ -67,7 +111,12 @@
   .searchnfilter {
     display:flex;
   }
-
-
+  textarea {
+   background-image: linear-gradient(hsl(190,10%,98%), hsl(190,10%,94%)); 
+   padding:1ex;
+   font-size:1em;
+   box-sizing:border-box;
+   color:navy;
+}
 </style>
 
