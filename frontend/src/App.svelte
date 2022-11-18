@@ -2,7 +2,9 @@
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
   import Post from './lib/Post.svelte'
-//   import Searchbar from './lib/Searchbar.svelte'
+  import Searchbar from './lib/Searchbar.svelte'
+  import Filter from './lib/Filter.svelte'
+  import Settings from './lib/Settings.svelte'
 
   import { onMount } from "svelte";
   const endpoint = "";
@@ -20,7 +22,11 @@
 
 <main>
 	<div class="header">
-
+    <div class="searchnfilter">
+      <Searchbar />
+      <Filter />
+    </div>
+    <Settings />
 	</div>
 	<div class="masongrid">
 		{#each posts as post}
@@ -43,5 +49,15 @@
 	background-color: #fff;
 	color: #ddd;
 	}
+  .header {
+  display: flex;
+  padding: 2em;
+  justify-content: space-between;
+  }
+  .serachfilter {
+    display:flex;
+  }
+
+
 </style>
 
