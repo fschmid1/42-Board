@@ -36,26 +36,30 @@
 
 {#if post}
 <div class="post" on:click={() => getModal('bigpost').open()}>
-	<Vote votes={post.votesScore}/>
-	<h3 class="phead">{post.name}</h3>
+	<div class="head">
+		<Vote votes={post.votesScore} postId={post._id}/>
+		<h3 class="phead">{post.name}</h3>
+		<Tags tags={post.tags} />
+	</div>
 	<p class="content">{post.content}</p>
 	<div class="reac_tags">
 		<Reactions reactions={post.reactions} />
-		<Tags tags={post.tags} />
 	</div>
-	<button on:click={()=>getModal('add_comment').open()}>
-		<Reply />
-	</button>
-
-	<Modal id="add_comment">
-		Want to write a new comment?
-		<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
-		<button on:click={() => {
-			submit()
-			getModal('add_comment').close(1)}}>
-			Submit
+	<div class="bottom">
+		<button on:click={()=>getModal('add_comment').open()}>
+			<Reply />
 		</button>
-	</Modal>
+
+		<Modal id="add_comment">
+			Want to write a new comment?
+			<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
+			<button on:click={() => {
+				submit()
+				getModal('add_comment').close(1)}}>
+				Submit
+			</button>
+		</Modal>
+	</div>
 </div>
 
 <Modal id="bigpost">
@@ -87,6 +91,7 @@
  
 <style>
   .post {
+	grid-template-columns: auto;
 	background-color: #f8f8f8;
 	color: #000;
 	border-radius: 5px;
@@ -94,7 +99,16 @@
 	font-size: 1rem;
 	cursor: pointer;
   }
+  h3 {
+	margin-left: 10px;
+	margin-right: 10px;
+  }
+  .head {
+	display: flex;
+	justify-content: space-between;
+  }
   .reac_tags {
 		display: flex;
+		align-items: flex-end;
   }
 </style>
