@@ -7,42 +7,26 @@
   import Settings from './lib/Settings.svelte'
 
   import { onMount } from "svelte";
-  import { userStore } from './stores';
+  import { postStore, userStore } from './stores';
 
   const authStatusEndpoint = "http://localhost:8080/auth/status";
   const authLoginEndpoint = "http://localhost:8080/auth/login";
+  const apiBaseEndpoint = "http://localhost:8080/";
 	
   let posts = ["Haskell", "Lisp", "Clojure", "Julia", "Rust", "Elixir"];
-  let postobs = [{"name" : "Haskell",
-					 "content": "(λx.x am pure)(I)",
-  					 "votesScore": 15,
-					 "tags": ["workshop", "rfc", "blaBlah!"],
-					 "reactions": [{"emote" : "🦄"}, {"emote" : "εїз"}],
-					 "comments": [],
-					 "user": {}},
-				 {"name" : "Lisp",
-					 "content": "Trust in the Recursion",
-  					 "votesScore": 10,
-					 "tags": ["workshop"],
-					 "reactions": [],
-					 "comments": [],
-					 "user": {}},
-				 {"name" : "Rust",
-					 "content": "I'll be your designated driver tonight",
-  					 "votesScore": 0,
-					 "tags": [],
-					 "reactions": [{"emote" : "🦄"}],
-					 "comments": [],
-					 "user": {}},]
 
   onMount(async () => {
 		try {
-			const response  = await fetch(authStatusEndpoint, { credentials: "include"});
+			let response  = await fetch(authStatusEndpoint, { credentials: "include"});
+
+			postStore.subscribe(data => (console.log(data)))
 			
 			if (response.status === 401) {
 				location.replace(authLoginEndpoint);
 			}
 			userStore.set(await response.json());
+			response = await fetch(apiBaseEndpoint + 'posts', { credentials: "include"});
+			postStore.set(await response.json());
 		} catch (error) {
 			console.log(error);
 		}
@@ -61,7 +45,7 @@
     <Settings />
 	</div>
 	<div class="masongrid">
-		{#each postobs as post}
+		{#each $postStore as post}
 			<Post post={post} />
 		{/each}
 	</div>
