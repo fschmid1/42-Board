@@ -12,6 +12,10 @@
 	.then(response => response.json())
 	.then(result => posts = result)
   });
+
+  function handleClick() {
+		location.replace('http://localhost:8080/auth/login');
+	}
 </script>
 
 <main>
@@ -24,7 +28,9 @@
 		{/each}
 	</div>
 	<div class="footer">
-
+		<button on:click={handleClick}>
+			Click me
+		</button>
 	</div>
 </main>
 
@@ -38,3 +44,4 @@
 	color: #ddd;
 	}
 </style>
+
