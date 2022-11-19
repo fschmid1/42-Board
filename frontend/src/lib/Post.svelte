@@ -7,9 +7,10 @@
   import type { Post } from '../interfaces/post.interface';
   import { apiBaseEndpoint } from '../variables'
   import { postStore } from '../stores'
-	import Time from "svelte-time";
-	import SvelteMarkdown from 'svelte-markdown'
-	import removeMd from 'remove-markdown'
+  import Time from "svelte-time";
+  import SvelteMarkdown from 'svelte-markdown'
+  import removeMd from 'remove-markdown'
+  import TextAreaAutosize from './TextAreaAutosize.svelte';
 
   export let post: Post;
 
@@ -50,13 +51,14 @@
 		<Reactions reactions={post.reactions} />
 	</div>
 	<div class="bottom">
-		<button class="comment-button" on:click={()=>getModal('add_comment' + post._id).open()}>
+		<TextAreaAutosize bind:value={text} minRows={1} maxRows={5} />
+		<button class="comment-button" on:click={()=> submit()}>
 			<Reply />
 		</button>
 
 		<Modal id={"add_comment" + post._id}>
 			Want to write a new comment?
-			<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
+			<textarea class="text" bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
 			<button on:click={() => {
 				submit()
 				getModal('add_comment' + post._id).close(1)}}>
@@ -76,7 +78,7 @@
 		<SvelteMarkdown class="content" source="{post.content}"  on:click={() => getModal('bigpost' + post.name).open()}/>
 		<div class="reac_tags">
 			<Reactions reactions={post.reactions} />
-			<Tags tags={post.tags} />
+			<Tags tags={post.tags} user={post.user.username} />
 		</div>
 		<button class="comment-button" on:click={()=>getModal('add_comment' + post._id).open()}>
 			<Reply />

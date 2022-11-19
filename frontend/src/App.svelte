@@ -96,8 +96,8 @@
 				<option value={tag}>{tag}</option>
 			{/each}
 		</select>
-		<textarea bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?"></textarea>
-		<textarea bind:value={content} cols="35" rows="4" name="text" id="body" placeholder="What is it exactly about?"></textarea>
+		<textarea class="name" bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?"></textarea>
+		<textarea class="content" bind:value={content} cols="35" rows="4" name="text" id="body" placeholder="What is it exactly about?"></textarea>
 		<button class="submit" on:click={() => {
 			submit()
 			getModal('add_post').close(1)}}>
@@ -144,7 +144,7 @@
   .searchnfilter {
     display:flex;
   }
-  textarea {
+  .name, .content {
    background-image: linear-gradient(hsl(190,10%,98%), hsl(190,10%,94%)); 
    padding:1ex;
    font-size:1em;
