@@ -4,10 +4,10 @@
   import Tags from './Tags.svelte'
   import Reply from './Reply.svelte'
   import Vote from './Vote.svelte'
-  import Comments from './Comments.svelte'
   import type { Post } from '../interfaces/post.interface';
   import { apiBaseEndpoint } from '../variables'
   import { postStore, userStore } from '../stores'
+	import Time from "svelte-time";
 
   export let post: Post;
 
@@ -65,8 +65,10 @@
 {/if}
 
 <Modal id={"bigpost" + post.name}>
-	<Vote votes={post.votesScore} postId={post._id}/>
-	<h3 class="phead">{post.name}</h3>
+	<div class="content-header">
+		<h3 class="phead">{post.name}</h3>
+		<Vote votes={post.votesScore} postId={post._id}/>
+	</div>
 	<p class="content">{post.content}</p>
 	<div class="reac_tags">
 		<Reactions reactions={post.reactions} />
@@ -89,12 +91,37 @@
 	<!-- <Comments comments={post.comments} postId={post._id}/> -->
 	{#each post.comments as comment}
 		<!-- <Vote votes={comment.votesScore} postId={post._id}/> -->
-		<p>{comment.text}</p>
+		<div class="comment">
+			<div class="comment-header">
+				<div class="user">{comment?.user?.username}</div><Time relative timestamp="{comment.ts}"></Time>
+			</div>
+			<p>{comment?.text}</p>
+		</div>
 	{/each}
 </Modal>
  
 <style>
-  .post {
+  .comment {
+		border: 1px solit gray;
+	}
+
+	.content-header {
+		display: flex; 
+		width: 100%;
+		justify-content: space-between;
+		align-items:flex-end;
+	}
+
+	.comment-header {
+		display:  flex;
+	}
+
+	.comment-header div {
+		font-weight: bold;
+		margin-right: .5rem;
+	}
+	
+	.post {
 	grid-template-columns: auto;
 	background-color: #f8f8f8;
 	color: #000;

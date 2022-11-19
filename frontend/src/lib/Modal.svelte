@@ -25,6 +25,8 @@ function keyPress(ev){
 
 /**  API **/
 function open(callback){
+	console.log(id);
+	
 	closeCallback=callback
 	if(visible) return
 	prevOnTop=onTop
@@ -59,7 +61,7 @@ onDestroy(()=>{
 </script>
 
 <div id="topModal" class:visible bind:this={topDiv} on:click={()=>close()}>
-	<div id='modal' on:click|stopPropagation={()=>{}}>
+	<div id='modal' style="width: {id.startsWith('bigpost') ? '80%' : '40%'};" on:click|stopPropagation={()=>{}}>
 		<svg id="close" on:click={()=>close()} viewBox="0 0 12 12">
 			<circle cx=6 cy=6 r=6 />
 			<line x1=3 y1=3 x2=9 y2=9 />
@@ -120,5 +122,6 @@ onDestroy(()=>{
 		max-width: calc(100vw - 20px);
 		max-height: calc(100vh - 20px);
 		overflow: auto;
+		align-items: flex-start;
 	}
 </style>
