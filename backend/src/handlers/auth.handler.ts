@@ -20,7 +20,7 @@ export const registerAuthHandler = (app: Application) => {
         (async () => {
           try {
             let user = await User.findOne({ intraId: profile.id });
-            if (user?.username == 'knickel') return cb({ status: 400, message: 'Nicht mit mir...' }, null);
+            // if (user?.username == 'knickel') return cb({ status: 400, message: 'Nicht mit mir...' }, null);
             if (!user) {
               profile = profile._json;
               user = await new User({
