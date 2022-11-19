@@ -28,9 +28,11 @@
 			}),
 			credentials: "include",
 		});
-	let post_index = $postStore.findIndex(el => el._id === post._id)
+	text = '';
+	let post_index = $postStore.findIndex(el => el._id == post._id)
 	let comment = await res.json();
 	$postStore[post_index].comments.push(comment);
+	$postStore[post_index] = $postStore[post_index];
 	}
 </script>
 
@@ -64,50 +66,69 @@
 {/if}
 
 <Modal id={"bigpost" + post.name}>
-	<div class="content-header">
-		<h3 class="phead">{post.name}</h3>
-		<Vote votes={post.votesScore} postId={post._id}/>
-	</div>
-	<p class="content">{post.content}</p>
-	<div class="reac_tags">
-		<Reactions reactions={post.reactions} />
-		<Tags tags={post.tags} />
-	</div>
-	<button on:click={()=>getModal('add_comment' + post._id).open()}>
-		<Reply />
-	</button>
-
-	<Modal id={"add_comment" + post._id}>
-		Want to write a new comment?
-		<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
-		<button on:click={() => {
-			submit()
-			getModal('add_comment' + post._id).close(1)}}>
-			Submit
-		</button>
-	</Modal>
-
-	<!-- <Comments comments={post.comments} postId={post._id}/> -->
-	{#each post.comments as comment}
-		<!-- <Vote votes={comment.votesScore} postId={post._id}/> -->
-		<div class="comment">
-			<div class="comment-header">
-				<div class="user">
-					<div class="avatar" style="background-image: url({comment?.user.photo});"></div>
-					{comment?.user?.username}
-				</div>
-				<Time relative timestamp="{comment.ts}"></Time>
-			</div>
-			<p>{comment?.text}</p>
+	<div class="modal-content">
+		<div class="content-header">
+			<h3 class="phead">{post.name}</h3>
+			<Vote votes={post.votesScore} postId={post._id}/>
 		</div>
-	{/each}
+		<p class="content">{post.content}</p>
+		<div class="reac_tags">
+			<Reactions reactions={post.reactions} />
+			<Tags tags={post.tags} />
+		</div>
+		<button class="comment-button" on:click={()=>getModal('add_comment' + post._id).open()}>
+			<Reply />
+		</button>
+	
+		<Modal id={"add_comment" + post._id}>
+			Want to write a new comment?
+			<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
+			<button on:click={() => {
+				submit()
+				getModal('add_comment' + post._id).close(1)}}>
+				Submit
+			</button>
+		</Modal>
+	
+		<!-- <Comments comments={post.comments} postId={post._id}/> -->
+		<div class="comments">
+			{#each post.comments as comment}
+			<!-- <Vote votes={comment.votesScore} postId={post._id}/> -->
+			<div class="comment">
+				<div class="comment-header">
+					<div class="user">
+						<div class="avatar" style="background-image: url({comment?.user.photo});"></div>
+						{comment?.user?.username}
+					</div>
+					<Time relative timestamp="{comment.ts}"></Time>
+				</div>
+				<p>{comment?.text}</p>
+			</div>
+		{/each}
+		</div>
+	</div>
 </Modal>
  
 <style>
-  .comment {
-		border: 1px solit gray;
+
+	.modal-content {
+		overflow-y: scroll;
+		width: 100%;
+		max-height: 400px;
 	}
 
+	.comment-button {
+		position: absolute;
+		bottom: 5%;
+		right: 4%;
+	}
+  .comment {
+		border: 1px solit gray;
+		width: 100%;
+	}
+	.comments {
+		width: 100%;
+	}
 	.content-header {
 		display: flex; 
 		width: 100%;
@@ -143,13 +164,13 @@
     }
 	
 	.post {
-	grid-template-columns: auto;
-	background-color: #f8f8f8;
-	color: #000;
-	border-radius: 5px;
-	padding: 20px;
-	font-size: 1rem;
-	cursor: pointer;
+		grid-template-columns: auto;
+		background-color: #f8f8f8;
+		color: #000;
+		border-radius: 5px;
+		padding: 20px;
+		font-size: 1rem;
+		cursor: pointer;
   }
   h3 {
 	margin-left: 10px;
