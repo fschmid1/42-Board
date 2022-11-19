@@ -1,4 +1,4 @@
-FROM node:16 as builder
+FROM node:16-slim
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -12,15 +12,6 @@ COPY . .
 
 RUN npm run build
 
-FROM node:16-slim
-
-# Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-COPY package.json ./
-
-RUN npm install --production 
 
 COPY --from=builder /usr/src/app/dist ./dist
 
