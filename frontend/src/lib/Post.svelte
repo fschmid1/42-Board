@@ -58,7 +58,7 @@
 
 		<Modal id={"add_comment" + post._id}>
 			Want to write a new comment?
-			<textarea class="text" bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
+			<textarea class="text" bind:value={text} cols="35" rows="4" name="text" style="width: 98%;" id="title" placeholder="type here"></textarea>
 			<button on:click={() => {
 				submit()
 				getModal('add_comment' + post._id).close(1)}}>
@@ -86,7 +86,7 @@
 	
 		<Modal id={"add_comment" + post._id}>
 			Want to write a new comment?
-			<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
+			<textarea bind:value={text} cols="35" rows="4" style="width: 98%;"  name="text" id="title" placeholder="type here"></textarea>
 			<button class="submit" on:click={() => {
 				submit()
 				getModal('add_comment' + post._id).close(1)}}>
@@ -190,6 +190,7 @@
 		padding: 20px;
 		font-size: 1rem;
 		position: relative;
+		filter: drop-shadow(5px 5px 5px #555);
 	}
   .content, .reac_tags, .phead {
 	cursor: pointer;
