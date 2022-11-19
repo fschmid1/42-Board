@@ -34,6 +34,9 @@ app.use('/vote', voteRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
+  if (err._message.includes('Validation failed')) {
+    return res.status(400).send(err.error);
+  }
   res.status(err.status ?? 500).send(err.error ?? 'Something went wrong');
 });
 
