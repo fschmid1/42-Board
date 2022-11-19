@@ -26,7 +26,7 @@ router.post('/', async (req, res, next) => {
       ts: new Date().getTime(),
       replies: []
     };
-    await Post.updateOne({ _id: req.body._id }, { $push: { comments: data } });
+    await Post.updateOne({ _id: req.body._id }, { $push: { comments: data } }, { runValidators: true });
     res.send(data);
   } catch (error) {
     next(error);

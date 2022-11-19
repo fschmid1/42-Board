@@ -51,7 +51,7 @@ router.post('/', async (req, res, next) => {
       tags: req.body.tags,
       user: req.user
     };
-    const post = await new Post(data).save();
+    const post = await new Post(data, { runValidators: true }).save();
     res.send(post);
   } catch (error) {
     next(error);
@@ -71,7 +71,7 @@ router.patch('/', async (req, res, next) => {
       content: req.body.content,
       tags: req.body.tags
     };
-    await Post.updateOne({ _id: post._id }, data);
+    await Post.updateOne({ _id: post._id }, data, { runValidators: true });
     res.send({ ...post.toObject(), ...data });
   } catch (error) {
     next(error);
