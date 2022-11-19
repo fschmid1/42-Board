@@ -115,6 +115,7 @@
 
 	.modal-content {
 		overflow-y: scroll;
+		overflow-wrap: break-word;
 		width: 100%;
 		max-height: 400px;
 	}

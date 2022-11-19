@@ -42,6 +42,9 @@
 	let name = "";
 	let content = "";
 	let tags = [""];
+	let curr_tag = "";
+	let	tag_selection = ["", "workshop", "rfc", "event", "marketplace"];
+
 	
 	// Callback function provided to the `open` function, it receives the value given to the `close` function call, or `undefined` if the Modal was closed with escape or clicking the X, etc.
 	function setSelection(res){
@@ -87,6 +90,12 @@
 	</div>
 	<Modal id="add_post">
 		Want to write a new post?
+		<p>Tag selection: </p>
+		<select bind:value={curr_tag} on:change={() => tags = [curr_tag]} >
+			{#each tag_selection as tag}
+				<option value={tag}>{tag}</option>
+			{/each}
+		</select>
 		<textarea bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?"></textarea>
 		<textarea bind:value={content} cols="35" rows="4" name="text" id="body" placeholder="What is it exactly about?"></textarea>
 		<button class="submit" on:click={() => {
@@ -142,5 +151,16 @@
    box-sizing:border-box;
    color:navy;
 }
+select {
+        border-radius: 8px;
+        border: 1px solid transparent;
+        width: 80px;
+        background-color: transparent;
+    }
+
+    p {
+        font-size: 14px;
+        margin-left: 1em;
+    }
 </style>
 

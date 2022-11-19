@@ -10,7 +10,9 @@ export let user;
 	{/if}
 	{#if tags}
 		{#each tags as tag}
-			<span class="tag">{tag}</span>
+			{#if tag != ""}
+				<span class="tag">{tag}</span>
+			{/if}
 		{/each}
 	{/if}
 </div>
