@@ -6,4 +6,4 @@ export const userStore = writable<User>(null);
 
 export const postStore = writable<Post[]>([]);
 
-export const filterStore = writable<string>(null);
+export const filterStore = writable<{ search: string; filter: string }>({ search: '', filter: '' });

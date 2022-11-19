@@ -1,8 +1,14 @@
 <script lang="ts">
+
+    import {filterStore} from '../stores'
+
+    let text
     
 </script>
 
-<input type="text" placeholder="Search..">
+<input type="text" bind:value={text} on:change={() => {
+    filterStore.set({filter: $filterStore.filter, search: text})
+}} placeholder="Search..">
 
 <style>
 input {
