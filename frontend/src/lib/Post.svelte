@@ -41,7 +41,7 @@
 	<div class="head">
 		<Vote votes={post.votesScore} postId={post._id}/>
 		<h3 class="phead" on:click={() => getModal('bigpost' + post.name).open()}>{post.name}</h3>
-		<Tags tags={post.tags} />
+		<Tags tags={post.tags} user={post.user.username} />
 	</div>
 	<p class="content" on:click={() => getModal('bigpost' + post.name).open()}>{post.content}</p>
 	<div class="reac_tags" on:click={() => getModal('bigpost' + post.name).open()}>
@@ -83,7 +83,7 @@
 		<Modal id={"add_comment" + post._id}>
 			Want to write a new comment?
 			<textarea bind:value={text} cols="35" rows="4" name="text" id="title" placeholder="type here"></textarea>
-			<button on:click={() => {
+			<button class="submit" on:click={() => {
 				submit()
 				getModal('add_comment' + post._id).close(1)}}>
 				Submit
@@ -151,7 +151,9 @@
 		display: flex;
 		align-items: center;
 	}
-
+	.submit {
+		padding: 0.5rem;
+	}
 	.avatar{
         line-height: 35px;
         box-sizing: border-box;

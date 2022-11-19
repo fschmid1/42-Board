@@ -1,12 +1,18 @@
 <script lang="ts">
 
-export let tags = [];
+export let tags;
+export let user;
 </script>
   
 <div class="tags">
-	{#each tags as tag}
-		<span class="tag">{tag}</span>
-	{/each}
+	{#if user}
+		<span class="user">{user}</span>
+	{/if}
+	{#if tags}
+		{#each tags as tag}
+			<span class="tag">{tag}</span>
+		{/each}
+	{/if}
 </div>
  
 <style>
@@ -18,14 +24,24 @@ export let tags = [];
 
   .tag {
 	background-color: #eee;
+	height: 1.5rem;
 	border-radius: 9px;
 	padding: 0 2px 0 5px;
 	margin: 0 0.2rem;
-	align-self: flex-start;
   }
   .tag::before {
 	content: "#";
 	font-size: 0.85rem;
+  }
+  .user {
+	height: 1.5rem;
+	padding: 0 2px 0 5px;
+	margin: 0 0.2rem;
+	font-size: 0.8rem;
+  }
+  .user::before {
+	content: "@";
+	font-size: 0.85em;
   }
 </style>
   
