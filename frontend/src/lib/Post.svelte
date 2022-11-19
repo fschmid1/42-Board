@@ -6,8 +6,10 @@
   import Vote from './Vote.svelte'
   import type { Post } from '../interfaces/post.interface';
   import { apiBaseEndpoint } from '../variables'
-  import { postStore, userStore } from '../stores'
+  import { postStore } from '../stores'
 	import Time from "svelte-time";
+	import SvelteMarkdown from 'svelte-markdown'
+	import removeMd from 'remove-markdown'
 
   export let post: Post;
 
@@ -43,7 +45,7 @@
 		<h3 class="phead" on:click={() => getModal('bigpost' + post.name).open()}>{post.name}</h3>
 		<Tags tags={post.tags} />
 	</div>
-	<p class="content" on:click={() => getModal('bigpost' + post.name).open()}>{post.content}</p>
+	<p class="content" on:click={() => getModal('bigpost' + post.name).open()}>{removeMd(post.content)}</p>
 	<div class="reac_tags" on:click={() => getModal('bigpost' + post.name).open()}>
 		<Reactions reactions={post.reactions} />
 	</div>
@@ -71,7 +73,7 @@
 			<h3 class="phead">{post.name}</h3>
 			<Vote votes={post.votesScore} postId={post._id}/>
 		</div>
-		<p class="content">{post.content}</p>
+		<SvelteMarkdown class="content" source="{post.content}"  on:click={() => getModal('bigpost' + post.name).open()}/>
 		<div class="reac_tags">
 			<Reactions reactions={post.reactions} />
 			<Tags tags={post.tags} />
@@ -102,7 +104,7 @@
 					</div>
 					<Time relative timestamp="{comment.ts}"></Time>
 				</div>
-				<p>{comment?.text}</p>
+				<SvelteMarkdown source="{comment?.text}"/>
 			</div>
 		{/each}
 		</div>
@@ -150,6 +152,13 @@
 		margin-right: .5rem;
 		display: flex;
 		align-items: center;
+	}
+
+	.content {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		margin-bottom: 2.5rem;
 	}
 
 	.avatar{
