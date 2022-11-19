@@ -32,7 +32,7 @@ const repliesSchema: any = {
 };
 
 const commentsSchema: any = {
-  text: { type: String, required: true },
+  text: { type: String, required: true, minlength: 3 },
   votes: { type: [votesSchema], default: [] },
   ts: {
     type: Number,
@@ -43,8 +43,8 @@ const commentsSchema: any = {
 };
 
 const postSchema = new Schema<IPost>({
-  name: { type: String, required: true },
-  content: { type: String, required: true },
+  name: { type: String, required: true, minlength: 3 },
+  content: { type: String, required: true, minlength: 5 },
   votes: { type: [votesSchema], default: [] },
   votesScore: { type: Number, default: 0 },
   reactions: { type: [reactionSchema], default: [] },
