@@ -17,7 +17,7 @@ router.post('/posts/', async (req, res, next) => {
         status: 404,
         error: 'Post not found'
       };
-    let vote = post?.votes.find(el => el.user._id == (req.user as User)._id);
+    let vote = post?.votes.find(el => el.user.intraId == (req.user as User).intraId);
     if (vote) {
       if (!vote.up && req.body.up) {
         post.votesScore += 2;
