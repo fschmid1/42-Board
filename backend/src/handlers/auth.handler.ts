@@ -2,7 +2,7 @@ import { Application } from 'express';
 import passport from 'passport';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { User } from '../models/user.model';
-import { AUTH_SECRET, AUTH_UID } from '../vars.global';
+import { AUTH_SECRET, AUTH_UID, BACK, FRONT } from '../vars.global';
 var FortyTwoStrategy = require('passport-42').Strategy;
 
 export const registerAuthHandler = (app: Application) => {
@@ -14,7 +14,7 @@ export const registerAuthHandler = (app: Application) => {
       {
         clientID: AUTH_UID,
         clientSecret: AUTH_SECRET,
-        callbackURL: 'https://42-board-production.up.railway.app/auth/42/callback'
+        callbackURL: BACK + '/auth/42/callback'
       },
       (accessToken: string, refreshToken: string, profile: any, cb: (err: any, user: any) => any) => {
         (async () => {
@@ -49,6 +49,7 @@ export const registerAuthHandler = (app: Application) => {
   passport.serializeUser((user: any, done) => {
     done(null, user.intraId);
   });
+
   passport.deserializeUser((id, done) => {
     User.findOne({ intraId: id })
       .then(user => {
@@ -62,7 +63,7 @@ export const registerAuthHandler = (app: Application) => {
   app.get('/auth/login', passport.authenticate('42'));
 
   app.get('/auth/42/callback', passport.authenticate('42', { failureRedirect: '/auth/login' }), function (req, res) {
-    res.redirect('https://board-89761.web.app/');
+    res.redirect(FRONT);
   });
 
   app.get('/auth/status', isAuthenticated, (req, res) => res.send(req.user));

@@ -8,13 +8,13 @@ import session from 'express-session';
 import cors from 'cors';
 const cookieParser = require('cookie-parser');
 
-import { PORT, DB_URL } from './vars.global';
+import { PORT, DB_URL, FRONT } from './vars.global';
 
 const app = express();
 
 app.set('trust proxy', 1); // trust first proxy
 
-app.use(cors({ origin: 'https://board-89761.web.app', credentials: true }));
+app.use(cors({ origin: FRONT, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
