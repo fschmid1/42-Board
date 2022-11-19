@@ -92,7 +92,11 @@
 		<!-- <Vote votes={comment.votesScore} postId={post._id}/> -->
 		<div class="comment">
 			<div class="comment-header">
-				<div class="user">{comment?.user?.username}</div><Time relative timestamp="{comment.ts}"></Time>
+				<div class="user">
+					<div class="avatar" style="background-image: url({comment?.user.photo});"></div>
+					{comment?.user?.username}
+				</div>
+				<Time relative timestamp="{comment.ts}"></Time>
 			</div>
 			<p>{comment?.text}</p>
 		</div>
@@ -113,12 +117,30 @@
 
 	.comment-header {
 		display:  flex;
+		align-items: center;
 	}
 
 	.comment-header div {
 		font-weight: bold;
 		margin-right: .5rem;
+		display: flex;
+		align-items: center;
 	}
+
+	.avatar{
+        line-height: 35px;
+        box-sizing: border-box;
+        background-size: cover !important;
+        display: block;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        border-radius: 50%;
+        height: 35px;
+        width: 35px;
+        margin: auto;
+        transition: all 0.2 ease;
+       
+    }
 	
 	.post {
 	grid-template-columns: auto;

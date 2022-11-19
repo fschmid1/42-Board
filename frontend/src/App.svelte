@@ -72,14 +72,14 @@
     <Settings />
 	</div>
 	<div class="masongrid">
+		<button class="add-button" on:click={()=>getModal('add_post').open()}>
+			+
+		</button>
+	
 		{#each $postStore as post}
 			<Post post={post} />
 		{/each}
 	</div>
-	<button on:click={()=>getModal('add_post').open()}>
-		+
-	</button>
-
 	<Modal id="add_post">
 		Want to write a new post?
 		<textarea bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?"></textarea>
@@ -97,12 +97,21 @@
 
 <style>
 	.masongrid {
+		padding-top: 50px;
 		display: grid;
 		grid-template-columns: 33% 33% 33%;
 		width: 100%;
 		grid-gap: 10px;
 		background-color: transparent;
 		color: #eee;
+		position: relative;
+	}
+
+	.add-button {
+		position: absolute;
+		right: -3%;
+		top: -6%;
+		font-size: xx-large;
 	}
 	main {
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

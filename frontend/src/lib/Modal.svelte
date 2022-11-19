@@ -25,8 +25,6 @@ function keyPress(ev){
 
 /**  API **/
 function open(callback){
-	console.log(id);
-	
 	closeCallback=callback
 	if(visible) return
 	prevOnTop=onTop
