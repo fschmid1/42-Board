@@ -14,7 +14,7 @@ export const registerAuthHandler = (app: Application) => {
       {
         clientID: AUTH_UID,
         clientSecret: AUTH_SECRET,
-        callbackURL: 'https://42-board-production.up.railway.app/auth/callback'
+        callbackURL: 'https://42-board-production.up.railway.app/auth/42/callback'
       },
       (accessToken: string, refreshToken: string, profile: any, cb: (err: any, user: any) => any) => {
         (async () => {
