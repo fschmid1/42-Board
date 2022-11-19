@@ -48,7 +48,7 @@
 		<Reactions reactions={post.reactions} />
 	</div>
 	<div class="bottom">
-		<button on:click={()=>getModal('add_comment' + post._id).open()}>
+		<button class="comment-button" on:click={()=>getModal('add_comment' + post._id).open()}>
 			<Reply />
 		</button>
 
@@ -171,6 +171,7 @@
 		padding: 20px;
 		font-size: 1rem;
 		cursor: pointer;
+		position: relative;
   }
   h3 {
 	margin-left: 10px;
