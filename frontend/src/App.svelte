@@ -84,7 +84,7 @@
 		Want to write a new post?
 		<textarea bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?"></textarea>
 		<textarea bind:value={content} cols="35" rows="4" name="text" id="body" placeholder="What is it exactly about?"></textarea>
-		<button on:click={() => {
+		<button class="submit" on:click={() => {
 			submit()
 			getModal('add_post').close(1)}}>
 			Submit
@@ -109,9 +109,13 @@
 
 	.add-button {
 		position: absolute;
+		padding: 0.5rem;
 		right: -3%;
 		top: -6%;
 		font-size: xx-large;
+	}
+	.submit {
+		padding: 0.5rem;
 	}
 	main {
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

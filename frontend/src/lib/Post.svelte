@@ -119,6 +119,10 @@
 
 	.comment-button {
 		position: absolute;
+		background-color: cornflowerblue;
+		border-radius: 40px;
+		height: 2rem;
+		width: 2rem;
 		bottom: 5%;
 		right: 4%;
 	}
@@ -170,8 +174,10 @@
 		border-radius: 5px;
 		padding: 20px;
 		font-size: 1rem;
-		cursor: pointer;
 		position: relative;
+	}
+  .content, .reac_tags, .phead {
+	cursor: pointer;
   }
   h3 {
 	margin-left: 10px;
