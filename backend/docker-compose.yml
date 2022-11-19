@@ -1,11 +1,10 @@
 version: '3.8'
 services:
   backend:
-    image: registry.festech.de/42-board:latest
     environment:
       - DB_URL=mongodb+srv://db:GUm88zVIN1msOgh5@cluster0.mholpde.mongodb.net/?retryWrites=true&w=majority
-      - 42_UID=u-s4t2ud-341816d833ed2b5ec7ac18541b1d8aa8bdc5582d1be4fe5bf2fb605ec067bedb
-      - 42_SECRET=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
+      - UID=u-s4t2ud-341816d833ed2b5ec7ac18541b1d8aa8bdc5582d1be4fe5bf2fb605ec067bedb
+      - SECRET=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
     deploy:
       mode: replicated
       replicas: 1
