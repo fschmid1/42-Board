@@ -118,7 +118,7 @@ onDestroy(()=>{
 	#modal-content {
 		display: flex;
 		flex-flow: column wrap;
-		justify-content: flex-start;
+		justify-content: left;
 		max-width: calc(100vw - 20px);
 		max-height: calc(100vh - 20px);
 		overflow: auto;

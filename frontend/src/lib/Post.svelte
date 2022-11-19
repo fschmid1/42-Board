@@ -35,14 +35,14 @@
 </script>
 
 {#if post}
-<div class="post" on:click={() => getModal('bigpost' + post.name).open()}>
+<div class="post">
 	<div class="head">
 		<Vote votes={post.votesScore} postId={post._id}/>
-		<h3 class="phead">{post.name}</h3>
+		<h3 class="phead" on:click={() => getModal('bigpost' + post.name).open()}>{post.name}</h3>
 		<Tags tags={post.tags} />
 	</div>
-	<p class="content">{post.content}</p>
-	<div class="reac_tags">
+	<p class="content" on:click={() => getModal('bigpost' + post.name).open()}>{post.content}</p>
+	<div class="reac_tags" on:click={() => getModal('bigpost' + post.name).open()}>
 		<Reactions reactions={post.reactions} />
 	</div>
 	<div class="bottom">
@@ -61,7 +61,6 @@
 		</Modal>
 	</div>
 </div>
-
 {/if}
 
 <Modal id={"bigpost" + post.name}>
@@ -133,6 +132,7 @@
   h3 {
 	margin-left: 10px;
 	margin-right: 10px;
+	min-width: 50px;
   }
   .head {
 	display: flex;
