@@ -8,7 +8,7 @@ import session from 'express-session';
 import cors from 'cors';
 const cookieParser = require('cookie-parser');
 
-import { PORT, DB_URL, FRONT } from './vars.global';
+import { PORT, DB_URL, FRONT, MODE } from './vars.global';
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
 
-    cookie: { secure: true, sameSite: 'none' }
+    cookie: { secure: MODE == 'DEV' ? false : true, sameSite: MODE == 'DEV' ? false : 'none' }
   })
 );
 
