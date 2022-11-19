@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { text } from "svelte/internal";
     import { filterStore } from "../stores";
 
     export let selected = 'votes'
@@ -6,7 +7,7 @@
 </script>
 
 <p>Filter by</p>
-<select bind:value={selected} on:change="{() => filterStore.set(selected) }">>
+<select bind:value={selected} on:change="{() => filterStore.set({search: $filterStore.search, filter: selected}) }">>
     <option value="votes">Vote</option>
     <option value="ts">New</option>
 </select>

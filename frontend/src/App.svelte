@@ -24,10 +24,15 @@
 		}
   });
 
-	async function fetchPosts(filter?: string) {
-		let url = apiBaseEndpoint + 'posts';
-		if (filter && filter == 'ts') {
-			url += '?sortByTs=1'
+	async function fetchPosts(options: {search: string, filter: string}) {
+		let url = apiBaseEndpoint + 'posts?';
+		if (options?.filter &&options.filter == 'ts') {
+			url += 'sortByTs=1'
+		}
+		if (options?.search && options.search != '') {
+			if (options.filter == 'ts')
+			url += '&'
+			url += 'search=' + options.search;
 		}
 		const response = await fetch(url, { credentials: "include"});
 		postStore.set(await response.json());

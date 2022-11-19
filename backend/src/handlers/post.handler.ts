@@ -7,11 +7,22 @@ export const router = Router();
 router.use('/', isAuthenticated);
 
 router.get('/', async (req, res, next) => {
+  const search = req.query.search;
+  let query = {};
+  if (search) {
+    query = {
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { content: { $regex: search, $options: 'i' } },
+        { 'user.username': { $regex: search, $options: 'i' } }
+      ]
+    };
+  }
   try {
     if (req.query.sortByTs) {
-      res.send(await Post.find().sort({ ts: -1 }));
+      res.send(await Post.find(query).sort({ ts: -1 }));
     } else {
-      res.send(await Post.find().sort({ votesScore: -1 }));
+      res.send(await Post.find(query).sort({ votesScore: -1 }));
     }
   } catch (error) {
     next(error);
