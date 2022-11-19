@@ -61,7 +61,7 @@ export const registerAuthHandler = (app: Application) => {
   app.get('/auth/login', passport.authenticate('42'));
 
   app.get('/auth/42/callback', passport.authenticate('42', { failureRedirect: '/auth/login' }), function (req, res) {
-    res.redirect('http://localhost:5173/');
+    res.redirect('https://board-89761.web.app/');
   });
 
   app.get('/auth/status', isAuthenticated, (req, res) => res.send(req.user));
