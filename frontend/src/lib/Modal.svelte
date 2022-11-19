@@ -60,11 +60,6 @@ onDestroy(()=>{
 
 <div id="topModal" class:visible bind:this={topDiv} on:click={()=>close()}>
 	<div id='modal' style="width: {id.startsWith('bigpost') ? '80%' : '40%'};" on:click|stopPropagation={()=>{}}>
-		<svg id="close" on:click={()=>close()} viewBox="0 0 12 12">
-			<circle cx=6 cy=6 r=6 />
-			<line x1=3 y1=3 x2=9 y2=9 />
-			<line x1=9 y1=3 x2=3 y2=9 />
-		</svg>
 		<div id='modal-content'>
 			<slot></slot>
 		</div>
@@ -89,29 +84,11 @@ onDestroy(()=>{
 		position: relative;
 		border-radius: 6px;
 		background: white;
-    	border: 2px solid #000;
 		filter: drop-shadow(5px 5px 5px #555);
 		padding: 1em;
 	}
-
 	.visible {
 		visibility: visible !important;
-	}
-
-	#close {
-		position: absolute;
-		top:-12px;
-		right:-12px;
-		width:24px;
-		height:24px;
-		cursor: pointer;
-		fill:#F44;
-		transition: transform 0.3s;
-	}
-
-	#close line {
-		stroke:#FFF;
-		stroke-width:2;
 	}
 	#modal-content {
 		display: flex;
