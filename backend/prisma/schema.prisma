@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   Int                   @id @default(autoincrement())
+  username             String                @unique
+  intraId              String                @unique
+  email                String                @unique
+  displayName          String
+  familyName           String
+  givenName            String
+  profileUrl           String
+  phoneNumber          String
+  banned               Boolean               @default(false)
+  photoUrl             String
+  posts                Post[]
+  postVotes            PostVote[]
+  commentVotes         CommentVote[]
+  postReactions        PostReaction[]
+  postComments         PostComment[]
+  postCommentReactions PostCommentReaction[]
+}
+
+model Post {
+  id        Int            @id @default(autoincrement())
+  name      String
+  content   String
+  published Boolean        @default(false)
+  user      User           @relation(fields: [userId], references: [id])
+  userId    Int
+  voteScore Int            @default(0)
+  ts        DateTime
+  votes     PostVote[]
+  tags      Tag[]
+  reactions PostReaction[]
+  comments  PostComment[]
+}
+
+model PostVote {
+  id     Int     @id @default(autoincrement())
+  up     Boolean
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int
+  post   Post    @relation(fields: [postId], references: [id])
+  postId Int
+}
+
+model CommentVote {
+  id        Int         @id @default(autoincrement())
+  up        Boolean
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int
+  comment   PostComment @relation(fields: [commentId], references: [id])
+  commentId Int
+}
+
+model Tag {
+  id     Int    @id @default(autoincrement())
+  value  String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId Int
+}
+
+model PostReaction {
+  id     Int      @id @default(autoincrement())
+  ts     DateTime
+  emote  String
+  post   Post     @relation(fields: [postId], references: [id])
+  postId Int
+  user   User     @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model PostCommentReaction {
+  id        Int         @id @default(autoincrement())
+  ts        DateTime
+  emote     String
+  comment   PostComment @relation(fields: [commentId], references: [id])
+  commentId Int
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+model PostComment {
+  id        Int                   @id @default(autoincrement())
+  ts        DateTime
+  parent    Post                  @relation(fields: [postId], references: [id])
+  postId    Int
+  user      User                  @relation(fields: [userId], references: [id])
+  userId    Int
+  voteScore Int                   @default(0)
+  votes     CommentVote[]
+  reactions PostCommentReaction[]
+}
