@@ -26,6 +26,7 @@ export const registerAuthHandler = (app: Application) => {
             });
             if (!user) {
               profile = profile._json;
+
               user = await prisma.user.create({
                 data: {
                   intraId: String(profile.id),
@@ -36,7 +37,7 @@ export const registerAuthHandler = (app: Application) => {
                   profileUrl: profile.url,
                   email: profile.email,
                   phoneNumber: profile.phone,
-                  photoUrl: profile.image_url
+                  photoUrl: profile.image.versions.small
                 }
               });
             }

@@ -1,13 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { registerAuthHandler } from './handlers/auth.handler';
 import { router as postRouter } from './handlers/post.handler';
-// import { router as commentsRouter } from '../comments.handler';
-// import { router as voteRouter } from './handlers/vote.handler';
+import { router as commentsRouter } from './handlers/comments.handler';
+import { router as voteRouter } from './handlers/vote.handler';
 import session from 'express-session';
 import cors from 'cors';
 const cookieParser = require('cookie-parser');
 
 import { PORT, FRONT, MODE } from './vars.global';
+import { redisStore, redisClient } from './handlers/redis.handler';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   session({
+    store: redisStore,
     secret: 'fkdisjkfijIDUHaundsais',
     resave: false,
     saveUninitialized: true,
@@ -28,8 +30,8 @@ app.use(
 
 registerAuthHandler(app);
 app.use('/posts', postRouter);
-// app.use('/comments', commentsRouter);
-// app.use('/vote', voteRouter);
+app.use('/comments', commentsRouter);
+app.use('/vote', voteRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);

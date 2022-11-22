@@ -67,8 +67,16 @@ router.get('/:id', async (req, res, next) => {
       where: { id: Number(req.params.id) },
       include: {
         user: true,
-        comments: true,
-        reactions: true,
+        comments: {
+          include: {
+            reactions: {
+              include: {
+                user: true
+              }
+            }
+          }
+        },
+        reactions: { include: { user: true } },
         tags: true
       }
     });
@@ -163,17 +171,17 @@ router.patch('/', async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async (req, res, next) => {
-  try {
-    const post = await prisma.post.findFirst({ where: { id: Number(req.params.id) } });
-    if (!post)
-      throw {
-        status: 404,
-        error: 'Post not found'
-      };
+// router.delete('/:id', async (req, res, next) => {
+//   try {
+//     const post = await prisma.post.findFirst({ where: { id: Number(req.params.id) } });
+//     if (!post)
+//       throw {
+//         status: 404,
+//         error: 'Post not found'
+//       };
 
-    res.send(await prisma.post.delete({ where: { id: Number(req.params.id) } }));
-  } catch (error) {
-    next(error);
-  }
-});
+//     res.send(await prisma.post.delete({ where: { id: Number(req.params.id) } }));
+//   } catch (error) {
+//     next(error);
+//   }
+// });
