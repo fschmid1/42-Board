@@ -117,37 +117,63 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// router.patch('/', async (req, res, next) => {
-//   try {
-//     let post = await Post.findOne({ _id: req.body._id, user: req.user });
-//     if (!post)
-//       throw {
-//         status: 400,
-//         error: 'Post not found'
-//       };
-//     const data = {
-//       name: req.body.name,
-//       content: req.body.content,
-//       tags: req.body.tags
-//     };
-//     await Post.updateOne({ _id: post._id }, data, { runValidators: true });
-//     res.send({ ...post.toObject(), ...data });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+router.patch('/', async (req, res, next) => {
+  try {
+    let post = await prisma.post.findFirst({
+      where: { id: Number(req.body.id ?? '0'), userId: (req.user as any).id },
+      include: { tags: true }
+    });
+    if (!post)
+      throw {
+        status: 400,
+        error: 'Post not found'
+      };
+    const data = {
+      name: req.body.name,
+      content: req.body.content,
+      tags: req.body.tags
+    };
+    await prisma.post.update({
+      where: {
+        id: req.body.id
+      },
+      data: {
+        name: data.name,
+        content: data.content,
+        tags: {
+          createMany: {
+            data: data.tags.map((tag: string) => ({ value: tag })),
+            skipDuplicates: true
+          }
+        }
+      }
+    });
+    post = await prisma.post.findFirst({
+      where: { id: post.id },
+      include: {
+        user: true,
+        comments: true,
+        reactions: true,
+        tags: true
+      }
+    });
+    res.send(post);
+  } catch (error) {
+    next(error);
+  }
+});
 
-// router.delete('/:id', async (req, res, next) => {
-//   try {
-//     const post = await Post.findOne({ _id: req.params.id });
-//     if (!post)
-//       throw {
-//         status: 404,
-//         error: 'Post not found'
-//       };
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const post = await prisma.post.findFirst({ where: { id: Number(req.params.id) } });
+    if (!post)
+      throw {
+        status: 404,
+        error: 'Post not found'
+      };
 
-//     res.send(await Post.deleteOne({ _id: post._id }));
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+    res.send(await prisma.post.delete({ where: { id: Number(req.params.id) } }));
+  } catch (error) {
+    next(error);
+  }
+});
