@@ -8,13 +8,12 @@ import cors from 'cors';
 const cookieParser = require('cookie-parser');
 
 import { PORT, FRONT, MODE } from './vars.global';
-import { redisStore, redisClient } from './handlers/redis.handler';
+import { redisStore } from './handlers/redis.handler';
 
 const app = express();
 
 app.set('trust proxy', 1); // trust first proxy
-
-app.use(cors({ origin: FRONT, credentials: true }));
+if (MODE == 'DEV') app.use(cors({ origin: FRONT, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -24,7 +23,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
 
-    cookie: { secure: MODE == 'DEV' ? false : true, sameSite: MODE == 'DEV' ? false : 'none' }
+    cookie: { secure: MODE == 'DEV' ? false : true }
   })
 );
 
