@@ -17,7 +17,7 @@ router.post('/', async (req, res, next) => {
     const data = {
       text: req.body.text,
       votes: [],
-      votesScore: 0,
+      voteScore: 0,
       reactions: [],
       ts: new Date().getTime(),
       replies: []

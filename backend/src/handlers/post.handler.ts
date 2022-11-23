@@ -69,6 +69,7 @@ router.get('/:id', async (req, res, next) => {
         user: true,
         comments: {
           include: {
+            user: true,
             reactions: {
               include: {
                 user: true

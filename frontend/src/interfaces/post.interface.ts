@@ -7,7 +7,7 @@ export interface Post {
   name: string;
   content: string;
   votes: Vote[];
-  votesScore: number;
+  voteScore: number;
   tags: { value: string }[];
   reactions: Reaction[];
   comments: Comment[];

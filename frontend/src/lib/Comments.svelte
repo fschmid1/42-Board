@@ -8,7 +8,7 @@ export let postId;
   
 <div class="comments">
 	{#each comments as comment}
-		<Vote votes={comment.votesScore} postId={postId}/>
+		<Vote votes={comment.voteScore} postId={postId}/>
 		<p class="text">{comment.text}</p>
 		<div class="reac_tags">
 			<Reactions reactions={comment.reactions}/>

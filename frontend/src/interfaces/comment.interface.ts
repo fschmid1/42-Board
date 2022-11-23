@@ -10,7 +10,7 @@ export interface Comment {
   user: User;
   userId: number;
   votes: Vote[];
-  votesScore: number;
+  voteScore: number;
   reactions: Reaction[];
   replies: Comment[];
 }

@@ -2,12 +2,13 @@
 
 export let reactions;
 </script>
-
-<div class="reactions">
-	{#each reactions as r}
-		<span class="reaction">{r.emote}</span>
-	{/each}
-</div>
+{ #if reactions }
+	<div class="reactions">
+		{#each reactions as r}
+			<span class="reaction">{r.emote}</span>
+		{/each}
+	</div>
+{/if}
 
 <style>
   .reactions {

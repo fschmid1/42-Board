@@ -15,12 +15,12 @@
     		},
 			method: 'POST',
 			body: JSON.stringify({
-				_id: postId,
+				id: postId,
 				up
 			}),
 			credentials: "include",
 		});
-		let index = $postStore.findIndex(el => el._id == postId)
+		let index = $postStore.findIndex(el => el.id == postId)
 		$postStore[index] = await res.json();
 	}
 
