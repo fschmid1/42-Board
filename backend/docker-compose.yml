@@ -4,7 +4,7 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     env_file:
-      - ./.env
+      - ./.env-dev
     links:
       - redis
     build:
