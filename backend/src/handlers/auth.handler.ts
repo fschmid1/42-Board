@@ -1,7 +1,7 @@
+import { prisma } from '../prisma';
 import { Application } from 'express';
 import passport from 'passport';
 import { isAuthenticated } from '../middlewares/auth.middleware';
-import { User } from '../models/user.model';
 import { AUTH_SECRET, AUTH_UID, BACK, FRONT } from '../vars.global';
 var FortyTwoStrategy = require('passport-42').Strategy;
 
@@ -19,24 +19,29 @@ export const registerAuthHandler = (app: Application) => {
       (accessToken: string, refreshToken: string, profile: any, cb: (err: any, user: any) => any) => {
         (async () => {
           try {
-            let user = await User.findOne({ intraId: profile.id });
-            // if (user?.username == 'knickel') return cb({ status: 400, message: 'Nicht mit mir...' }, null);
+            let user = await prisma.user.findFirst({
+              where: {
+                intraId: profile.id
+              }
+            });
             if (!user) {
               profile = profile._json;
-              user = await new User({
-                intraId: String(profile.id),
-                username: profile.login,
-                displayName: profile.displayname,
-                name: {
+
+              user = await prisma.user.create({
+                data: {
+                  intraId: String(profile.id),
+                  username: profile.login,
+                  displayName: profile.displayname,
                   familyName: profile.last_name,
-                  givenName: profile.first_name
-                },
-                profileUrl: profile.url,
-                email: profile.email,
-                phoneNumber: profile.phone,
-                photo: profile.image_url
-              }).save();
+                  givenName: profile.first_name,
+                  profileUrl: profile.url,
+                  email: profile.email,
+                  phoneNumber: profile.phone,
+                  photoUrl: profile.image.versions.small
+                }
+              });
             }
+            if (user.banned) return cb({ status: 400, message: 'Nicht mit mir...' }, null);
             cb(null, user);
           } catch (error) {
             cb(error, null);
@@ -50,14 +55,17 @@ export const registerAuthHandler = (app: Application) => {
     done(null, user.intraId);
   });
 
-  passport.deserializeUser((id, done) => {
-    User.findOne({ intraId: id })
-      .then(user => {
-        done(null, user);
-      })
-      .catch(err => {
-        done(err, null);
+  passport.deserializeUser(async (id: string, done) => {
+    try {
+      let user = await prisma.user.findFirst({
+        where: {
+          intraId: id
+        }
       });
+      done(null, user);
+    } catch (error) {
+      done(error, null);
+    }
   });
 
   app.get('/auth/login', passport.authenticate('42'));

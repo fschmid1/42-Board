@@ -3,14 +3,15 @@ import { User } from './user.interface';
 import { Vote } from './vote.interface';
 
 export interface Post {
-  _id?: string;
+  id: number;
   name: string;
   content: string;
   votes: Vote[];
-  votesScore: number;
-  tags: string[];
+  voteScore: number;
+  tags: { value: string }[];
   reactions: Reaction[];
   comments: Comment[];
   user: User;
-  ts: number;
+  userId: number;
+  ts: string;
 }

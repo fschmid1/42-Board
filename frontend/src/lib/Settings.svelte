@@ -7,7 +7,7 @@
 {#if $userStore}
     <div class="row">
         <span>{$userStore.username}</span>
-        <div class="avatar" style="background-image: url({$userStore.photo});"></div>
+        <div class="avatar" style="background-image: url({$userStore.photoUrl});"></div>
     </div>
    
 {/if}

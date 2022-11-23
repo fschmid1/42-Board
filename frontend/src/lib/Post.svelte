@@ -14,9 +14,21 @@
 
   export let post: Post;
 
-  let _id = post._id;
+  let id = post.id;
   let text = "";
-
+	
+  async function loadPostDetails() {
+		const res = await fetch(apiBaseEndpoint + 'posts/' + post.id,
+			{
+				headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json'
+					},
+				method: 'GET',
+				credentials: "include",
+			});
+			post = await res.json();
+	}
   async function submit() {
 	const res = await fetch(apiBaseEndpoint + 'comments',
 		{
@@ -26,28 +38,33 @@
     		},
 			method: 'POST',
 			body: JSON.stringify({
-				_id,
+				id,
 				text
 			}),
 			credentials: "include",
 		});
 	text = '';
-	let post_index = $postStore.findIndex(el => el._id == post._id)
+	let post_index = $postStore.findIndex(el => el.id == post.id)
 	let comment = await res.json();
 	$postStore[post_index].comments.push(comment);
 	$postStore[post_index] = $postStore[post_index];
+	}
+
+	const openDetails = async () => {
+		await loadPostDetails();
+		getModal('bigpost' + post.name).open()
 	}
 </script>
 
 {#if post}
 <div class="post">
 	<div class="head">
-		<Vote votes={post.votesScore} postId={post._id}/>
-		<h3 class="phead" on:click={() => getModal('bigpost' + post.name).open()}>{post.name}</h3>
+		<Vote votes={post.voteScore} postId={post.id}/>
+		<h3 class="phead" on:click={() =>openDetails()}>{post.name}</h3>
 		<Tags tags={post.tags} user={post.user.username} />
 	</div>
-	<p class="content" on:click={() => getModal('bigpost' + post.name).open()}>{removeMd(post.content)}</p>
-	<div class="reac_tags" on:click={() => getModal('bigpost' + post.name).open()}>
+	<p class="content" on:click={() => openDetails()}>{removeMd(post.content)}</p>
+	<div class="reac_tags" on:click={() => openDetails()}>
 		<Reactions reactions={post.reactions} />
 	</div>
 	<div class="bottom">
@@ -56,12 +73,12 @@
 			<Reply />
 		</button>
 
-		<Modal id={"add_comment" + post._id}>
+		<Modal id={"add_comment" + post.id}>
 			Want to write a new comment?
 			<textarea class="text" bind:value={text} cols="35" rows="4" name="text" style="width: 98%;" id="title" placeholder="type here"></textarea>
 			<button on:click={() => {
 				submit()
-				getModal('add_comment' + post._id).close(1)}}>
+				getModal('add_comment' + post.id).close(1)}}>
 				Submit
 			</button>
 		</Modal>
@@ -73,42 +90,46 @@
 	<div class="modal-content">
 		<div class="content-header">
 			<h3 class="phead">{post.name}</h3>
-			<Vote votes={post.votesScore} postId={post._id}/>
+			<Vote votes={post.voteScore} postId={post.id}/>
 		</div>
-		<SvelteMarkdown class="content" source="{post.content}"  on:click={() => getModal('bigpost' + post.name).open()}/>
+		<SvelteMarkdown class="content" source="{post.content}"  on:click={() => openDetails()}/>
 		<div class="reac_tags">
 			<Reactions reactions={post.reactions} />
 			<Tags tags={post.tags} user={post.user.username} />
 		</div>
-		<button class="comment-button" on:click={()=>getModal('add_comment' + post._id).open()}>
+		<button class="comment-button" on:click={()=>getModal('add_comment' + post.id).open()}>
 			<Reply />
 		</button>
 	
-		<Modal id={"add_comment" + post._id}>
+		<Modal id={"add_comment" + post.id}>
 			Want to write a new comment?
 			<textarea bind:value={text} cols="35" rows="4" style="width: 98%;"  name="text" id="title" placeholder="type here"></textarea>
 			<button class="submit" on:click={() => {
 				submit()
-				getModal('add_comment' + post._id).close(1)}}>
+				getModal('add_comment' + post.id).close(1)}}>
 				Submit
 			</button>
 		</Modal>
 	
-		<!-- <Comments comments={post.comments} postId={post._id}/> -->
+		<!-- <Comments comments={post.comments} postId={post.id}/> -->
 		<div class="comments">
-			{#each post.comments as comment}
-			<!-- <Vote votes={comment.votesScore} postId={post._id}/> -->
-			<div class="comment">
-				<div class="comment-header">
-					<div class="user">
-						<div class="avatar" style="background-image: url({comment?.user.photo});"></div>
-						{comment?.user?.username}
+			{ #if post.comments}
+				
+			{ #each post.comments as comment}
+				
+				<div class="comment">
+					<div class="comment-header">
+						<div class="user">
+							<div class="avatar" style="background-image: url({comment?.user.photoUrl});"></div>
+							{comment?.user?.username}
+						</div>
+						<Time relative timestamp="{comment.ts}"></Time>
 					</div>
-					<Time relative timestamp="{comment.ts}"></Time>
+					<SvelteMarkdown source="{comment?.text}"/>
 				</div>
-				<SvelteMarkdown source="{comment?.text}"/>
-			</div>
-		{/each}
+			{/each}
+			<!-- <Vote votes={comment.voteScore} postId={post.id}/> -->
+			{/if}
 		</div>
 	</div>
 </Modal>

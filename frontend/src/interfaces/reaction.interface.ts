@@ -1,7 +1,9 @@
 import { User } from './user.interface';
 
 export interface Reaction {
-  ts: number;
+  id: number;
+  ts: string;
   emote: string;
   user: User;
+  userId: number;
 }
