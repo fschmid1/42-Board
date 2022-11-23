@@ -13,7 +13,6 @@ import { redisStore } from './handlers/redis.handler';
 const app = express();
 
 app.set('trust proxy', 1); // trust first proxy
-if (MODE == 'DEV') app.use(cors({ origin: FRONT, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
