@@ -1,27 +1,27 @@
 <script lang="ts">
-    import { text } from "svelte/internal";
-    import { filterStore } from "../stores";
+  import { text } from 'svelte/internal';
+  import { filterStore } from '../stores';
 
-    export let selected = 'votes'
-
+  export let selected = 'votes';
 </script>
 
 <p>Filter by</p>
-<select bind:value={selected} on:change="{() => filterStore.set({search: $filterStore.search, filter: selected}) }">>
-    <option value="votes">Vote</option>
-    <option value="ts">New</option>
+<select bind:value={selected} on:change={() => filterStore.set({ search: $filterStore.search, filter: selected })}
+  >>
+  <option value="votes">Vote</option>
+  <option value="ts">New</option>
 </select>
 
 <style>
-    select {
-        border-radius: 8px;
-        border: 1px solid transparent;
-        width: 80px;
-        background-color: transparent;
-    }
+  select {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    width: 80px;
+    background-color: transparent;
+  }
 
-    p {
-        font-size: 14px;
-        margin-left: 1em;
-    }
+  p {
+    font-size: 14px;
+    margin-left: 1em;
+  }
 </style>

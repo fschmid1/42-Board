@@ -42,7 +42,7 @@ router.post('/posts/', async (req, res, next) => {
       }),
       prisma.post.update({ where: { id: post.id }, data: { voteScore: post.voteScore } })
     ]);
-    res.send({ success: true });
+    res.send({ score: post.voteScore });
   } catch (error) {
     next(error);
   }
@@ -84,7 +84,7 @@ router.post('/comments/', async (req, res, next) => {
       }),
       prisma.postComment.update({ where: { id: comment.id }, data: { voteScore: comment.voteScore } })
     ]);
-    res.send({ success: true });
+    res.send({ score: comment.voteScore });
   } catch (error) {
     next(error);
   }

@@ -41,5 +41,5 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(Number(PORT), async () => {
-  console.log(`Server is running on Port '${PORT}' `);
+  console.log(`Server is running in ${MODE} mode on Port '${PORT}' `);
 });

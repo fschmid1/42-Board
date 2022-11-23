@@ -28,6 +28,9 @@ router.post('/', async (req, res, next) => {
         ts: new Date(),
         userId: (req.user as any).id,
         text: data.text
+      },
+      include: {
+        user: true
       }
     });
     res.send(comment);

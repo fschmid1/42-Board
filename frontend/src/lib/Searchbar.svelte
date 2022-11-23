@@ -1,17 +1,20 @@
 <script lang="ts">
+  import { filterStore } from '../stores';
 
-    import {filterStore} from '../stores'
-
-    let text
-    
+  let text;
 </script>
 
-<input type="text" bind:value={text} on:change={() => {
-    filterStore.set({filter: $filterStore.filter, search: text})
-}} placeholder="Search..">
+<input
+  type="text"
+  bind:value={text}
+  on:change={() => {
+    filterStore.set({ filter: $filterStore.filter, search: text });
+  }}
+  placeholder="Search.."
+/>
 
 <style>
-input {
+  input {
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
@@ -19,9 +22,9 @@ input {
     font-weight: 500;
     font-family: inherit;
     background-color: transparent;
-}
+  }
 
-input:hover {
+  input:hover {
     border: 1px solid;
-}
+  }
 </style>
