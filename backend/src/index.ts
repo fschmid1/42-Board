@@ -4,24 +4,26 @@ import { router as postRouter } from './handlers/post.handler';
 import { router as commentsRouter } from './handlers/comments.handler';
 import { router as voteRouter } from './handlers/vote.handler';
 import session from 'express-session';
-import cors from 'cors';
+import fileStore from 'session-file-store'
 const cookieParser = require('cookie-parser');
 
 import { PORT, FRONT, MODE } from './vars.global';
-import { redisStore } from './handlers/redis.handler';
+import cors from 'cors';
 
 const app = express();
 
+const FileStore = fileStore(session);
+
 app.set('trust proxy', 1); // trust first proxy
+if (MODE == 'DEV') app.use(cors({ origin: FRONT, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   session({
-    store: redisStore,
+    store: new FileStore() ,
     secret: 'fkdisjkfijIDUHaundsais',
     resave: false,
     saveUninitialized: true,
-
     cookie: { secure: MODE == 'DEV' ? false : true }
   })
 );
@@ -33,9 +35,6 @@ app.use('/vote', voteRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
-  // if (err._message.includes('Validation failed')) {
-  //   return res.status(400).send(err.error);
-  // }
   res.status(err.status ?? 500).send(err.error ?? 'Something went wrong');
 });
 
