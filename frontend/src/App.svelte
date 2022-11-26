@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Modal, { getModal } from './lib/Modal.svelte';
   import Post from './lib/Post.svelte';
   import Header from './lib/Header.svelte';
   import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint } from './variables';
 
   import { onMount } from 'svelte';
   import { filterStore, postStore, userStore } from './stores';
+  import { Modal, Textarea, Button } from 'flowbite-svelte';
 
   onMount(async () => {
 	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -43,12 +43,8 @@
   let content = '';
   let tags = [''];
   let curr_tag = '';
+  let addPostModal = false;
   let tag_selection = ['', 'workshop', 'rfc', 'event', 'marketplace'];
-
-  // Callback function provided to the `open` function, it receives the value given to the `close` function call, or `undefined` if the Modal was closed with escape or clicking the X, etc.
-  function setSelection(res) {
-    selection = res;
-  }
 
   async function submit() {
     let url = apiBaseEndpoint + 'posts';
@@ -71,21 +67,22 @@
 <Header></Header>
 <main>
   <div class="masongrid">
-    <button class="add-button" on:click={() => getModal('add_post').open()}> + </button>
+    <button class="add-button" on:click={() => addPostModal = true}> + </button>
 
     {#each $postStore as post}
       <Post {post} />
     {/each}
   </div>
-  <Modal id="add_post">
-    Want to write a new post?
-    <p>Tag selection:</p>
-    <select bind:value={curr_tag} on:change={() => (tags = [curr_tag])}>
-      {#each tag_selection as tag}
-        <option value={tag}>{tag}</option>
-      {/each}
-    </select>
-    <textarea
+  <Modal size="md" title="Want to write a new post?" bind:open={addPostModal} >
+	<div class="flex">
+		<p class="mr-2">Tag selection:</p>
+		<select style="width: 12rem !important;" bind:value={curr_tag} on:change={() => (tags = [curr_tag])}>
+		  {#each tag_selection as tag}
+			<option value={tag}>{tag}</option>
+		  {/each}
+		</select>
+	</div>
+    <Textarea
       class="name"
       bind:value={name}
       cols="35"
@@ -94,7 +91,7 @@
       id="title"
       placeholder="What do you want to call it?"
     />
-    <textarea
+    <Textarea
       class="content"
       bind:value={content}
       cols="35"
@@ -103,15 +100,15 @@
       id="body"
       placeholder="What is it exactly about?"
     />
-    <button
+    <Button
       class="submit"
       on:click={() => {
         submit();
-        getModal('add_post').close(1);
+        addPostModal = false;
       }}
     >
       Submit
-    </button>
+    </Button>
   </Modal>
   <div class="footer" />
 </main>

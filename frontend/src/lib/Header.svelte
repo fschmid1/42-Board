@@ -26,7 +26,10 @@
 		</svelte:fragment>
 	  </DarkMode>
 	  </DropdownHeader>
-	  <DropdownItem>Sign out</DropdownItem>
+	  <DropdownItem on:click={() => {
+		console.log('log out');
+		
+	  }}>Sign out</DropdownItem>
 	</Dropdown>
 	<NavUl {hidden}>
 	</NavUl>
