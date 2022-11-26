@@ -126,9 +126,10 @@
   .masongrid {
     padding-top: 50px;
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+	grid-gap: 30px;
+    grid-template-columns: repeat(auto-fit, 300px);
     width: 100%;
-    grid-gap: 10px;
+	margin: 0 auto;
     background-color: transparent;
     color: #eee;
     position: relative;
@@ -175,5 +176,11 @@
   p {
     font-size: 14px;
     margin-left: 1em;
+  }
+
+  @media screen and (max-width: 787px) {
+	.masongrid {
+		justify-content: center;
+	}
   }
 </style>
