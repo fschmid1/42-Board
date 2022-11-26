@@ -4,10 +4,10 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     env_file:
-      - ./.env-dev
-    links:
-      - redis
+      - ./.env
     build:
       context: ./
     ports:
       - 8080:8080
+    volumes:
+      - ./sessions:/usr/src/app/sessions
