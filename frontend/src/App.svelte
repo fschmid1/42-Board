@@ -1,15 +1,16 @@
 <script lang="ts">
   import Modal, { getModal } from './lib/Modal.svelte';
   import Post from './lib/Post.svelte';
-  import Searchbar from './lib/Searchbar.svelte';
-  import Filter from './lib/Filter.svelte';
-  import Settings from './lib/Settings.svelte';
+  import Header from './lib/Header.svelte';
   import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint } from './variables';
 
   import { onMount } from 'svelte';
   import { filterStore, postStore, userStore } from './stores';
 
   onMount(async () => {
+	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		document.getElementsByTagName('html').item(0).classList.add('dark')
+	}
     try {
       let response = await fetch(authStatusEndpoint, { credentials: 'include' });
 
@@ -67,15 +68,8 @@
     $postStore = [...$postStore, await res.json()];
   }
 </script>
-
+<Header></Header>
 <main>
-  <div class="header">
-    <div class="searchnfilter">
-      <Searchbar />
-      <Filter />
-    </div>
-    <Settings />
-  </div>
   <div class="masongrid">
     <button class="add-button" on:click={() => getModal('add_post').open()}> + </button>
 
@@ -139,7 +133,7 @@
     position: absolute;
     padding: 0.5rem;
     right: -3%;
-    top: -6%;
+    top: 6%;
     font-size: xx-large;
   }
   .submit {
@@ -160,7 +154,7 @@
   }
   .name,
   .content {
-    background-image: linear-gradient(hsl(190, 10%, 98%), hsl(190, 10%, 94%));
+    /* background-image: linear-gradient(hsl(190, 10%, 98%), hsl(190, 10%, 94%)); */
     padding: 1ex;
     font-size: 1em;
     box-sizing: border-box;

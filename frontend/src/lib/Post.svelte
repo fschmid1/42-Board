@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Modal, { getModal } from './Modal.svelte';
   import Reactions from './Reactions.svelte';
   import Tags from './Tags.svelte';
   import Reply from './Reply.svelte';
@@ -10,12 +9,15 @@
   import Time from 'svelte-time';
   import SvelteMarkdown from 'svelte-markdown';
   import removeMd from 'remove-markdown';
-  import TextAreaAutosize from './TextAreaAutosize.svelte';
+
+  import { Card, Textarea, Modal, Input, Button, Avatar } from "flowbite-svelte";
 
   export let post: Post;
 
   let id = post.id;
   let text = '';
+  let detailModal = false;
+  let commentModal = false;
 
   async function loadPostDetails() {
     const res = await fetch(apiBaseEndpoint + 'posts/' + post.id, {
@@ -52,131 +54,94 @@
 
   const openDetails = async () => {
     await loadPostDetails();
-    getModal('bigpost' + post.name).open();
+    // getModal('bigpost' + post.name).open();
+	detailModal = true;
   };
 </script>
 
 {#if post}
-  <div class="post">
-    <div class="head">
-      <Vote votes={post.voteScore} postId={post.id} />
-      <h3 class="phead" on:click={() => openDetails()}>{post.name}</h3>
-      <Tags tags={post.tags} user={post.user.username} />
-    </div>
-    <p class="content" on:click={() => openDetails()}>{removeMd(post.content)}</p>
-    <div class="reac_tags" on:click={() => openDetails()}>
-      <Reactions reactions={post.reactions} />
-    </div>
-    <div class="bottom">
-      <TextAreaAutosize bind:value={text} minRows={1} maxRows={5} />
-      <button class="comment-button" on:click={() => submit()}>
-        <Reply />
-      </button>
+<Card>
+	<div class="flex justify-between">
+		<Vote votes={post.voteScore} postId={post.id} />
+		<h3 on:click={() => openDetails()}>{post.name}</h3>
+		<Tags tags={post.tags} user={post.user.username} />
+	</div>
+	<p class="content" on:click={() => openDetails()}>{removeMd(post.content)}</p>
+	<div class="bottom-0 relative">
+		<Input type="text" name="text"  bind:value={text} />
+		<button class="h-8 w-8 bg-blue-500 rounded-full absolute" style="right: -0.5rem; bottom: -0.75rem" on:click={() => submit()}>
+		  <Reply />
+		</button>
+	</div>
+</Card>
 
-      <Modal id={'add_comment' + post.id}>
-        Want to write a new comment?
-        <textarea
-          class="text"
-          bind:value={text}
-          cols="35"
-          rows="4"
-          name="text"
-          style="width: 98%;"
-          id="title"
-          placeholder="type here"
-        />
-        <button
-          on:click={() => {
-            submit();
-            getModal('add_comment' + post.id).close(1);
-          }}
-        >
-          Submit
-        </button>
-      </Modal>
-    </div>
-  </div>
+<Modal bind:open={detailModal} size="xl" class="pb-4">
+	<div class="relative pb-4">
+		<div class="details-content pb-4">
+			<div class="flex justify-between" style="width: 100%;">
+				<h3 class="m-0 font-bold"> {post.name}</h3>
+				<Vote className="mr-6" votes={post.voteScore} postId={post.id} />
+			</div>
+			<SvelteMarkdown class="content" source={post.content}  />
+			<div class="comments mt-2">
+				{#if post.comments}
+				  {#each post.comments as comment}
+					<div class="comment mb-2">
+					  <div class="comment-header">
+						<div class="user">
+							<Avatar src="{comment.user?.photoUrl}" size="sm" class="mr-1" />
+						  {comment?.user?.username}
+						</div>
+						<Time relative timestamp={comment.ts} />
+					  </div>
+					  <SvelteMarkdown source={comment?.text} />
+					</div>
+				  {/each}
+				{/if}
+			  </div>
+		</div>
+		<button class="comment-button" on:click={() => {
+			commentModal = true
+		}}>
+			<Reply />
+		</button>
+
+	</div>
+  </Modal>
+
+  <Modal title="Want to write a new comment?" bind:open={commentModal}>
+	<Textarea type="text" cols="35" rows="4" name="text"  placeholder="type here"  bind:value={text} />
+	<Button
+	  on:click={() => {
+		submit();
+		commentModal = false;
+	  }}
+	>
+	  Submit
+	</Button>
+  </Modal>
 {/if}
 
-<Modal id={'bigpost' + post.name}>
-  <div class="modal-content">
-    <div class="content-header">
-      <h3 class="phead">{post.name}</h3>
-      <Vote votes={post.voteScore} postId={post.id} />
-    </div>
-    <SvelteMarkdown class="content" source={post.content} on:click={() => openDetails()} />
-    <div class="reac_tags">
-      <Reactions reactions={post.reactions} />
-      <Tags tags={post.tags} user={post.user.username} />
-    </div>
-    <button class="comment-button" on:click={() => getModal('add_comment' + post.id).open()}>
-      <Reply />
-    </button>
-
-    <Modal id={'add_comment' + post.id}>
-      Want to write a new comment?
-      <textarea bind:value={text} cols="35" rows="4" style="width: 98%;" name="text" id="title" placeholder="type here" />
-      <button
-        class="submit"
-        on:click={() => {
-          submit();
-          getModal('add_comment' + post.id).close(1);
-        }}
-      >
-        Submit
-      </button>
-    </Modal>
-
-    <!-- <Comments comments={post.comments} postId={post.id}/> -->
-    <div class="comments">
-      {#if post.comments}
-        {#each post.comments as comment}
-          <div class="comment">
-            <div class="comment-header">
-              <div class="user">
-                <div class="avatar" style="background-image: url({comment?.user.photoUrl});" />
-                {comment?.user?.username}
-              </div>
-              <Time relative timestamp={comment.ts} />
-            </div>
-            <SvelteMarkdown source={comment?.text} />
-          </div>
-        {/each}
-        <!-- <Vote votes={comment.voteScore} postId={post.id}/> -->
-      {/if}
-    </div>
-  </div>
-</Modal>
 
 <style>
-  .modal-content {
-    overflow-y: scroll;
-    overflow-wrap: break-word;
+  .details-content {
     width: 100%;
     max-height: 400px;
+	overflow-wrap: break-word;
   }
 
   .comment-button {
-    position: absolute;
+    position: fixed;
     background-color: cornflowerblue;
     border-radius: 40px;
     height: 2rem;
     width: 2rem;
-    bottom: 5%;
-    right: 4%;
+    bottom: 28%;
+    right: 3%;
   }
   .comment {
     border: 1px solit gray;
     width: 100%;
-  }
-  .comments {
-    width: 100%;
-  }
-  .content-header {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: flex-end;
   }
 
   .comment-header {
@@ -190,57 +155,11 @@
     display: flex;
     align-items: center;
   }
-  .submit {
-    padding: 0.5rem;
-  }
-
   .content {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     margin-bottom: 2.5rem;
-  }
-
-  .avatar {
-    line-height: 35px;
-    box-sizing: border-box;
-    background-size: cover !important;
-    display: block;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    border-radius: 50%;
-    height: 35px;
-    width: 35px;
-    margin: auto;
-    transition: all 0.2 ease;
-  }
-
-  .post {
-    grid-template-columns: auto;
-    background-color: #f8f8f8;
-    color: #000;
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 1rem;
-    position: relative;
-    filter: drop-shadow(5px 5px 5px #555);
-  }
-  .content,
-  .reac_tags,
-  .phead {
-    cursor: pointer;
-  }
-  h3 {
-    margin-left: 10px;
-    margin-right: 10px;
-    min-width: 50px;
-  }
-  .head {
-    display: flex;
-    justify-content: space-between;
-  }
-  .reac_tags {
-    display: flex;
-    align-items: flex-end;
+	min-height: 24px;
   }
 </style>

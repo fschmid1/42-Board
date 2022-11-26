@@ -3,42 +3,23 @@
   export let user;
 </script>
 
-<div class="tags">
+<div class="flex justify-end">
   {#if user}
-    <span class="user">{user}</span>
+    <span class="h-6 text-md user">{user}</span>
   {/if}
   {#if tags}
     {#each tags as tag}
-      {#if tag != ''}
-        <span class="tag">{tag.value}</span>
+      {#if tag.value != ''}
+        <span class="tag h-6 rounded bg-gray-100 dark:bg-gray-900 px-1 ml-2">{tag.value}</span>
       {/if}
     {/each}
   {/if}
 </div>
 
 <style>
-  .tags {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
-  }
-
-  .tag {
-    background-color: #eee;
-    height: 1.5rem;
-    border-radius: 9px;
-    padding: 0 2px 0 5px;
-    margin: 0 0.2rem;
-  }
   .tag::before {
     content: '#';
     font-size: 0.85rem;
-  }
-  .user {
-    height: 1.5rem;
-    padding: 0 2px 0 5px;
-    margin: 0 0.2rem;
-    font-size: 0.8rem;
   }
   .user::before {
     content: '@';

@@ -4,6 +4,7 @@
 
   export let votes = 0;
   export let postId;
+  export let className = '';
 
   const doVote = async (up: boolean) => {
     const res = await fetch(apiBaseEndpoint + 'vote/posts', {
@@ -27,7 +28,7 @@
   const voteDown = () => doVote(false);
 </script>
 
-<div class="vote">
+<div class="vote {className}">
   <button on:click={voteUp}> ∧ </button>
   <span>{votes}</span>
   <button on:click={voteDown}> ∨ </button>
