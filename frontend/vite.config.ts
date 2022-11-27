@@ -5,6 +5,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 export default defineConfig({
   plugins: [svelte()],
   optimizeDeps: {
-    include: ['dayjs/plugin/relativeTime.js']
+    include: ['dayjs/plugin/relativeTime.js'],
+	 exclude: ["svelte-navigator"]
   }
 });
