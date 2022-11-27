@@ -5,7 +5,9 @@
 
   import { onMount } from 'svelte';
   import { filterStore, postStore, userStore } from './stores';
-  import { Modal, Textarea, Button } from 'flowbite-svelte';
+  import { Modal, Textarea, Button, Search, Label, Select } from 'flowbite-svelte';
+    import Filter from './lib/Filter.svelte';
+    import Searchbar from './lib/Searchbar.svelte';
 
   onMount(async () => {
 	if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -38,7 +40,6 @@
     postStore.set(await response.json());
   }
 
-  let selection;
   let name = '';
   let content = '';
   let tags = [''];
@@ -66,9 +67,12 @@
 </script>
 <Header></Header>
 <main>
+	<div class="flex my-4">
+		<Searchbar></Searchbar>	
+		<Filter></Filter>
+		<Button class="ml-2" on:click={() => addPostModal = true}> + </Button>
+	</div>
   <div class="masongrid">
-    <button class="add-button" on:click={() => addPostModal = true}> + </button>
-
     {#each $postStore as post}
       <Post {post} />
     {/each}
@@ -115,7 +119,6 @@
 
 <style>
   .masongrid {
-    padding-top: 50px;
     display: grid;
 	grid-gap: 30px;
     grid-template-columns: repeat(auto-fit, 300px);
@@ -126,49 +129,11 @@
     position: relative;
   }
 
-  .add-button {
-    position: absolute;
-    padding: 0.5rem;
-    right: -3%;
-    top: 6%;
-    font-size: xx-large;
-  }
-  .submit {
-    padding: 0.5rem;
-  }
   main {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 80%;
     margin: 0 auto;
   }
-  .header {
-    display: flex;
-    padding: 2em;
-    justify-content: space-between;
-  }
-  .searchnfilter {
-    display: flex;
-  }
-  .name,
-  .content {
-    /* background-image: linear-gradient(hsl(190, 10%, 98%), hsl(190, 10%, 94%)); */
-    padding: 1ex;
-    font-size: 1em;
-    box-sizing: border-box;
-    color: navy;
-  }
-  select {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    width: 80px;
-    background-color: transparent;
-  }
-
-  p {
-    font-size: 14px;
-    margin-left: 1em;
-  }
-
   @media screen and (max-width: 787px) {
 	.masongrid {
 		justify-content: center;

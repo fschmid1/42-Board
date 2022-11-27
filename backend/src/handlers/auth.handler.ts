@@ -69,6 +69,13 @@ export const registerAuthHandler = (app: Application) => {
   });
 
   app.get('/auth/login', passport.authenticate('42'));
+  
+  app.post('/auth/logout', (req, res, next) => {
+	req.logout(function(err) {
+		if (err) { return next(err); }
+		res.redirect('/');
+	  });
+  });
 
   app.get('/auth/42/callback', passport.authenticate('42', { failureRedirect: '/auth/login' }), function (req, res) {
     res.redirect(FRONT);

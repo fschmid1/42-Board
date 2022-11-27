@@ -10,7 +10,7 @@
   import SvelteMarkdown from 'svelte-markdown';
   import removeMd from 'remove-markdown';
 
-  import { Card, Textarea, Modal, Input, Button, Avatar } from "flowbite-svelte";
+  import { Card, Textarea, Modal, Input, Button, Avatar, Alert } from "flowbite-svelte";
 
   export let post: Post;
 
@@ -18,6 +18,7 @@
   let text = '';
   let detailModal = false;
   let commentModal = false;
+  let commentError = '';
 
   async function loadPostDetails() {
     const res = await fetch(apiBaseEndpoint + 'posts/' + post.id, {
@@ -47,9 +48,9 @@
     text = '';
     let post_index = $postStore.findIndex(el => el.id == post.id);
     let comment = await res.json();
-    if (!$postStore[post_index].comments) $postStore[post_index].comments = [];
-    $postStore[post_index].comments.push(comment);
-    $postStore[post_index] = $postStore[post_index];
+    if (!post.comments?.length) post.comments = [];
+    post.comments.push(comment);
+    $postStore[post_index] = post;
   }
 
   const openDetails = async () => {
@@ -69,14 +70,18 @@
 	<p class="content" on:click={() => openDetails()}>{removeMd(post.content)}</p>
 	<div class="bottom-0 relative">
 		<Input type="text" name="text"  bind:value={text} />
-		<button class="h-8 w-8 bg-blue-500 rounded-full absolute" style="right: -0.5rem; bottom: -0.75rem" on:click={() => submit()}>
+		<button class="h-8 w-8 bg-blue-500 rounded-full absolute" style="right: -0.5rem; bottom: -0.75rem" on:click={() => {
+			 if (text.length <= 3)
+			 	return;
+			 submit();
+		}}>
 		  <Reply />
 		</button>
 	</div>
 </Card>
 
-<Modal bind:open={detailModal} size="xl" class="pb-4">
-	<div class="relative pb-4">
+<Modal bind:open={detailModal} size="lg" class="relative pb-4">
+	<!-- <div class="relative pb-4"> -->
 		<div class="details-content pb-4">
 			<div class="flex justify-between" style="width: 100%;">
 				<h3 class="m-0 font-bold"> {post.name}</h3>
@@ -110,14 +115,24 @@
 			<Reply />
 		</button>
 
-	</div>
+	<!-- </div> -->
   </Modal>
 
   <Modal title="Want to write a new comment?" bind:open={commentModal}>
-	<Textarea type="text" cols="35" rows="4" name="text"  placeholder="type here"  bind:value={text} />
+	{#if commentError}
+		<Alert color="red">
+			<span class="font-medium">Error!</span> {commentError}
+		</Alert>
+	{/if}
+	<Textarea type="text" cols="35" rows="4" name="text" s placeholder="type here"  bind:value={text} />
 	<Button
 	  on:click={() => {
+		if (text.length <= 3) {
+			commentError = 'Minium three charaters are required'
+			return
+		}
 		submit();
+		commentError = '';
 		commentModal = false;
 	  }}
 	>
@@ -135,13 +150,13 @@
   }
 
   .comment-button {
-    position: fixed;
+    position: absolute;
     background-color: cornflowerblue;
     border-radius: 40px;
     height: 2rem;
     width: 2rem;
-    bottom: 28%;
-    right: 3%;
+    bottom: 10px;
+    right: 1rem;
   }
   .comment {
     border: 1px solit gray;

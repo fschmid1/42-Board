@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Navbar, DarkMode, NavLi, NavUl, NavHamburger, Avatar, Dropdown, DropdownItem, DropdownHeader, DropdownDivider } from 'flowbite-svelte'
     import { userStore } from '../stores';
+    import { apiBaseEndpoint } from '../variables';
 </script>
 
 <Navbar let:hidden let:toggle>
@@ -26,9 +27,15 @@
 		</svelte:fragment>
 	  </DarkMode>
 	  </DropdownHeader>
-	  <DropdownItem on:click={() => {
-		console.log('log out');
-		
+	  <DropdownItem on:click={ async () => {
+		await fetch(apiBaseEndpoint + 'auth/logout', {
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: 'POST',
+      credentials: 'include'
+    });
 	  }}>Sign out</DropdownItem>
 	</Dropdown>
 	<NavUl {hidden}>

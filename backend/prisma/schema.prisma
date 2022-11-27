@@ -93,7 +93,7 @@ model PostCommentReaction {
 model PostComment {
   id        Int                   @id @default(autoincrement())
   ts        DateTime
-  text      String
+  text      String				  
   parent    Post                  @relation(fields: [postId], references: [id])
   postId    Int
   user      User                  @relation(fields: [userId], references: [id])

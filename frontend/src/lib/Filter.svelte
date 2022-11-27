@@ -1,27 +1,22 @@
 <script lang="ts">
-  import { text } from 'svelte/internal';
+    import { Select } from 'flowbite-svelte';
   import { filterStore } from '../stores';
 
   export let selected = 'votes';
+  let orderOptions = [
+	{
+		name: 'By Votes',
+		value: 'votes'
+	},
+	{
+		name: 'By Date',
+		value: 'ts'
+	}
+	
+  ]
 </script>
 
-<p>Filter by</p>
-<select bind:value={selected} on:change={() => filterStore.set({ search: $filterStore.search, filter: selected })}
-  >>
-  <option value="votes">Vote</option>
-  <option value="ts">New</option>
-</select>
+<div class="w-1/2 flex items-center justify-end ">
+	<Select class="w-2/3" items={orderOptions} bind:value={selected}  on:change={() => filterStore.set({ search: $filterStore.search, filter: selected })} />
+</div>
 
-<style>
-  select {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    width: 80px;
-    background-color: transparent;
-  }
-
-  p {
-    font-size: 14px;
-    margin-left: 1em;
-  }
-</style>
