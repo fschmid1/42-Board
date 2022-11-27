@@ -83,6 +83,10 @@
 				<Vote className="mr-6" votes={post.voteScore} postId={post.id} />
 			</div>
 			<SvelteMarkdown class="content" source={post.content}  />
+			<div class="flex mt-2">
+				<Reactions reactions={post.reactions} />
+				<Tags tags={post.tags} user={post.user.username} />
+			  </div>
 			<div class="comments mt-2">
 				{#if post.comments}
 				  {#each post.comments as comment}
