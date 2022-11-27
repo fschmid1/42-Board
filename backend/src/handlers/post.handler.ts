@@ -8,7 +8,13 @@ router.use('/', isAuthenticated);
 
 router.get('/', async (req, res, next) => {
   const search = req.query.search;
+  const size = Number(req.query.pageSize) || 12;
+  const page = Number(req.query.page) || 1;
   let query = {};
+  const pageQuery = {
+	skip: size * (page - 1),
+	take: size
+  }
   if (search) {
     query = {
       OR: [
@@ -36,6 +42,7 @@ router.get('/', async (req, res, next) => {
           orderBy: {
             ts: 'desc'
           },
+		  ...pageQuery,
           include: {
             user: true,
             tags: true
@@ -49,6 +56,7 @@ router.get('/', async (req, res, next) => {
           orderBy: {
             voteScore: 'desc'
           },
+		  ...pageQuery,
           include: {
             user: true,
             tags: true

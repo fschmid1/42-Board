@@ -23,7 +23,7 @@
     type="text"
     placeholder="Search"
     bind:value={text}
-    on:keypress={() => {
+    on:keyup={() => {
       debounce(() => {
         search();
       });

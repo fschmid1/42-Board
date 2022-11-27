@@ -4,10 +4,20 @@
   import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint } from './variables';
 
   import { onMount } from 'svelte';
-  import { filterStore, postStore, userStore } from './stores';
-  import { Modal, Textarea, Button, Search, Label, Select, Skeleton, Card } from 'flowbite-svelte';
+  import { postStore, userStore, filterStore } from './stores';
+  import { Modal, Textarea, Button, Label, Select, Skeleton, Card, PaginationItem } from 'flowbite-svelte';
   import Filter from './lib/Filter.svelte';
   import Searchbar from './lib/Searchbar.svelte';
+
+  const previous = () => {
+    const page = $filterStore.page;
+    if (page == 1) return;
+    filterStore.set({ ...$filterStore, page: page - 1 });
+  };
+  const next = () => {
+    const page = $filterStore.page;
+    filterStore.set({ ...$filterStore, page: page + 1 });
+  };
 
   onMount(async () => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -15,8 +25,6 @@
     }
     try {
       let response = await fetch(authStatusEndpoint, { credentials: 'include' });
-
-      filterStore.subscribe(filter => fetchPosts(filter));
 
       if (response.status === 401) {
         location.replace(authLoginEndpoint);
@@ -26,19 +34,6 @@
       console.log(error);
     }
   });
-
-  async function fetchPosts(options: { search: string; filter: string }) {
-    let url = apiBaseEndpoint + 'posts?';
-    if (options?.filter && options.filter == 'ts') {
-      url += 'sortByTs=1';
-    }
-    if (options?.search && options.search != '') {
-      if (options.filter == 'ts') url += '&';
-      url += 'search=' + options.search;
-    }
-    const response = await fetch(url, { credentials: 'include' });
-    postStore.set(await response.json());
-  }
 
   let name = '';
   let content = '';
@@ -62,6 +57,10 @@
       }),
       credentials: 'include'
     });
+    name = '';
+    content = '';
+    tags = [''];
+    curr_tag = '';
     $postStore = [...$postStore, await res.json()];
   }
 </script>
@@ -126,6 +125,10 @@
       Submit
     </Button>
   </Modal>
+  <div class="flex w-full justify-center mt-2 space-x-3">
+    <PaginationItem on:click={previous}>Previous</PaginationItem>
+    <PaginationItem on:click={next}>Next</PaginationItem>
+  </div>
   <div class="footer" />
 </main>
 
@@ -134,7 +137,7 @@
     display: grid;
     grid-gap: 30px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
-	justify-content: center;
+    justify-content: center;
     width: 100%;
     margin: 0 auto;
     background-color: transparent;
