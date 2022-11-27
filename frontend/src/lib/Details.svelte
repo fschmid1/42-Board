@@ -8,25 +8,26 @@
   import Reactions from './Reactions.svelte';
   import Tags from './Tags.svelte';
   import Vote from './Vote.svelte';
-  import { useNavigate } from "svelte-navigator";
+  import { useNavigate } from 'svelte-navigator';
 
   import { postStore } from '../stores';
-    import Reply from './Reply.svelte';
-    import { writable } from 'svelte/store';
+  import Reply from './Reply.svelte';
+  import { writable } from 'svelte/store';
+  import type {Post} from '../interfaces/post.interface';
 
   export let id;
-  let post;
+  let post: Post | undefined;
   let text = '';
   let open = writable<boolean>(false);
   let commentModal = false;
   let commentError = '';
   const sub = open.subscribe(val => {
-		if (!val && post) {
-			setTimeout(()=> {
-				navigate('/');
-			}, 0);
-		}
-	});
+    if (!val && post) {
+      setTimeout(() => {
+        navigate('/');
+      }, 0);
+    }
+  });
 
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@
       credentials: 'include'
     });
     post = await res.json();
-	open.set(true);
+    open.set(true);
   }
 
   async function submit() {
@@ -72,7 +73,7 @@
 </script>
 
 {#if post}
-  <Modal bind:open={$open} size="lg" class="relative pb-4" >
+  <Modal bind:open={$open} size="lg" class="relative pb-4">
     <div class="details-content pb-4">
       <div class="flex justify-between" style="width: 100%;">
         <h3 class="m-0 font-bold">{post.name}</h3>

@@ -21,6 +21,7 @@
     });
     let index = $postStore.findIndex(el => el.id == postId);
     let { score } = await res.json();
+	votes = score;
     $postStore[index] = { ...$postStore[index], voteScore: score };
   };
 
