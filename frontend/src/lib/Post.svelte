@@ -10,7 +10,8 @@
   import SvelteMarkdown from 'svelte-markdown';
   import removeMd from 'remove-markdown';
 
-  import { Card, Textarea, Modal, Input, Button, Avatar, Alert } from "flowbite-svelte";
+  import { Card, Textarea, Modal, Input, Button, Alert } from "flowbite-svelte";
+    import Avatar from './Avatar.svelte';
 
   export let post: Post;
 
@@ -64,7 +65,7 @@
 <Card>
 	<div class="flex justify-between">
 		<Vote votes={post.voteScore} postId={post.id} />
-		<h3 on:click={() => openDetails()}>{post.name}</h3>
+		<h3 class="truncate mx-1 text-ellipsis overflow-hidden" on:click={() => openDetails()}>{post.name}</h3>
 		<Tags tags={post.tags} user={post.user.username} />
 	</div>
 	<p class="content" on:click={() => openDetails()}>{removeMd(post.content)}</p>
@@ -98,7 +99,7 @@
 					<div class="comment mb-2">
 					  <div class="comment-header">
 						<div class="user">
-							<Avatar src="{comment.user?.photoUrl}" size="sm" class="mr-1" />
+							<Avatar src="{comment.user?.photoUrl}" size="8" className="!mr-1" />
 						  {comment?.user?.username}
 						</div>
 						<Time relative timestamp={comment.ts} />

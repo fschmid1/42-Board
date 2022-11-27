@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { Navbar, DarkMode, NavLi, NavUl, NavHamburger, Avatar, Dropdown, DropdownItem, DropdownHeader, DropdownDivider } from 'flowbite-svelte'
+	import { Navbar, DarkMode, NavLi, NavUl, NavHamburger, Dropdown, DropdownItem, DropdownHeader, DropdownDivider } from 'flowbite-svelte'
     import { userStore } from '../stores';
     import { apiBaseEndpoint } from '../variables';
+    import Avatar from './Avatar.svelte';
 </script>
 
 <Navbar let:hidden let:toggle>
 	<div class="flex items-center md:order-2 cursor-pointer" id="avatar-menu">
-	  <Avatar  src="{$userStore?.photoUrl}" />
+	  <Avatar src="{$userStore?.photoUrl}" size="8" />
 	  <span class="block ml-2 text-sm">{$userStore?.username}</span>
 	  <NavHamburger on:click={toggle} class1="w-full md:flex md:w-auto md:order-1"/>
 	</div>

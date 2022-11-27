@@ -35,7 +35,7 @@ model Post {
   name      String
   content   String         @db.Text
   published Boolean        @default(false)
-  user      User           @relation(fields: [userId], references: [id])
+  user      User           @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId    Int
   voteScore Int            @default(0)
   ts        DateTime
@@ -48,25 +48,25 @@ model Post {
 model PostVote {
   id     Int     @id @default(autoincrement())
   up     Boolean
-  user   User    @relation(fields: [userId], references: [id])
+  user   User    @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId Int
-  post   Post    @relation(fields: [postId], references: [id])
+  post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId Int
 }
 
 model CommentVote {
   id        Int         @id @default(autoincrement())
   up        Boolean
-  user      User        @relation(fields: [userId], references: [id])
+  user      User        @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId    Int
-  comment   PostComment @relation(fields: [commentId], references: [id])
+  comment   PostComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId Int
 }
 
 model Tag {
   id     Int    @id @default(autoincrement())
   value  String
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId Int
 }
 
@@ -74,9 +74,9 @@ model PostReaction {
   id     Int      @id @default(autoincrement())
   ts     DateTime
   emote  String
-  post   Post     @relation(fields: [postId], references: [id])
+  post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId Int
-  user   User     @relation(fields: [userId], references: [id])
+  user   User     @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId Int
 }
 
@@ -84,7 +84,7 @@ model PostCommentReaction {
   id        Int         @id @default(autoincrement())
   ts        DateTime
   emote     String
-  comment   PostComment @relation(fields: [commentId], references: [id])
+  comment   PostComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId Int
   user      User        @relation(fields: [userId], references: [id])
   userId    Int
@@ -94,9 +94,9 @@ model PostComment {
   id        Int                   @id @default(autoincrement())
   ts        DateTime
   text      String				  
-  parent    Post                  @relation(fields: [postId], references: [id])
+  parent    Post                  @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
-  user      User                  @relation(fields: [userId], references: [id])
+  user      User                  @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId    Int
   voteScore Int                   @default(0)
   votes     CommentVote[]
