@@ -68,9 +68,9 @@
 
 <Header />
 <main>
-  <div class="flex justify-between my-4">
+  <div class="flex flex-col justify-between my-4 md:flex-row">
     <Searchbar />
-    <div class="w-1/3 flex">
+    <div class="flex mt-2 w-full md:w-1/3 md:mt-0">
       <Filter />
       <Button class="ml-2" on:click={() => (addPostModal = true)}>+</Button>
     </div>

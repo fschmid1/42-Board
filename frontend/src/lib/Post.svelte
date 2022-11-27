@@ -121,7 +121,7 @@
 
   <Modal title="Want to write a new comment?" bind:open={commentModal}>
 	{#if commentError}
-		<Alert color="red">
+		<Alert color="red" dismissable accent>
 			<span class="font-medium">Error!</span> {commentError}
 		</Alert>
 	{/if}
