@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Navbar, DarkMode, Dropdown, DropdownItem, DropdownHeader } from 'flowbite-svelte';
+  import { Navbar, DarkMode, Dropdown, DropdownItem, DropdownHeader, Skeleton, Avatar as FAvatar } from 'flowbite-svelte';
   import { userStore } from '../stores';
   import { apiBaseEndpoint } from '../variables';
   import Avatar from './Avatar.svelte';
@@ -7,8 +7,14 @@
 
 <Navbar>
   <div class="flex ml-auto items-center md:order-2 cursor-pointer" id="avatar-menu">
-    <Avatar src={$userStore?.photoUrl} size="8" />
-    <span class="block ml-2 text-sm">{$userStore?.username}</span>
+	{#if $userStore}
+		<Avatar src={$userStore?.photoUrl} size="8" />
+		<span class="block ml-2 text-sm">{$userStore?.username}</span>
+	{/if}
+	{#if !$userStore}
+		<FAvatar class="pace-y-2.5 animate-pulse max-w-lg" ></FAvatar>
+		<span class="pace-y-2.5 w-24 h-4 ml-2 rounded bg-gray-500 animate-pulse"></span>
+	{/if}
   </div>
   <Dropdown placement="bottom" triggeredBy="#avatar-menu">
     <DropdownHeader>
