@@ -10,7 +10,7 @@
   {#if tags}
     {#each tags as tag}
       {#if tag.value != ''}
-        <span class="tag h-6 rounded bg-gray-100 dark:bg-gray-900 px-1 ml-2">{tag.value}</span>
+        <span class="tag text-sm h-5 mt-0.5 rounded bg-gray-100 dark:bg-gray-900 px-1 ml-2">{tag.value}</span>
       {/if}
     {/each}
   {/if}

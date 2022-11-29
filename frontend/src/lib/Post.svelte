@@ -44,8 +44,8 @@
   <Card>
     <div class="flex justify-between">
       <Vote votes={post.voteScore} postId={post.id} />
-      <Link to="/{post.id}"
-        ><h3 class="text-lg font-semibold truncate mx-1 text-ellipsis overflow-hidden cursor-pointer" on:click={() => openDetails()}>
+      <Link to="/{post.id}" class="truncate"
+        ><h3 class="text-xl text-ellipsis font-semibold mx-1 overflow-hidden cursor-pointer" on:click={() => openDetails()}>
           {post.name}
         </h3></Link
       >
@@ -71,37 +71,6 @@
 {/if}
 
 <style>
-  .details-content {
-    width: 100%;
-    max-height: 400px;
-    overflow-wrap: break-word;
-  }
-
-  .comment-button {
-    position: absolute;
-    background-color: cornflowerblue;
-    border-radius: 40px;
-    height: 2rem;
-    width: 2rem;
-    bottom: 10px;
-    right: 1rem;
-  }
-  .comment {
-    border: 1px solit gray;
-    width: 100%;
-  }
-
-  .comment-header {
-    display: flex;
-    align-items: center;
-  }
-
-  .comment-header div {
-    font-weight: bold;
-    margin-right: 0.5rem;
-    display: flex;
-    align-items: center;
-  }
   .content {
     overflow: hidden;
     white-space: nowrap;

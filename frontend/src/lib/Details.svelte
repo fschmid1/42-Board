@@ -76,7 +76,7 @@
   <Modal bind:open={$open} size="lg" class="relative pb-4">
     <div class="details-content pb-4">
       <div class="flex justify-between" style="width: 100%;">
-        <h3 class="m-0 font-bold">{post.name}</h3>
+        <h3 class="m-0 text-3xl font-bold">{post.name}</h3>
         <Vote className="mr-6" votes={post.voteScore} postId={post.id} />
       </div>
       <SvelteMarkdown class="content" source={post.content} />

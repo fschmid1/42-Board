@@ -186,7 +186,6 @@
   }
 
   main {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 80%;
     margin: 0 auto;
   }
