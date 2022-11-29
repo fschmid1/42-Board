@@ -29,15 +29,10 @@ router.post('/comments/', async (req, res, next) => {
     if (!reaction) {
       reaction = await prisma.postCommentReaction.create({
         data: {
-          count: 1,
+          count: 0,
           ts: new Date(),
           emote: req.body.emote,
-          commentId: req.body.id,
-          users: {
-            create: {
-              userId: (req.user as any).id
-            }
-          }
+          commentId: req.body.id
         },
         include: {
           users: true

@@ -58,7 +58,7 @@
       <Input type="text" name="text" bind:value={text} />
       <button
         class="h-8 w-8 bg-blue-500 rounded-full absolute"
-        style="right: -0.5rem; bottom: -0.75rem"
+        style="right: -0.9rem; bottom: -0.9rem"
         on:click={() => {
           if (text.length <= 3) return;
           submit();
