@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { userInfo } from 'os';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { prisma } from '../prisma';
 
@@ -10,10 +11,24 @@ router.get('/', async (req, res, next) => {
   const search = req.query.search;
   const size = Number(req.query.pageSize) || 12;
   const page = Number(req.query.page) || 1;
+  let orderQuery: any;
   let query = {};
   const pageQuery = {
-	skip: size * (page - 1),
-	take: size
+    skip: size * (page - 1),
+    take: size
+  };
+  if (req.query.sortByTs) {
+    orderQuery = {
+      orderBy: {
+        ts: 'desc'
+      }
+    };
+  } else {
+    orderQuery = {
+      orderBy: {
+        voteScore: 'desc'
+      }
+    };
   }
   if (search) {
     query = {
@@ -35,35 +50,21 @@ router.get('/', async (req, res, next) => {
     };
   }
   try {
-    if (req.query.sortByTs) {
-      res.send(
-        await prisma.post.findMany({
-          where: query,
-          orderBy: {
-            ts: 'desc'
-          },
-		  ...pageQuery,
-          include: {
-            user: true,
-            tags: true
-          }
-        })
-      );
-    } else {
-      res.send(
-        await prisma.post.findMany({
-          where: query,
-          orderBy: {
-            voteScore: 'desc'
-          },
-		  ...pageQuery,
-          include: {
-            user: true,
-            tags: true
-          }
-        })
-      );
-    }
+    const result = await prisma.$transaction([
+      prisma.post.count({
+        where: query
+      }),
+      prisma.post.findMany({
+        where: query,
+        ...orderQuery,
+        ...pageQuery,
+        include: {
+          user: true,
+          tags: true
+        }
+      })
+    ]);
+    res.send({ total: result[0], result: result[1] });
   } catch (error) {
     next(error);
   }
