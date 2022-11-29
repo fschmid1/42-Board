@@ -1,4 +1,3 @@
-import { PostCommentReaction } from '@prisma/client';
 import { Router } from 'express';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { prisma } from '../prisma';
@@ -39,7 +38,7 @@ router.post('/comments/', async (req, res, next) => {
         }
       });
     }
-    let user = reaction?.users.find(el => el.userId == (req.user as any).id);
+    let user = reaction?.users.find((el: any) => el.userId == (req.user as any).id);
     if (user) {
       await prisma.postCommentReaction.update({
         where: { id: reaction.id },
