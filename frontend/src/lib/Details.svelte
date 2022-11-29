@@ -87,16 +87,18 @@
       <div class="comments mt-2">
         {#if post.comments}
           {#each post.comments as comment}
-            <div class="comment relative mb-2">
+            <div class="comment relative my-4">
               <Reactions id={comment.id} reactions={comment.reactions} />
-              <div class="comment-header">
+              <div class="comment-header my-2">
                 <div class="user">
-                  <Avatar src={comment.user?.photoUrl} size="8" className="!mr-1" />
+                  <Avatar src={comment.user?.photoUrl} size="8" className="!mr-1 pr-2" />
                   {comment?.user?.username}
                 </div>
                 <Time relative timestamp={comment.ts} />
               </div>
-              <SvelteMarkdown source={comment?.text} />
+			  <div class="ml-4">
+				  <SvelteMarkdown source={comment?.text} />
+			  </div>
             </div>
           {/each}
         {/if}
