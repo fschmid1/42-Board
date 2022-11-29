@@ -3,8 +3,9 @@ import { registerAuthHandler } from './handlers/auth.handler';
 import { router as postRouter } from './handlers/post.handler';
 import { router as commentsRouter } from './handlers/comments.handler';
 import { router as voteRouter } from './handlers/vote.handler';
+import { router as reactionRouter } from './handlers/reaction.handler';
 import session from 'express-session';
-import fileStore from 'session-file-store'
+import fileStore from 'session-file-store';
 const cookieParser = require('cookie-parser');
 
 import { PORT, FRONT, MODE } from './vars.global';
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   session({
-    store: new FileStore() ,
+    store: new FileStore(),
     secret: 'fkdisjkfijIDUHaundsais',
     resave: false,
     saveUninitialized: true,
@@ -32,6 +33,7 @@ registerAuthHandler(app);
 app.use('/posts', postRouter);
 app.use('/comments', commentsRouter);
 app.use('/vote', voteRouter);
+app.use('/reaction', reactionRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
