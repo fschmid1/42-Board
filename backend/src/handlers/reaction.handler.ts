@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 import { PostCommentReaction } from '@prisma/client';
->>>>>>> 3792e8781bd81ff102e9a5c1556801967e88f1f5
 import { Router } from 'express';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { prisma } from '../prisma';
@@ -15,15 +12,11 @@ router.post('/comments/', async (req, res, next) => {
     let comment = await prisma.postComment.findFirst({
       where: { id: req.body.id },
       include: {
-<<<<<<< HEAD
-        reactions: true
-=======
         reactions: {
           include: {
             users: true
           }
         }
->>>>>>> 3792e8781bd81ff102e9a5c1556801967e88f1f5
       }
     });
 
@@ -32,22 +25,6 @@ router.post('/comments/', async (req, res, next) => {
         status: 404,
         error: 'Comment not found'
       };
-<<<<<<< HEAD
-    let reaction = comment?.reactions.find((el: any) => el.userId == (req.user as any).id && el.emote == req.body.emote);
-    if (reaction) {
-      await prisma.postCommentReaction.delete({ where: { id: reaction.id } });
-    } else {
-      reaction = await prisma.postCommentReaction.create({
-        data: {
-          commentId: comment.id,
-          userId: (req.user as any).id,
-          ts: new Date(),
-          emote: req.body.emote
-        }
-      });
-    }
-    res.send(reaction);
-=======
     let reaction = comment?.reactions.find((el: any) => el.emote == req.body.emote);
     if (!reaction) {
       reaction = await prisma.postCommentReaction.create({
@@ -113,7 +90,6 @@ router.post('/comments/', async (req, res, next) => {
         }
       })
     );
->>>>>>> 3792e8781bd81ff102e9a5c1556801967e88f1f5
   } catch (error) {
     next(error);
   }
