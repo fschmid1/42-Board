@@ -13,7 +13,7 @@
   import { postStore } from '../stores';
   import Reply from './Reply.svelte';
   import { writable } from 'svelte/store';
-  import type {Post} from '../interfaces/post.interface';
+  import type { Post } from '../interfaces/post.interface';
 
   export let id;
   let post: Post | undefined;
@@ -52,7 +52,7 @@
       },
       method: 'POST',
       body: JSON.stringify({
-        id,
+        id: Number(id),
         text
       }),
       credentials: 'include'
@@ -122,7 +122,7 @@
     <Button
       on:click={() => {
         if (text.length <= 3) {
-          commentError = 'Minium three charaters are required';
+          commentError = 'Minium four charaters are required';
           return;
         }
         submit();
