@@ -7,11 +7,12 @@ export const userStore = writable<User>(null);
 
 export const postStore = writable<Post[]>([]);
 
-export const filterStore = writable<{ search: string; filter: string; page: number; total: number }>({
+export const paginationStore = writable<{ total: number }>({ total: 0 });
+
+export const filterStore = writable<{ search: string; filter: string; page: number }>({
   search: '',
   filter: '',
-  page: 1,
-  total: 0
+  page: 1
 });
 
 filterStore.subscribe(filter => fetchPosts(filter));
@@ -29,8 +30,8 @@ async function fetchPosts(options: { search: string; filter: string; page: numbe
   url += `page=${options.page}`;
   const response = await fetch(url, { credentials: 'include' });
   const result = await response.json();
-  filterStore.update(value => {
-    return { ...value, total: result.total };
+  paginationStore.update(value => {
+    return { total: result.total };
   });
   postStore.set(result.result);
 }

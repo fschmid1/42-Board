@@ -4,7 +4,7 @@
   import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint } from './variables';
 
   import { onMount } from 'svelte';
-  import { postStore, userStore, filterStore } from './stores';
+  import { postStore, userStore, filterStore, paginationStore } from './stores';
   import { Modal, Textarea, Button, Label, Select, Skeleton, Card, PaginationItem, Pagination } from 'flowbite-svelte';
   import Filter from './lib/Filter.svelte';
   import Searchbar from './lib/Searchbar.svelte';
@@ -138,7 +138,7 @@
           <span class="font-semibold text-gray-900 dark:text-white"
             >{1 + 12 * ($filterStore.page - 1) + $postStore.length - 1}</span
           >
-          of <span class="font-semibold text-gray-900 dark:text-white">{$filterStore.total}</span> Entries
+          of <span class="font-semibold text-gray-900 dark:text-white">{$paginationStore.total}</span> Entries
         </div>
         <Pagination table>
           <div slot="prev" class="flex items-center gap-2" on:click={previous}>

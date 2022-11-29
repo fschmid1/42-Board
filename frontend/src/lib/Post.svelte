@@ -7,10 +7,9 @@
   import { postStore } from '../stores';
   import removeMd from 'remove-markdown';
 
-  import {Link} from 'svelte-navigator';
+  import { Link } from 'svelte-navigator';
 
-
-  import { Card,  Input } from "flowbite-svelte";
+  import { Card, Input } from 'flowbite-svelte';
 
   export let post: Post;
 
@@ -38,40 +37,44 @@
     $postStore[post_index] = post;
   }
 
-  const openDetails = async () => {
-  };
+  const openDetails = async () => {};
 </script>
 
 {#if post}
-<Card>
-	<div class="flex justify-between">
-		<Vote votes={post.voteScore} postId={post.id} />
-		<Link to="/{post.id}"><h3 class="truncate mx-1 text-ellipsis overflow-hidden cursor-pointer" on:click={() => openDetails()}>{post.name}</h3></Link>
-		<Tags tags={post.tags} user={post.user.username} />
-	</div>
-	<Link to="/{post.id}">
-		<p class="content cursor-pointer" on:click={() => openDetails()}>{removeMd(post.content)}</p>
-	</Link>
-	<div class="bottom-0 relative">
-		<Input type="text" name="text"  bind:value={text} />
-		<button class="h-8 w-8 bg-blue-500 rounded-full absolute" style="right: -0.5rem; bottom: -0.75rem" on:click={() => {
-			 if (text.length <= 3)
-			 	return;
-			 submit();
-		}}>
-		  <Reply />
-		</button>
-	</div>
-</Card>
+  <Card>
+    <div class="flex justify-between">
+      <Vote votes={post.voteScore} postId={post.id} />
+      <Link to="/{post.id}"
+        ><h3 class="truncate mx-1 text-ellipsis overflow-hidden cursor-pointer" on:click={() => openDetails()}>
+          {post.name}
+        </h3></Link
+      >
+      <Tags tags={post.tags} user={post.user.username} />
+    </div>
+    <Link to="/{post.id}">
+      <p class="content cursor-pointer" on:click={() => openDetails()}>{removeMd(post.content)}</p>
+    </Link>
+    <div class="bottom-0 relative">
+      <Input type="text" name="text" bind:value={text} />
+      <button
+        class="h-8 w-8 bg-blue-500 rounded-full absolute"
+        style="right: -0.5rem; bottom: -0.75rem"
+        on:click={() => {
+          if (text.length <= 3) return;
+          submit();
+        }}
+      >
+        <Reply />
+      </button>
+    </div>
+  </Card>
 {/if}
-
-
 
 <style>
   .details-content {
     width: 100%;
     max-height: 400px;
-	overflow-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .comment-button {
@@ -104,6 +107,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     margin-bottom: 2.5rem;
-	min-height: 24px;
+    min-height: 24px;
   }
 </style>
