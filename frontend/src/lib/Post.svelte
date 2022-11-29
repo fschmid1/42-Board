@@ -45,7 +45,7 @@
     <div class="flex justify-between">
       <Vote votes={post.voteScore} postId={post.id} />
       <Link to="/{post.id}"
-        ><h3 class="truncate mx-1 text-ellipsis overflow-hidden cursor-pointer" on:click={() => openDetails()}>
+        ><h3 class="text-lg font-semibold truncate mx-1 text-ellipsis overflow-hidden cursor-pointer" on:click={() => openDetails()}>
           {post.name}
         </h3></Link
       >

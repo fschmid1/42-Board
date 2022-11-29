@@ -5,7 +5,7 @@
 
 <div class="flex justify-end">
   {#if user}
-    <span class="h-6 text-md user">{user}</span>
+    <span class="h-6 text-base font-mono user">{user}</span>
   {/if}
   {#if tags}
     {#each tags as tag}
