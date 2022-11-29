@@ -86,8 +86,13 @@ router.get('/:id', async (req, res, next) => {
           include: {
             user: true,
             reactions: {
+              where: { count: { gt: 0 } },
               include: {
-                user: true
+                users: {
+                  include: {
+                    user: true
+                  }
+                }
               }
             }
           }
