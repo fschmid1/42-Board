@@ -26,7 +26,11 @@
 {#if reactions}
   <div class="flex absolute -top-2 right-0 justify-en ">
     {#each reactions as r}
-      <span class="reaction text-xl px-2 text-center rounded-lg shadow bg-gray-900 mr-1"
+      <span
+        on:click={() => {
+          submit({ detail: r.emote });
+        }}
+        class="reaction text-xl px-2 text-center cursor-pointer rounded-lg shadow bg-gray-900 mr-1"
         >{r.emote} <span class="text-sm text-center">{r.count}</span></span
       >
     {/each}
