@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { userInfo } from 'os';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { prisma } from '../prisma';
 
@@ -43,6 +42,13 @@ router.get('/', async (req, res, next) => {
           user: {
             username: {
               contains: search
+            }
+          }
+        },
+        {
+          tags: {
+            some: {
+              value: { contains: search }
             }
           }
         }
