@@ -4,6 +4,9 @@ export interface Reaction {
   id: number;
   ts: string;
   emote: string;
-  user: User;
-  userId: number;
+  users: {
+    userId: number;
+    user: User;
+  }[];
+  count: number;
 }

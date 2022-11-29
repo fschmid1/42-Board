@@ -81,13 +81,14 @@
       </div>
       <SvelteMarkdown class="content" source={post.content} />
       <div class="flex mt-2">
-        <Reactions reactions={post.reactions} />
+        <Reactions id={post.id} reactions={post.reactions} />
         <Tags tags={post.tags} user={post.user.username} />
       </div>
       <div class="comments mt-2">
         {#if post.comments}
           {#each post.comments as comment}
-            <div class="comment mb-2">
+            <div class="comment relative mb-2">
+              <Reactions id={comment.id} reactions={comment.reactions} />
               <div class="comment-header">
                 <div class="user">
                   <Avatar src={comment.user?.photoUrl} size="8" className="!mr-1" />

@@ -1,3 +1,4 @@
+import { PostCommentReaction } from '@prisma/client';
 import { Router } from 'express';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { prisma } from '../prisma';
@@ -11,7 +12,11 @@ router.post('/comments/', async (req, res, next) => {
     let comment = await prisma.postComment.findFirst({
       where: { id: req.body.id },
       include: {
-        reactions: true
+        reactions: {
+          include: {
+            users: true
+          }
+        }
       }
     });
 
@@ -20,23 +25,68 @@ router.post('/comments/', async (req, res, next) => {
         status: 404,
         error: 'Comment not found'
       };
-    let reaction = comment?.reactions.find((el: any) => el.userId == (req.user as any).id && el.emote == req.body.emote);
-    if (reaction) {
-      await prisma.postCommentReaction.delete({ where: { id: reaction.id } });
-    } else {
-      await prisma.postCommentReaction.create({
+    let reaction = comment?.reactions.find((el: any) => el.emote == req.body.emote);
+    if (!reaction) {
+      reaction = await prisma.postCommentReaction.create({
         data: {
-          commentId: comment.id,
-          userId: (req.user as any).id,
+          count: 1,
           ts: new Date(),
-          emote: req.body.emote
+          emote: req.body.emote,
+          commentId: req.body.id,
+          users: {
+            create: {
+              userId: (req.user as any).id
+            }
+          }
+        },
+        include: {
+          users: true
+        }
+      });
+    }
+    let user = reaction?.users.find(el => el.userId == (req.user as any).id);
+    if (user) {
+      await prisma.postCommentReaction.update({
+        where: { id: reaction.id },
+        data: {
+          count: reaction.count - 1,
+          users: {
+            delete: {
+              reactionId_userId: {
+                userId: (req.user as any).id,
+                reactionId: reaction.id
+              }
+            }
+          }
+        }
+      });
+    } else {
+      await prisma.postCommentReaction.update({
+        where: { id: reaction.id },
+        data: {
+          count: reaction.count + 1,
+          users: {
+            create: {
+              userId: (req.user as any).id
+            }
+          }
         }
       });
     }
     res.send(
       await prisma.postCommentReaction.findMany({
         where: {
-          commentId: req.body.id
+          commentId: req.body.id,
+          count: {
+            gt: 0
+          }
+        },
+        include: {
+          users: {
+            include: {
+              user: true
+            }
+          }
         }
       })
     );
