@@ -174,7 +174,7 @@
     </div>
   </main>
 
-  <Route path="/:id" let:params>
+  <Route primary={false} path="/:id" let:params>
     <Details id={params.id} />
   </Route>
 </Router>
