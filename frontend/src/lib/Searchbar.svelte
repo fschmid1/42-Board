@@ -14,7 +14,7 @@
   };
 
   const search = () => {
-    filterStore.set({ filter: $filterStore.filter, search: text });
+    filterStore.set({ ...$filterStore, search: text, page: 1 });
   };
 </script>
 

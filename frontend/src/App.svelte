@@ -22,17 +22,15 @@
   };
 
   onMount(async () => {
-    if (!localStorage.getItem('dark') || localStorage.getItem('dark') != 'true') {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('dark')) {
+      console.log('dark bro');
+
+      localStorage.setItem('dark', 'true');
+    } else if (window.matchMedia && !window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('dark')) {
       localStorage.setItem('dark', 'false');
     }
-    if (
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches &&
-      localStorage.getItem('dark') &&
-      localStorage.getItem('dark') == 'true'
-    ) {
+    if (localStorage.getItem('dark') == 'true') {
       document.getElementsByTagName('html').item(0).classList.add('dark');
-      localStorage.setItem('dark', 'true');
     }
     try {
       let response = await fetch(authStatusEndpoint, { credentials: 'include' });

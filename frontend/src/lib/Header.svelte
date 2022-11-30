@@ -41,7 +41,12 @@
           </div>
         </svelte:fragment>
         <svelte:fragment slot="darkIcon">
-          <div class="flex items-center">
+          <div
+            class="flex items-center"
+            on:click={() => {
+              localStorage.setItem('dark', 'true');
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1em"

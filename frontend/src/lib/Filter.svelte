@@ -15,4 +15,8 @@
   ];
 </script>
 
-<Select items={orderOptions} bind:value={selected} on:change={() => filterStore.set({ ...$filterStore, filter: selected })} />
+<Select
+  items={orderOptions}
+  bind:value={selected}
+  on:change={() => filterStore.set({ ...$filterStore, filter: selected, page: 1 })}
+/>
