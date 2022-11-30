@@ -18,6 +18,7 @@
   export let id;
   let post: Post | undefined;
   let text = '';
+  let backdrop;
   let open = writable<boolean>(false);
   let commentModal = false;
   let commentError = '';
@@ -65,16 +66,24 @@
     $postStore[post_index] = post;
   }
 
+  const handleBackdropClick = event => {
+    if (event.target.classList.contains('h-modal')) {
+      open.set(false);
+    }
+  };
+
   onMount(async () => {
     await loadPostDetails();
     setTimeout(() => {
-      document.querySelector('.h-modal').addEventListener('click', () => {
-        open.set(false);
-      });
+      backdrop = document.querySelector('.h-modal');
+      backdrop.addEventListener('click', handleBackdropClick);
     }, 0);
   });
 
-  onDestroy(sub);
+  onDestroy(() => {
+    sub();
+    backdrop.removeEventListener('click', handleBackdropClick, true);
+  });
 </script>
 
 {#if post}
