@@ -65,8 +65,13 @@
     $postStore[post_index] = post;
   }
 
-  onMount(() => {
-    loadPostDetails();
+  onMount(async () => {
+    await loadPostDetails();
+    setTimeout(() => {
+      document.querySelector('.h-modal').addEventListener('click', () => {
+        open.set(false);
+      });
+    }, 0);
   });
 
   onDestroy(sub);
@@ -96,9 +101,9 @@
                 </div>
                 <Time relative timestamp={comment.ts} />
               </div>
-			  <div class="ml-4">
-				  <SvelteMarkdown source={comment?.text} />
-			  </div>
+              <div class="ml-4">
+                <SvelteMarkdown source={comment?.text} />
+              </div>
             </div>
           {/each}
         {/if}
