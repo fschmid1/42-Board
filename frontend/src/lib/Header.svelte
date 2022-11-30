@@ -7,20 +7,25 @@
 
 <Navbar>
   <div class="flex ml-auto items-center md:order-2 cursor-pointer" id="avatar-menu">
-	{#if $userStore}
-		<Avatar src={$userStore?.photoUrl} size="8" />
-		<span class="block ml-2 text-sm">{$userStore?.username}</span>
-	{/if}
-	{#if !$userStore}
-		<FAvatar class="pace-y-2.5 animate-pulse max-w-lg" ></FAvatar>
-		<span class="pace-y-2.5 w-24 h-4 ml-2 rounded bg-gray-500 animate-pulse"></span>
-	{/if}
+    {#if $userStore}
+      <Avatar src={$userStore?.photoUrl} size="8" />
+      <span class="block ml-2 text-sm">{$userStore?.username}</span>
+    {/if}
+    {#if !$userStore}
+      <FAvatar class="pace-y-2.5 animate-pulse max-w-lg" />
+      <span class="pace-y-2.5 w-24 h-4 ml-2 rounded bg-gray-500 animate-pulse" />
+    {/if}
   </div>
   <Dropdown placement="bottom" triggeredBy="#avatar-menu">
     <DropdownHeader>
       <DarkMode class="text-md">
         <svelte:fragment slot="lightIcon">
-          <div class="flex items-center">
+          <div
+            class="flex items-center"
+            on:click={() => {
+              localStorage.setItem('dark', 'false');
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1em"

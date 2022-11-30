@@ -81,7 +81,7 @@
       </div>
       <SvelteMarkdown class="content" source={post.content} />
       <div class="flex mt-2">
-        <Reactions id={post.id} reactions={post.reactions} />
+        <!-- <Reactions id={post.id} reactions={post.reactions} /> -->
         <Tags tags={post.tags} user={post.user.username} />
       </div>
       <div class="comments mt-2">

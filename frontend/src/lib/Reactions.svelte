@@ -43,11 +43,13 @@
         on:click={() => {
           submit({ detail: r.emote });
         }}
-        class="reaction text-xl px-2 text-center cursor-pointer rounded-lg shadow bg-gray-900 mr-1"
+        class="reaction text-xl px-2 text-center cursor-pointer rounded-lg shadow bg-gray-100 dark:bg-gray-900 mr-1"
         >{r.emote} <span class="text-sm text-center">{r.count}</span></span
       >
     {/each}
-    <span class="text-xl px-2 text-center rounded-lg shadow bg-gray-900"><EmojiSelector class="z-50" on:emoji={submit} /></span>
+    <span class="text-xl px-2 text-center rounded-lg shadow bg-gray-100 dark:bg-gray-900"
+      ><EmojiSelector class="z-50" on:emoji={submit} /></span
+    >
   </div>
 {/if}
 

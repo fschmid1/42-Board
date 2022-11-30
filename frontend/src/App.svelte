@@ -22,8 +22,17 @@
   };
 
   onMount(async () => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (!localStorage.getItem('dark') || localStorage.getItem('dark') != 'true') {
+      localStorage.setItem('dark', 'false');
+    }
+    if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches &&
+      localStorage.getItem('dark') &&
+      localStorage.getItem('dark') == 'true'
+    ) {
       document.getElementsByTagName('html').item(0).classList.add('dark');
+      localStorage.setItem('dark', 'true');
     }
     try {
       let response = await fetch(authStatusEndpoint, { credentials: 'include' });
