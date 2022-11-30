@@ -85,7 +85,7 @@
         <Button class="ml-2" on:click={() => (addPostModal = true)}>+</Button>
       </div>
     </div>
-    <div class="masongrid">
+    <div class="relative grid grid-cols-1 md:grid-cols-2 w-full lg:grid-cols-3 grid-flow-row gap-4">
       {#if $postStore.length == 0}
         {#each new Array(12) as d}
           <Card>
@@ -180,18 +180,6 @@
 </Router>
 
 <style>
-  .masongrid {
-    display: grid;
-    grid-gap: 30px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
-    justify-content: center;
-    width: 100%;
-    margin: 0 auto;
-    background-color: transparent;
-    color: #eee;
-    position: relative;
-  }
-
   main {
     width: 80%;
     margin: 0 auto;
