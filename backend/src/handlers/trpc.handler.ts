@@ -1,11 +1,10 @@
+import { User } from '@prisma/client';
 import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { postRouter } from './post.handler';
-import { voteRouter } from './vote.handler';
 
 export const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
   const getUser = () => {
-    return req.user as any;
+    return req.user as User;
   };
 
   return {
@@ -21,9 +20,16 @@ export const router = t.router;
 export const middleware = t.middleware;
 export const publicProcedure = t.procedure;
 
+import { commentRouter } from './comments.handler';
+import { postRouter } from './post.handler';
+import { reactionRouter } from './reaction.handler';
+import { voteRouter } from './vote.handler';
+
 export const appRouter = router({
-  posts: postRouter,
-  vote: voteRouter
+  post: postRouter,
+  vote: voteRouter,
+  reaction: reactionRouter,
+  comment: commentRouter
 });
 
 export type AppRouter = typeof appRouter;

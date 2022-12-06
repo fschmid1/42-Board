@@ -1,11 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { registerAuthHandler } from './handlers/auth.handler';
-import { router as commentsRouter } from './handlers/comments.handler';
-import { router as reactionRouter } from './handlers/reaction.handler';
 import session from 'express-session';
 import fileStore from 'session-file-store';
 const cookieParser = require('cookie-parser');
-import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
 
 import { PORT, FRONT, MODE } from './vars.global';
@@ -38,9 +35,6 @@ app.use(
     createContext
   })
 );
-
-app.use('/comments', commentsRouter);
-app.use('/reaction', reactionRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);

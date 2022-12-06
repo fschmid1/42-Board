@@ -1,5 +1,5 @@
 import { prisma } from '../prisma';
-import { Application } from 'express';
+import { Application, Request, Response } from 'express';
 import passport from 'passport';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { AUTH_SECRET, AUTH_UID, BACK, FRONT } from '../vars.global';
@@ -69,17 +69,19 @@ export const registerAuthHandler = (app: Application) => {
   });
 
   app.get('/auth/login', passport.authenticate('42'));
-  
+
   app.post('/auth/logout', (req, res, next) => {
-	req.logout(function(err) {
-		if (err) { return next(err); }
-		res.redirect('/');
-	  });
+    req.logout(function (err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/');
+    });
   });
 
   app.get('/auth/42/callback', passport.authenticate('42', { failureRedirect: '/auth/login' }), function (req, res) {
     res.redirect(FRONT);
   });
 
-  app.get('/auth/status', isAuthenticated, (req, res) => res.send(req.user));
+  app.get('/auth/status', isAuthenticated, (req: Request, res: Response) => res.send(req.user));
 };

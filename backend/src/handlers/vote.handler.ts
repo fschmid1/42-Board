@@ -13,7 +13,7 @@ export const voteRouter = router({
         up: z.boolean()
       })
     )
-    .query(async req => {
+    .mutation(async req => {
       const data = req.input;
       try {
         let post = await prisma.post.findFirst({ where: { id: data.id }, include: { votes: true } });
@@ -63,7 +63,7 @@ export const voteRouter = router({
         up: z.boolean()
       })
     )
-    .query(async req => {
+    .mutation(async req => {
       const data = req.input;
       try {
         let comment = await prisma.postComment.findFirst({ where: { id: data.id }, include: { votes: true } });
