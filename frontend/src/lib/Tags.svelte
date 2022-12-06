@@ -3,7 +3,7 @@
   export let user;
 </script>
 
-<div class="flex justify-end">
+<div class="flex flex-col-reverse justify-end items-end">
   {#if user}
     <span class="h-6 text-base font-mono user">{user}</span>
   {/if}
