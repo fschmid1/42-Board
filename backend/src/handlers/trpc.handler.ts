@@ -1,10 +1,20 @@
-import { User } from '@prisma/client';
 import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
 
 export const createContext = ({ req }: trpcExpress.CreateExpressContextOptions) => {
   return {
-    user: req.user as User
+    user: req.user as {
+      id: number;
+      username: string;
+      intraId: string;
+      displayName: string;
+      familyName: string;
+      givenName: string;
+      profileUrl: string;
+      email: string;
+      phoneNumber: string;
+      photoUrl: string;
+    }
   };
 };
 type Context = inferAsyncReturnType<typeof createContext>;

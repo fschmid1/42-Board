@@ -3,7 +3,7 @@
 prod="let base = 'https:\/\/board.festech.de\/api';"
 oldFile=$(cat src/variables.ts)
 
-echo "$(sed "1s/.*/$prod/1" src/variables.ts)" > src/variables.ts
+echo "$(sed "5s/.*/$prod/1" src/variables.ts)" > src/variables.ts
 
 npm run build
 cd dist
