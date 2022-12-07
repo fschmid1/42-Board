@@ -1,24 +1,24 @@
 <script lang="ts">
   import { Popover } from 'flowbite-svelte';
-  import { apiBaseEndpoint, trpc } from '../variables';
+  import { trpc } from '../variables';
   import EmojiSelector from 'svelte-emoji-selector';
   import Avatar from './Avatar.svelte';
-  import type { Reaction } from '../interfaces/reaction.interface';
+  import type { PostCommentReaction } from '../types';
 
   export let id;
-  export let reactions: Reaction[] = [];
+  export let reactions: PostCommentReaction = [];
 
   const submit = async emote => {
     const res = await trpc.reaction.comment.mutate({
       emote: emote.detail,
       id
     });
-    reactions = res as any as Reaction[];
+    reactions = res;
   };
 </script>
 
 {#if reactions}
-  <div class="flex absolute -top-2 right-0 justify-end">
+  <div class="flex justify-end">
     {#each reactions as r}
       <Popover class="w-44" title={r.emote} trigger="hover" triggeredBy="#reaction-{r.id}">
         <div class="flex flex-col">

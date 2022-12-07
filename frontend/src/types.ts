@@ -6,3 +6,5 @@ type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends read
 export type PostList = RouterOutput['post']['list']['result'];
 export type PostListItem = ArrayElement<PostList>;
 export type PostDetails = RouterOutput['post']['getById'];
+export type PostCommentReaction = ArrayElement<PostDetails['comments']>['reactions'];
+export type PostComment = ArrayElement<PostDetails['comments']>;

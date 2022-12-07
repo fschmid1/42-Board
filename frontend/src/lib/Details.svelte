@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Alert, Button, Modal, Textarea } from 'flowbite-svelte';
+  import { Alert, Button, Modal, Dropdown, Textarea, DropdownItem } from 'flowbite-svelte';
   import { onDestroy, onMount } from 'svelte';
   import SvelteMarkdown from 'svelte-markdown';
   import Time from 'svelte-time';
@@ -13,7 +13,11 @@
   import { postStore } from '../stores';
   import Reply from './Reply.svelte';
   import { writable } from 'svelte/store';
-  import type { PostDetails } from '../types';
+  import type { PostComment, PostDetails } from '../types';
+  import { userStore } from '../stores';
+
+  import Fa from 'svelte-fa';
+  import { faTrash, faEllipsisVertical, faPen } from '@fortawesome/free-solid-svg-icons';
 
   export let id;
   let post: PostDetails | undefined;
@@ -53,6 +57,11 @@
     }
   };
 
+  const deleteComment = async (comment: PostComment) => {
+    await trpc.comment.delete.mutate({ id: comment.id });
+    post.comments = post.comments.filter(el => el.id != comment.id);
+  };
+
   onMount(async () => {
     await loadPostDetails();
     setTimeout(() => {
@@ -83,7 +92,21 @@
         {#if post.comments}
           {#each post.comments as comment}
             <div class="comment relative my-4">
-              <Reactions id={comment.id} reactions={comment.reactions} />
+              <div class="absolute right-0 -top-4 flex flex-row-reverse">
+                {#if comment.userId == $userStore.id}
+                  <div class="w-7 h-7 rounded mx-1 bg-gray-100 dark:bg-gray-900 flex justify-center items-center cursor-pointer">
+                    <Fa icon={faEllipsisVertical} />
+                  </div>
+                  <Dropdown class="w-12">
+                    <DropdownItem class="flex justify-center" on:click={() => deleteComment(comment)}
+                      ><Fa icon={faTrash} /></DropdownItem
+                    >
+                    <!-- <DropdownItem class="flex justify-center"><Fa icon={faPen} /></DropdownItem> -->
+                  </Dropdown>
+                {/if}
+                <Reactions id={comment.id} reactions={comment.reactions} />
+              </div>
+
               <div class="comment-header my-2">
                 <div class="user">
                   <Avatar src={comment.user?.photoUrl} size="8" className="!mr-1 pr-2" />
