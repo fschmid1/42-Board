@@ -24,8 +24,6 @@ async function fetchPosts(options: { search: string; filter: string; page: numbe
     sortByTs: options.filter == 'ts'
   });
 
-  trpc.post.create.mutate({});
-
   paginationStore.update(value => {
     return { total: total };
   });

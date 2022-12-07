@@ -69,7 +69,7 @@
 </script>
 
 {#if post}
-  <Modal bind:open={$open} size="lg" class="relative pb-4">
+  <Modal bind:open={$open} size="xl" class="relative pb-4">
     <div class="details-content pb-4">
       <div class="flex justify-between" style="width: 100%;">
         <h3 class="m-0 text-3xl font-bold">{post.name}</h3>
@@ -137,7 +137,7 @@
 <style>
   .details-content {
     width: 100%;
-    max-height: 400px;
+    max-height: 550px;
     overflow-wrap: break-word;
   }
 
