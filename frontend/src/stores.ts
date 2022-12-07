@@ -15,6 +15,8 @@ export const filterStore = writable<{ search: string; filter: string; page: numb
   page: 1
 });
 
+export const authState = writable<boolean>(false);
+
 filterStore.subscribe(filter => fetchPosts(filter));
 
 async function fetchPosts(options: { search: string; filter: string; page: number }) {

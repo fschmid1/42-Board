@@ -1,15 +1,16 @@
 <script lang="ts">
   import Post from './lib/Post.svelte';
   import Header from './lib/Header.svelte';
-  import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint, trpc } from './variables';
+  import { authStatusEndpoint, trpc } from './variables';
 
   import { onMount } from 'svelte';
-  import { postStore, userStore, filterStore, paginationStore } from './stores';
-  import { Modal, Textarea, Button, Label, Select, Skeleton, Card, PaginationItem, Pagination } from 'flowbite-svelte';
+  import { postStore, userStore, filterStore, paginationStore, authState } from './stores';
+  import { Modal, Textarea, Button, Label, Select, Skeleton, Card, Pagination } from 'flowbite-svelte';
   import Filter from './lib/Filter.svelte';
   import Searchbar from './lib/Searchbar.svelte';
   import { Router, Route } from 'svelte-navigator';
   import Details from './lib/Details.svelte';
+  import Login from './lib/Login.svelte';
 
   const previous = () => {
     const page = $filterStore.page;
@@ -33,10 +34,13 @@
       document.getElementsByTagName('html').item(0).classList.add('dark');
     }
     try {
+      if (location.pathname == '/login') return;
       let response = await fetch(authStatusEndpoint, { credentials: 'include' });
 
-      if (response.status === 401) {
-        location.replace(authLoginEndpoint);
+      if (response.status === 200) {
+        authState.set(true);
+      } else {
+        location.href = '/login';
       }
       userStore.set(await response.json());
     } catch (error) {
@@ -50,10 +54,8 @@
   let curr_tag = '';
   let addPostModal = false;
   let tag_selection = ['', 'workshop', 'rfc', 'event', 'marketplace'].map(el => ({ name: el, value: el }));
-  let helper = { start: 1, end: 10, total: 100 };
 
   async function submit() {
-    let url = apiBaseEndpoint + 'posts';
     const newPost = await trpc.post.create.mutate({
       content,
       name,
@@ -166,6 +168,9 @@
     </div>
   </main>
 
+  <Route primary={false} path="/login">
+    <Login />
+  </Route>
   <Route primary={false} path="/:id" let:params>
     <Details id={params.id} />
   </Route>

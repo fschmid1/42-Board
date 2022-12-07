@@ -66,6 +66,7 @@
     <DropdownItem
       on:click={async () => {
         await trpc.auth.logout.query();
+        location.reload();
       }}>Sign out</DropdownItem
     >
   </Dropdown>

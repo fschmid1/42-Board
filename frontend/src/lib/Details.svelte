@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Alert, Button, CloseButton, Modal, Textarea } from 'flowbite-svelte';
+  import { Alert, Button, Modal, Textarea } from 'flowbite-svelte';
   import { onDestroy, onMount } from 'svelte';
   import SvelteMarkdown from 'svelte-markdown';
   import Time from 'svelte-time';
-  import { apiBaseEndpoint, trpc } from '../variables';
+  import { trpc } from '../variables';
   import Avatar from './Avatar.svelte';
   import Reactions from './Reactions.svelte';
   import Tags from './Tags.svelte';
@@ -13,11 +13,10 @@
   import { postStore } from '../stores';
   import Reply from './Reply.svelte';
   import { writable } from 'svelte/store';
-  import type { Post } from '../interfaces/post.interface';
-  import type { Comment } from '../interfaces/comment.interface';
+  import type { PostDetails } from '../types';
 
   export let id;
-  let post: Post | undefined;
+  let post: PostDetails | undefined;
   let text = '';
   let backdrop;
   let open = writable<boolean>(false);
@@ -34,7 +33,7 @@
   const navigate = useNavigate();
 
   async function loadPostDetails() {
-    post = (await trpc.post.getById.query({ id: Number(id) })) as any as Post;
+    post = (await trpc.post.getById.query({ id: Number(id) })) as any as PostDetails;
     open.set(true);
   }
 
@@ -44,7 +43,7 @@
 
     let post_index = $postStore.findIndex(el => el.id == post.id);
     if (!post.comments?.length) post.comments = [];
-    post.comments = [...post.comments, comment];
+    post.comments = [...post.comments, comment as any];
     $postStore[post_index] = post;
   }
 
