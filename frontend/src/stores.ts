@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
-import type { Post } from './interfaces/post.interface';
 import type { User } from './interfaces/user.interface';
-import { apiBaseEndpoint, trpc } from './variables';
+import type { PostList } from './types';
+import { trpc } from './variables';
 
 export const userStore = writable<User>(null);
 
-export const postStore = writable<Post[]>([]);
+export const postStore = writable<PostList>([]);
 
 export const paginationStore = writable<{ total: number }>({ total: 0 });
 
@@ -24,8 +24,10 @@ async function fetchPosts(options: { search: string; filter: string; page: numbe
     sortByTs: options.filter == 'ts'
   });
 
+  trpc.post.create.mutate({});
+
   paginationStore.update(value => {
     return { total: total };
   });
-  postStore.set(result as any as Post[]);
+  postStore.set(result);
 }

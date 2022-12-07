@@ -1,6 +1,5 @@
 <script lang="ts">
   import Post from './lib/Post.svelte';
-  import type { Post as PostType } from './interfaces/post.interface';
   import Header from './lib/Header.svelte';
   import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint, trpc } from './variables';
 
@@ -64,7 +63,7 @@
     content = '';
     tags = [''];
     curr_tag = '';
-    $postStore = [...$postStore, newPost as any as PostType];
+    $postStore = [...$postStore, newPost];
   }
 </script>
 

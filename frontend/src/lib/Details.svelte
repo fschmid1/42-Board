@@ -44,7 +44,7 @@
 
     let post_index = $postStore.findIndex(el => el.id == post.id);
     if (!post.comments?.length) post.comments = [];
-    post.comments = [...post.comments, comment as any];
+    post.comments = [...post.comments, comment];
     $postStore[post_index] = post;
   }
 

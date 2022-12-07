@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { isAuthenticated } from '../middlewares/auth.middleware';
 import { prisma } from '../prisma';
 import { publicProcedure, router } from './trpc.handler';
 
