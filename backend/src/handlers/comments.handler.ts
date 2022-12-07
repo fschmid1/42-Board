@@ -6,7 +6,7 @@ import { publicProcedure, router } from './trpc.handler';
 
 export const commentRouter = router({
   create: publicProcedure
-    .use(isAuthenticated)
+
     .input(
       z.object({
         text: z.string().min(3),
@@ -40,7 +40,7 @@ export const commentRouter = router({
       });
     }),
   update: publicProcedure
-    .use(isAuthenticated)
+
     .input(
       z.object({
         text: z.string().min(3),
@@ -60,7 +60,7 @@ export const commentRouter = router({
       return { success: true };
     }),
   delete: publicProcedure
-    .use(isAuthenticated)
+
     .input(
       z.object({
         id: z.number()

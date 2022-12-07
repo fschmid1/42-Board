@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { apiBaseEndpoint } from '../variables';
+  import { apiBaseEndpoint, trpc } from '../variables';
   import { postStore } from '../stores';
 
   export let votes = 0;
@@ -7,21 +7,12 @@
   export let className = '';
 
   const doVote = async (up: boolean) => {
-    const res = await fetch(apiBaseEndpoint + 'vote/posts', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        id: postId,
-        up
-      }),
-      credentials: 'include'
-    });
     let index = $postStore.findIndex(el => el.id == postId);
-    let { score } = await res.json();
-	votes = score;
+    let { score } = await trpc.vote.post.mutate({
+      id: postId,
+      up
+    });
+    votes = score;
     $postStore[index] = { ...$postStore[index], voteScore: score };
   };
 

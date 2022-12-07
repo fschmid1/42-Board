@@ -8,6 +8,7 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import { PORT, FRONT, MODE } from './vars.global';
 import cors from 'cors';
 import { appRouter, createContext } from './handlers/trpc.handler';
+import { isAuthenticatedRest } from './middlewares/auth.middleware';
 
 const app = express();
 
@@ -30,9 +31,13 @@ app.use(
 registerAuthHandler(app);
 app.use(
   '/trpc',
+  isAuthenticatedRest,
   trpcExpress.createExpressMiddleware({
     router: appRouter,
-    createContext
+    createContext,
+    onError: err => {
+      console.log(err);
+    }
   })
 );
 

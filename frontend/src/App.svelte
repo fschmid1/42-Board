@@ -1,7 +1,8 @@
 <script lang="ts">
   import Post from './lib/Post.svelte';
+  import type { Post as PostType } from './interfaces/post.interface';
   import Header from './lib/Header.svelte';
-  import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint } from './variables';
+  import { authLoginEndpoint, authStatusEndpoint, apiBaseEndpoint, trpc } from './variables';
 
   import { onMount } from 'svelte';
   import { postStore, userStore, filterStore, paginationStore } from './stores';
@@ -54,24 +55,16 @@
 
   async function submit() {
     let url = apiBaseEndpoint + 'posts';
-    const res = await fetch(url, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        name,
-        content,
-        tags
-      }),
-      credentials: 'include'
+    const newPost = await trpc.post.create.mutate({
+      content,
+      name,
+      tags
     });
     name = '';
     content = '';
     tags = [''];
     curr_tag = '';
-    $postStore = [...$postStore, await res.json()];
+    $postStore = [...$postStore, newPost as any as PostType];
   }
 </script>
 

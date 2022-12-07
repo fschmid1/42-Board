@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Popover } from 'flowbite-svelte';
-  import { apiBaseEndpoint } from '../variables';
+  import { apiBaseEndpoint, trpc } from '../variables';
   import EmojiSelector from 'svelte-emoji-selector';
   import Avatar from './Avatar.svelte';
   import type { Reaction } from '../interfaces/reaction.interface';
@@ -9,19 +9,11 @@
   export let reactions: Reaction[] = [];
 
   const submit = async emote => {
-    const res = await fetch(apiBaseEndpoint + 'reaction/comments', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        id,
-        emote: emote.detail
-      }),
-      credentials: 'include'
+    const res = await trpc.reaction.comment.mutate({
+      emote: emote.detail,
+      id
     });
-    reactions = await res.json();
+    reactions = res as any as Reaction[];
   };
 </script>
 

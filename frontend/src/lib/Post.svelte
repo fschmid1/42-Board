@@ -3,7 +3,7 @@
   import Reply from './Reply.svelte';
   import Vote from './Vote.svelte';
   import type { Post } from '../interfaces/post.interface';
-  import { apiBaseEndpoint } from '../variables';
+  import { apiBaseEndpoint, trpc } from '../variables';
   import { postStore } from '../stores';
   import removeMd from 'remove-markdown';
 
@@ -17,23 +17,14 @@
   let text = '';
 
   async function submit() {
-    const res = await fetch(apiBaseEndpoint + 'comments', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        id,
-        text
-      }),
-      credentials: 'include'
+    const comment = await trpc.comment.create.mutate({
+      id,
+      text
     });
     text = '';
     let post_index = $postStore.findIndex(el => el.id == post.id);
-    let comment = await res.json();
     if (!post.comments?.length) post.comments = [];
-    post.comments.push(comment);
+    post.comments = [...post.comments, comment as any];
     $postStore[post_index] = post;
   }
 

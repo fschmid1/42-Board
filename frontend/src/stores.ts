@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import type { Post } from './interfaces/post.interface';
 import type { User } from './interfaces/user.interface';
-import { apiBaseEndpoint } from './variables';
+import { apiBaseEndpoint, trpc } from './variables';
 
 export const userStore = writable<User>(null);
 
@@ -18,20 +18,14 @@ export const filterStore = writable<{ search: string; filter: string; page: numb
 filterStore.subscribe(filter => fetchPosts(filter));
 
 async function fetchPosts(options: { search: string; filter: string; page: number }) {
-  let url = apiBaseEndpoint + 'posts?';
-  if (options?.filter && options.filter == 'ts') {
-    url += 'sortByTs=1';
-  }
-  if (options?.search && options.search != '') {
-    if (options.filter == 'ts') url += '&';
-    url += 'search=' + options.search;
-  }
-  if (!url.endsWith('?')) url += '&';
-  url += `page=${options.page}`;
-  const response = await fetch(url, { credentials: 'include' });
-  const result = await response.json();
-  paginationStore.update(value => {
-    return { total: result.total };
+  const { result, total } = await trpc.post.list.query({
+    page: options.page,
+    search: options.search,
+    sortByTs: options.filter == 'ts'
   });
-  postStore.set(result.result);
+
+  paginationStore.update(value => {
+    return { total: total };
+  });
+  postStore.set(result as any as Post[]);
 }

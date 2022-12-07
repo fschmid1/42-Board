@@ -6,7 +6,7 @@ import { publicProcedure, router } from './trpc.handler';
 
 export const voteRouter = router({
   post: publicProcedure
-    .use(isAuthenticated)
+
     .input(
       z.object({
         id: z.number(),
@@ -56,7 +56,7 @@ export const voteRouter = router({
       }
     }),
   comment: publicProcedure
-    .use(isAuthenticated)
+
     .input(
       z.object({
         id: z.number(),

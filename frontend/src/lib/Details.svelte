@@ -3,7 +3,7 @@
   import { onDestroy, onMount } from 'svelte';
   import SvelteMarkdown from 'svelte-markdown';
   import Time from 'svelte-time';
-  import { apiBaseEndpoint } from '../variables';
+  import { apiBaseEndpoint, trpc } from '../variables';
   import Avatar from './Avatar.svelte';
   import Reactions from './Reactions.svelte';
   import Tags from './Tags.svelte';
@@ -14,6 +14,7 @@
   import Reply from './Reply.svelte';
   import { writable } from 'svelte/store';
   import type { Post } from '../interfaces/post.interface';
+  import type { Comment } from '../interfaces/comment.interface';
 
   export let id;
   let post: Post | undefined;
@@ -33,36 +34,17 @@
   const navigate = useNavigate();
 
   async function loadPostDetails() {
-    const res = await fetch(apiBaseEndpoint + 'posts/' + Number(id), {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'GET',
-      credentials: 'include'
-    });
-    post = await res.json();
+    post = (await trpc.post.getById.query({ id: Number(id) })) as any as Post;
     open.set(true);
   }
 
   async function submit() {
-    const res = await fetch(apiBaseEndpoint + 'comments', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        id: Number(id),
-        text
-      }),
-      credentials: 'include'
-    });
+    const comment = await trpc.comment.create.mutate({ id: Number(id), text });
     text = '';
+
     let post_index = $postStore.findIndex(el => el.id == post.id);
-    let comment = await res.json();
     if (!post.comments?.length) post.comments = [];
-    post.comments.push(comment);
+    post.comments = [...post.comments, comment as any];
     $postStore[post_index] = post;
   }
 

@@ -1,7 +1,7 @@
 import { prisma } from '../prisma';
 import { Application, Request, Response } from 'express';
 import passport from 'passport';
-import { isAuthenticated } from '../middlewares/auth.middleware';
+import { isAuthenticatedRest } from '../middlewares/auth.middleware';
 import { AUTH_SECRET, AUTH_UID, BACK, FRONT } from '../vars.global';
 var FortyTwoStrategy = require('passport-42').Strategy;
 
@@ -83,5 +83,5 @@ export const registerAuthHandler = (app: Application) => {
     res.redirect(FRONT);
   });
 
-  app.get('/auth/status', isAuthenticated, (req: Request, res: Response) => res.send(req.user));
+  app.get('/auth/status', isAuthenticatedRest, (req: Request, res: Response) => res.send(req.user));
 };

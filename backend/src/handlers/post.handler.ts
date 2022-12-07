@@ -5,7 +5,6 @@ import { publicProcedure, router } from './trpc.handler';
 
 export const postRouter = router({
   list: publicProcedure
-    .use(isAuthenticated)
     .input(
       z.object({
         search: z.string().optional(),
@@ -76,36 +75,33 @@ export const postRouter = router({
       ]);
       return { total: result[0], result: result[1] };
     }),
-  getById: publicProcedure
-    .use(isAuthenticated)
-    .input(z.object({ id: z.number() }))
-    .query(({ input }) =>
-      prisma.post.findFirst({
-        where: { id: input.id },
-        include: {
-          user: true,
-          comments: {
-            include: {
-              user: true,
-              reactions: {
-                where: { count: { gt: 0 } },
-                include: {
-                  users: {
-                    include: {
-                      user: true
-                    }
+  getById: publicProcedure.input(z.object({ id: z.number() })).query(({ input }) =>
+    prisma.post.findFirst({
+      where: { id: input.id },
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+            reactions: {
+              where: { count: { gt: 0 } },
+              include: {
+                users: {
+                  include: {
+                    user: true
                   }
                 }
               }
             }
-          },
-          reactions: { include: { user: true } },
-          tags: true
-        }
-      })
-    ),
+          }
+        },
+        reactions: { include: { user: true } },
+        tags: true
+      }
+    })
+  ),
   create: publicProcedure
-    .use(isAuthenticated)
+
     .input(
       z.object({
         name: z.string().min(3),
@@ -137,7 +133,7 @@ export const postRouter = router({
       });
     }),
   update: publicProcedure
-    .use(isAuthenticated)
+
     .input(
       z.object({
         name: z.string().min(3),
