@@ -14,7 +14,8 @@ export const createContext = ({ req }: trpcExpress.CreateExpressContextOptions) 
       email: string;
       phoneNumber: string;
       photoUrl: string;
-    }
+    },
+    req
   };
 };
 type Context = inferAsyncReturnType<typeof createContext>;
@@ -33,7 +34,21 @@ export const appRouter = router({
   post: postRouter,
   vote: voteRouter,
   reaction: reactionRouter,
-  comment: commentRouter
+  comment: commentRouter,
+  auth: router({
+    logout: publicProcedure.query(async req => {
+      return new Promise<boolean>(resolve => {
+        req.ctx.req.logOut(
+          {
+            keepSessionInfo: false
+          },
+          () => {
+            req.ctx.req.session.destroy(() => resolve(true));
+          }
+        );
+      });
+    })
+  })
 });
 
 export type AppRouter = typeof appRouter;

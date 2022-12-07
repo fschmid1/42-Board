@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Navbar, DarkMode, Dropdown, DropdownItem, DropdownHeader, Skeleton, Avatar as FAvatar } from 'flowbite-svelte';
   import { userStore } from '../stores';
-  import { apiBaseEndpoint } from '../variables';
+  import { apiBaseEndpoint, trpc } from '../variables';
   import Avatar from './Avatar.svelte';
 </script>
 
@@ -65,14 +65,7 @@
     </DropdownHeader>
     <DropdownItem
       on:click={async () => {
-        await fetch(apiBaseEndpoint + 'auth/logout', {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          method: 'POST',
-          credentials: 'include'
-        });
+        await trpc.auth.logout.query();
       }}>Sign out</DropdownItem
     >
   </Dropdown>
