@@ -6,12 +6,15 @@
   import Tags from './Tags.svelte';
   import Vote from './Vote.svelte';
   import { useNavigate } from 'svelte-navigator';
+  import Fa from 'svelte-fa';
+  import { faPen } from '@fortawesome/free-solid-svg-icons';
 
-  import { postStore } from '../stores';
   import Reply from './Reply.svelte';
   import { writable } from 'svelte/store';
   import type { NewPostComment, PostComment, PostDetails } from '../types';
+  import { userStore, postStore } from '../stores';
   import Comments from './Comments.svelte';
+  import PostModal from './PostModal.svelte';
 
   export let id;
   let post: PostDetails | undefined;
@@ -22,6 +25,7 @@
   let backdrop;
   let open = writable<boolean>(false);
   let commentModal = false;
+  let postModal = false;
   let commentError = '';
   const sub = open.subscribe(val => {
     if (!val && post) {
@@ -36,6 +40,19 @@
   async function loadPostDetails() {
     post = (await trpc.post.getById.query({ id: Number(id) })) as any as PostDetails;
     open.set(true);
+  }
+
+  async function updatePost({ tags, name, content }: { tags: string[]; name: string; content: string }) {
+    const newPost = await trpc.post.update.mutate({
+      content,
+      name,
+      tags,
+      id: post.id
+    });
+    post = { ...post, name: newPost.name, content: newPost.content, tags: newPost.tags };
+    const index = $postStore.findIndex(el => el.id == post.id);
+    $postStore[index] = post;
+    postModal = false;
   }
 
   async function submit() {
@@ -77,7 +94,19 @@
   <Modal bind:open={$open} size="xl" class="relative pb-4">
     <div class="details-content pb-4">
       <div class="flex justify-between" style="width: 100%;">
-        <h3 class="m-0 text-3xl font-bold">{post.name}</h3>
+        <h3 class="m-0 text-3xl font-bold flex items-center">
+          {post.name}
+          {#if post.userId == $userStore.id}
+            <div
+              class="w-6 h-6"
+              on:click={() => {
+                postModal = true;
+              }}
+            >
+              <Fa class="ml-4 w-4 cursor-pointer" icon={faPen} />
+            </div>
+          {/if}
+        </h3>
         <Vote className="mr-6" votes={post.voteScore} postId={post.id} />
       </div>
       <SvelteMarkdown class="content" source={post.content} />
@@ -98,6 +127,10 @@
       <Reply />
     </button>
   </Modal>
+
+  {#if postModal}
+    <PostModal {post} title={'Update post'} submit={updatePost} />
+  {/if}
 
   <Modal title="Want to write a new comment?" bind:open={commentModal}>
     {#if commentError}

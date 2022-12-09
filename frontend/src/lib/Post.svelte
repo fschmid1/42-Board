@@ -2,7 +2,6 @@
   import Tags from './Tags.svelte';
   import Reply from './Reply.svelte';
   import Vote from './Vote.svelte';
-  import type { Post } from '../interfaces/post.interface';
   import { apiBaseEndpoint, trpc } from '../variables';
   import { postStore } from '../stores';
   import removeMd from 'remove-markdown';
@@ -10,8 +9,9 @@
   import { Link } from 'svelte-navigator';
 
   import { Card, Input } from 'flowbite-svelte';
+  import type { PostDetails } from '../types';
 
-  export let post: Post;
+  export let post: PostDetails | undefined;
 
   let id = post.id;
   let text = '';

@@ -5,12 +5,15 @@
 
   import { onMount } from 'svelte';
   import { postStore, userStore, filterStore, paginationStore, authState } from './stores';
-  import { Modal, Textarea, Button, Label, Select, Skeleton, Card, Pagination } from 'flowbite-svelte';
+  import { Button, Skeleton, Card, Pagination } from 'flowbite-svelte';
   import Filter from './lib/Filter.svelte';
   import Searchbar from './lib/Searchbar.svelte';
   import { Router, Route } from 'svelte-navigator';
   import Details from './lib/Details.svelte';
   import Login from './lib/Login.svelte';
+  import PostModal from './lib/PostModal.svelte';
+
+  let addPostModal = false;
 
   const previous = () => {
     const page = $filterStore.page;
@@ -48,24 +51,14 @@
     }
   });
 
-  let name = '';
-  let content = '';
-  let tags = [''];
-  let curr_tag = '';
-  let addPostModal = false;
-  let tag_selection = ['', 'workshop', 'rfc', 'event', 'marketplace'].map(el => ({ name: el, value: el }));
-
-  async function submit() {
+  async function submit({ tags, name, content }: { tags: string[]; name: string; content: string }) {
     const newPost = await trpc.post.create.mutate({
       content,
       name,
       tags
     });
-    name = '';
-    content = '';
-    tags = [''];
-    curr_tag = '';
     $postStore = [...$postStore, newPost];
+    addPostModal = false;
   }
 </script>
 
@@ -91,47 +84,7 @@
         <Post {post} />
       {/each}
     </div>
-    <Modal size="md" title="Want to write a new post?" bind:open={addPostModal}>
-      <Label for="select-lg"
-        >Tags:
-        <Select
-          id="select-lg"
-          class="mt-2"
-          size="md"
-          items={tag_selection}
-          bind:value={curr_tag}
-          on:change={() => (tags = [curr_tag])}
-        />
-      </Label>
 
-      <Textarea
-        class="name"
-        bind:value={name}
-        cols="35"
-        rows="1"
-        name="text"
-        id="title"
-        placeholder="What do you want to call it?"
-      />
-      <Textarea
-        class="content"
-        bind:value={content}
-        cols="35"
-        rows="4"
-        name="text"
-        id="body"
-        placeholder="What is it exactly about?"
-      />
-      <Button
-        class="submit"
-        on:click={() => {
-          submit();
-          addPostModal = false;
-        }}
-      >
-        Submit
-      </Button>
-    </Modal>
     <div class="mt-2 mb-4 flex w-full justify-center">
       <div class="flex flex-col items-center justify-center">
         <div class="text-sm text-gray-700 dark:text-gray-400">
@@ -167,6 +120,9 @@
       <div class="footer" />
     </div>
   </main>
+  {#if addPostModal}
+    <PostModal post={undefined} title={'Create Post'} {submit} />
+  {/if}
 
   <Route primary={false} path="/login">
     <Login />
