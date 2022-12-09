@@ -8,3 +8,4 @@ export type PostListItem = ArrayElement<PostList>;
 export type PostDetails = RouterOutput['post']['getById'];
 export type PostCommentReaction = ArrayElement<PostDetails['comments']>['reactions'];
 export type PostComment = ArrayElement<PostDetails['comments']>;
+export type NewPostComment = RouterOutput['comment']['create'];

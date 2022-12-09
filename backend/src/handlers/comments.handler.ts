@@ -55,8 +55,8 @@ export const commentRouter = router({
       const data = {
         text: req.input.text
       };
-      await prisma.postComment.update({ where: { id: req.input.id }, data });
-      return { success: true };
+
+      return await prisma.postComment.update({ where: { id: req.input.id }, data });
     }),
   delete: publicProcedure
 
