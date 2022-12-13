@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Alert, Button, Modal, Textarea } from 'flowbite-svelte';
+  import { Button, Modal, Textarea, Toolbar, ToolbarButton } from 'flowbite-svelte';
   import { onDestroy, onMount } from 'svelte';
   import SvelteMarkdown from 'svelte-markdown';
   import { trpc } from '../variables';
@@ -9,10 +9,9 @@
   import Fa from 'svelte-fa';
   import { faPen } from '@fortawesome/free-solid-svg-icons';
 
-  import Reply from './Reply.svelte';
   import { writable } from 'svelte/store';
   import type { NewPostComment, PostComment, PostDetails } from '../types';
-  import { userStore, postStore } from '../stores';
+  import { userStore, postStore, editStore } from '../stores';
   import Comments from './Comments.svelte';
   import PostModal from './PostModal.svelte';
 
@@ -24,7 +23,6 @@
 
   let backdrop;
   let open = writable<boolean>(false);
-  let commentModal = false;
   let postModal = false;
   let commentError = '';
   const sub = open.subscribe(val => {
@@ -71,7 +69,7 @@
   }
 
   const handleBackdropClick = event => {
-    if (event.target.classList.contains('h-modal')) {
+    if (event.target.classList.contains('h-modal') && !$editStore) {
       open.set(false);
     }
   };
@@ -91,8 +89,8 @@
 </script>
 
 {#if post}
-  <Modal bind:open={$open} size="xl" class="relative pb-4">
-    <div class="details-content pb-4">
+  <Modal bind:open={$open} size="xl" class="relative pb-4" bind:permanent={$editStore}>
+    <div class="details-content p-8">
       <div class="flex justify-between" style="width: 100%;">
         <h3 class="m-0 text-3xl font-bold flex items-center">
           {post.name}
@@ -109,51 +107,82 @@
         </h3>
         <Vote className="mr-6" votes={post.voteScore} postId={post.id} />
       </div>
-      <SvelteMarkdown class="content" source={post.content} />
+      <SvelteMarkdown class="post-content" source={post.content} />
       <div class="flex mt-2">
         <!-- <Reactions id={post.id} reactions={post.reactions} /> -->
         <Tags tags={post.tags} user={post.user.username} />
       </div>
-      <div class="comments mt-2 pb-4 ">
+      <div class="comments mt-4 p-4 ">
         <Comments comments={post.comments} />
+        <Textarea class="-mt-4" placeholder="Write a comment" bind:value={text}>
+          <div slot="footer" class="flex items-center justify-between">
+            <Button
+              type="submit"
+              on:click={() => {
+                if (text.length <= 3) {
+                  commentError = 'Minium four charaters are required';
+                  return;
+                }
+                submit();
+                commentError = '';
+              }}>Post comment</Button
+            >
+            <!-- <Toolbar embedded>
+				<ToolbarButton name="Attach file"
+				  ><svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-6 h-6"
+					><path
+					  stroke-linecap="round"
+					  stroke-linejoin="round"
+					  d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"
+					/></svg
+				  ></ToolbarButton
+				>
+				<ToolbarButton name="Set location"
+				  ><svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-6 h-6"
+					><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path
+					  stroke-linecap="round"
+					  stroke-linejoin="round"
+					  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+					/></svg
+				  ></ToolbarButton
+				>
+				<ToolbarButton name="Upload image"
+				  ><svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-6 h-6"
+					><path
+					  stroke-linecap="round"
+					  stroke-linejoin="round"
+					  d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+					/></svg
+				  ></ToolbarButton
+				> -->
+            <!-- </Toolbar> -->
+          </div>
+        </Textarea>
       </div>
     </div>
-    <button
-      class="comment-button"
-      on:click={() => {
-        commentModal = true;
-      }}
-    >
-      <Reply />
-    </button>
   </Modal>
 
   {#if postModal}
     <PostModal {post} title={'Update post'} submit={updatePost} />
   {/if}
-
-  <Modal title="Want to write a new comment?" bind:open={commentModal}>
-    {#if commentError}
-      <Alert color="red" dismissable accent>
-        <span class="font-medium">Error!</span>
-        {commentError}
-      </Alert>
-    {/if}
-    <Textarea type="text" cols="35" rows="4" name="text" s placeholder="type here" bind:value={text} />
-    <Button
-      on:click={() => {
-        if (text.length <= 3) {
-          commentError = 'Minium four charaters are required';
-          return;
-        }
-        submit();
-        commentError = '';
-        commentModal = false;
-      }}
-    >
-      Submit
-    </Button>
-  </Modal>
 {/if}
 
 <style>
@@ -172,7 +201,7 @@
     bottom: 10px;
     right: 1rem;
   }
-  .content {
+  .post-content {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

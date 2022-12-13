@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { NewPostComment, PostComment, PostDetails } from '../types';
   import Reactions from './Reactions.svelte';
-  import { userStore } from '../stores';
+  import { userStore, editStore } from '../stores';
   import Fa from 'svelte-fa';
   import { faTrash, faEllipsisVertical, faPen } from '@fortawesome/free-solid-svg-icons';
   import { Alert, Button, Dropdown, DropdownItem, Modal, Textarea } from 'flowbite-svelte';
@@ -15,7 +15,6 @@
   let commentEditId: number;
   let text = '';
   let commentError = '';
-  let commentModal = false;
 
   const deleteComment = async (comment: PostComment) => {
     await trpc.comment.delete.mutate({ id: comment.id });
@@ -34,7 +33,7 @@
 
 {#if comments}
   {#each comments as comment}
-    <div class="comment relative my-4">
+    <div class="comment relative my-10">
       <div class="absolute right-0 -top-4 flex flex-row-reverse">
         {#if comment.userId == $userStore.id}
           <div class="w-7 h-7 rounded mx-1 bg-gray-100 dark:bg-gray-900 flex justify-center items-center cursor-pointer">
@@ -47,7 +46,7 @@
               on:click={() => {
                 text = comment.text;
                 commentEditId = comment.id;
-                commentModal = true;
+                editStore.set(true);
               }}><Fa icon={faPen} /></DropdownItem
             >
           </Dropdown>
@@ -67,7 +66,7 @@
       </div>
     </div>
   {/each}
-  <Modal title="Update Comment" bind:open={commentModal}>
+  <Modal title="Update Comment" bind:open={$editStore} permanent>
     {#if commentError}
       <Alert color="red" dismissable accent>
         <span class="font-medium">Error!</span>
@@ -83,11 +82,19 @@
         }
         editComment();
         commentError = '';
-        commentModal = false;
+        editStore.set(false);
       }}
     >
       Submit
     </Button>
+    <Button
+      color="alternative"
+      on:click={() => {
+        editStore.set(false);
+        text = '';
+        commentEditId = 0;
+      }}>Cancel</Button
+    >
   </Modal>
 {/if}
 

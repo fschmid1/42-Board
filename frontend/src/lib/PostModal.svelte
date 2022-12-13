@@ -17,8 +17,6 @@
     }
   });
 
-  let open = true;
-
   let name = '';
   let content = '';
   let tags = [''];
@@ -26,7 +24,7 @@
   let tag_selection = ['workshop', 'rfc', 'event', 'marketplace'].map(el => ({ name: el, value: el }));
 </script>
 
-<Modal size="md" {title} bind:open>
+<Modal size="lg" {title} open={true}>
   <Label for="select-lg"
     >Tags:
     <Select
@@ -39,16 +37,8 @@
     />
   </Label>
 
-  <Textarea class="name" bind:value={name} cols="35" rows="1" name="text" id="title" placeholder="What do you want to call it?" />
-  <Textarea
-    class="content"
-    bind:value={content}
-    cols="35"
-    rows="4"
-    name="text"
-    id="body"
-    placeholder="What is it exactly about?"
-  />
+  <Textarea class="name" bind:value={name} cols="35" rows="1" name="text" placeholder="What do you want to call it?" />
+  <Textarea bind:value={content} name="text" class="overflow-y-scroll" placeholder="What is it exactly about?" />
   <Button
     class="submit"
     on:click={async () => {
