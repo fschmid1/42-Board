@@ -46,7 +46,7 @@
       <p class="content cursor-pointer" on:click={() => openDetails()}>{removeMd(post.content)}</p>
     </Link>
     <div class="bottom-0 relative">
-      <Input class="border-none dark:bg-gray-700" style="background-color: rgb(241 243 247)" type="text" name="text" bind:value={text} />
+      <Input class="border-none bg-gray-100 dark:bg-gray-700" type="text" name="text" bind:value={text} />
       <button
         class="h-8 w-8 bg-blue-500 rounded-full absolute"
         style="right: -0.9rem; bottom: -0.9rem"
