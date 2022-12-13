@@ -22,6 +22,9 @@
   };
   const next = () => {
     const page = $filterStore.page;
+    if (1 + 12 * (page - 1) + $postStore.length - 1 >= $paginationStore.total) {
+      return;
+    }
     filterStore.set({ ...$filterStore, page: page + 1 });
   };
 
