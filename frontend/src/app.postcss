@@ -1,5 +1,8 @@
-/* Write your global styles here, in PostCSS syntax */
-
+@import 'bytemd/dist/index.css';
+@import 'bytemd/dist/index.css';
+@import 'github-markdown-css/github-markdown-dark.css';
+@import 'highlight.js/styles/atom-one-dark.css';
+@import 'katex/dist/katex.css';
 @tailwind base;
 
 @tailwind components;
@@ -9,191 +12,178 @@
 #modal {
   overflow-x: hidden;
 }
+
+.bytemd {
+  height: calc(100vh - 200px);
+}
+
 .svelte-emoji-picker {
   z-index: 50;
 }
 
-p, .tag {
-	font-family: 'Poppins';
+p,
+.tag {
+  font-family: 'Poppins';
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-Black.woff2') format('woff2'),
-        url('./assets/Poppins-Black.woff') format('woff'),
-        url('./assets/Poppins-Black.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-Black.woff2') format('woff2'), url('./assets/Poppins-Black.woff') format('woff'),
+    url('./assets/Poppins-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-BlackItalic.woff2') format('woff2'),
-        url('./assets/Poppins-BlackItalic.woff') format('woff'),
-        url('./assets/Poppins-BlackItalic.ttf') format('truetype');
-    font-weight: 900;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-BlackItalic.woff2') format('woff2'), url('./assets/Poppins-BlackItalic.woff') format('woff'),
+    url('./assets/Poppins-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-SemiBoldItalic.woff2') format('woff2'),
-        url('./assets/Poppins-SemiBoldItalic.woff') format('woff'),
-        url('./assets/Poppins-SemiBoldItalic.ttf') format('truetype');
-    font-weight: 600;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-SemiBoldItalic.woff2') format('woff2'), url('./assets/Poppins-SemiBoldItalic.woff') format('woff'),
+    url('./assets/Poppins-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-ExtraBoldItalic.woff2') format('woff2'),
-        url('./assets/Poppins-ExtraBoldItalic.woff') format('woff'),
-        url('./assets/Poppins-ExtraBoldItalic.ttf') format('truetype');
-    font-weight: bold;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-ExtraBoldItalic.woff2') format('woff2'), url('./assets/Poppins-ExtraBoldItalic.woff') format('woff'),
+    url('./assets/Poppins-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-MediumItalic.woff2') format('woff2'),
-        url('./assets/Poppins-MediumItalic.woff') format('woff'),
-        url('./assets/Poppins-MediumItalic.ttf') format('truetype');
-    font-weight: 500;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-MediumItalic.woff2') format('woff2'), url('./assets/Poppins-MediumItalic.woff') format('woff'),
+    url('./assets/Poppins-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-Medium.woff2') format('woff2'),
-        url('./assets/Poppins-Medium.woff') format('woff'),
-        url('./assets/Poppins-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-Medium.woff2') format('woff2'), url('./assets/Poppins-Medium.woff') format('woff'),
+    url('./assets/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-LightItalic.woff2') format('woff2'),
-        url('./assets/Poppins-LightItalic.woff') format('woff'),
-        url('./assets/Poppins-LightItalic.ttf') format('truetype');
-    font-weight: 300;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-LightItalic.woff2') format('woff2'), url('./assets/Poppins-LightItalic.woff') format('woff'),
+    url('./assets/Poppins-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-ExtraLightItalic.woff2') format('woff2'),
-        url('./assets/Poppins-ExtraLightItalic.woff') format('woff'),
-        url('./assets/Poppins-ExtraLightItalic.ttf') format('truetype');
-    font-weight: 200;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-ExtraLightItalic.woff2') format('woff2'),
+    url('./assets/Poppins-ExtraLightItalic.woff') format('woff'), url('./assets/Poppins-ExtraLightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-Regular.woff2') format('woff2'),
-        url('./assets/Poppins-Regular.woff') format('woff'),
-        url('./assets/Poppins-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-Regular.woff2') format('woff2'), url('./assets/Poppins-Regular.woff') format('woff'),
+    url('./assets/Poppins-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-Italic.woff2') format('woff2'),
-        url('./assets/Poppins-Italic.woff') format('woff'),
-        url('./assets/Poppins-Italic.ttf') format('truetype');
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-Italic.woff2') format('woff2'), url('./assets/Poppins-Italic.woff') format('woff'),
+    url('./assets/Poppins-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-Light.woff2') format('woff2'),
-        url('./assets/Poppins-Light.woff') format('woff'),
-        url('./assets/Poppins-Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-Light.woff2') format('woff2'), url('./assets/Poppins-Light.woff') format('woff'),
+    url('./assets/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-Thin.woff2') format('woff2'),
-        url('./assets/Poppins-Thin.woff') format('woff'),
-        url('./assets/Poppins-Thin.ttf') format('truetype');
-    font-weight: 100;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-Thin.woff2') format('woff2'), url('./assets/Poppins-Thin.woff') format('woff'),
+    url('./assets/Poppins-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-BoldItalic.woff2') format('woff2'),
-        url('./assets/Poppins-BoldItalic.woff') format('woff'),
-        url('./assets/Poppins-BoldItalic.ttf') format('truetype');
-    font-weight: bold;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-BoldItalic.woff2') format('woff2'), url('./assets/Poppins-BoldItalic.woff') format('woff'),
+    url('./assets/Poppins-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-ExtraBold.woff2') format('woff2'),
-        url('./assets/Poppins-ExtraBold.woff') format('woff'),
-        url('./assets/Poppins-ExtraBold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-ExtraBold.woff2') format('woff2'), url('./assets/Poppins-ExtraBold.woff') format('woff'),
+    url('./assets/Poppins-ExtraBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-ThinItalic.woff2') format('woff2'),
-        url('./assets/Poppins-ThinItalic.woff') format('woff'),
-        url('./assets/Poppins-ThinItalic.ttf') format('truetype');
-    font-weight: 100;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-ThinItalic.woff2') format('woff2'), url('./assets/Poppins-ThinItalic.woff') format('woff'),
+    url('./assets/Poppins-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-ExtraLight.woff2') format('woff2'),
-        url('./assets/Poppins-ExtraLight.woff') format('woff'),
-        url('./assets/Poppins-ExtraLight.ttf') format('truetype');
-    font-weight: 200;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-ExtraLight.woff2') format('woff2'), url('./assets/Poppins-ExtraLight.woff') format('woff'),
+    url('./assets/Poppins-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-Bold.woff2') format('woff2'),
-        url('./assets/Poppins-Bold.woff') format('woff'),
-        url('./assets/Poppins-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-Bold.woff2') format('woff2'), url('./assets/Poppins-Bold.woff') format('woff'),
+    url('./assets/Poppins-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('./assets/Poppins-SemiBold.woff2') format('woff2'),
-        url('./assets/Poppins-SemiBold.woff') format('woff'),
-        url('./assets/Poppins-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Poppins';
+  src: url('./assets/Poppins-SemiBold.woff2') format('woff2'), url('./assets/Poppins-SemiBold.woff') format('woff'),
+    url('./assets/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
-

@@ -38,15 +38,6 @@
       console.log(error);
     }
   });
-
-  async function submit({ tags, name, content }: { tags: string[]; name: string; content: string }) {
-    const newPost = await trpc.post.create.mutate({
-      content,
-      name,
-      tags
-    });
-    $postStore = [...$postStore, newPost];
-  }
 </script>
 
 <Header />

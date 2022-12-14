@@ -5,6 +5,7 @@
   import { trpc } from '../variables';
   import { postStore } from '../stores';
   import { useNavigate } from 'svelte-navigator';
+  import MarkdownEditor from './MarkdownEditor.svelte';
 
   export let id = '';
 
@@ -64,5 +65,11 @@
 </Label>
 
 <Textarea class="name my-2" bind:value={name} cols="35" rows="1" name="text" placeholder="What do you want to call it?" />
-<Textarea bind:value={content} name="text" class="overflow-y-scroll" rows="14" placeholder="What is it exactly about?" />
-<Button class="submit" on:click={submit}>Submit</Button>
+<MarkdownEditor
+  classes="h-96"
+  value={content}
+  on:change={value => {
+    content = value.detail.value;
+  }}
+/>
+<Button class="submit mt-4" on:click={submit}>Submit</Button>

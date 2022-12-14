@@ -22,7 +22,7 @@
         <svelte:fragment slot="lightIcon">
           <div
             class="flex items-center"
-            on:click={() => {
+            on:click={async () => {
               localStorage.setItem('dark', 'false');
             }}
           >
@@ -43,7 +43,7 @@
         <svelte:fragment slot="darkIcon">
           <div
             class="flex items-center"
-            on:click={() => {
+            on:click={async () => {
               localStorage.setItem('dark', 'true');
             }}
           >
