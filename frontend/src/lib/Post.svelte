@@ -2,7 +2,7 @@
   import Tags from './Tags.svelte';
   import Reply from './Reply.svelte';
   import Vote from './Vote.svelte';
-  import { apiBaseEndpoint, trpc } from '../variables';
+  import { trpc } from '../variables';
   import { postStore } from '../stores';
   import removeMd from 'remove-markdown';
 
@@ -35,14 +35,14 @@
   <Card>
     <div class="flex justify-between">
       <Vote votes={post.voteScore} postId={post.id} />
-      <Link to="/{post.id}" class="truncate"
+      <Link to="/posts/{post.id}" class="truncate"
         ><h3 class="text-xl text-ellipsis font-semibold mx-1 overflow-hidden cursor-pointer" on:click={() => openDetails()}>
           {post.name}
         </h3></Link
       >
       <Tags tags={post.tags} user={post.user.username} />
     </div>
-    <Link to="/{post.id}">
+    <Link to="/posts/{post.id}">
       <p class="content cursor-pointer" on:click={() => openDetails()}>{removeMd(post.content)}</p>
     </Link>
     <div class="bottom-0 relative">

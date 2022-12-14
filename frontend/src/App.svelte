@@ -1,32 +1,17 @@
 <script lang="ts">
-  import Post from './lib/Post.svelte';
   import Header from './lib/Header.svelte';
   import { authStatusEndpoint, trpc } from './variables';
 
   import { onMount } from 'svelte';
-  import { postStore, userStore, filterStore, paginationStore, authState } from './stores';
-  import { Button, Skeleton, Card, Pagination } from 'flowbite-svelte';
+  import { postStore, userStore, authState } from './stores';
+  import { Button } from 'flowbite-svelte';
   import Filter from './lib/Filter.svelte';
   import Searchbar from './lib/Searchbar.svelte';
-  import { Router, Route } from 'svelte-navigator';
-  import Details from './lib/Details.svelte';
+  import { Router, Route, Link } from 'svelte-navigator';
   import Login from './lib/Login.svelte';
-  import PostModal from './lib/PostModal.svelte';
-
-  let addPostModal = false;
-
-  const previous = () => {
-    const page = $filterStore.page;
-    if (page == 1) return;
-    filterStore.set({ ...$filterStore, page: page - 1 });
-  };
-  const next = () => {
-    const page = $filterStore.page;
-    if (1 + 12 * (page - 1) + $postStore.length - 1 >= $paginationStore.total) {
-      return;
-    }
-    filterStore.set({ ...$filterStore, page: page + 1 });
-  };
+  import PostForm from './lib/PostForm.svelte';
+  import PostList from './lib/PostList.svelte';
+  import Redirects from './lib/Redirects.svelte';
 
   onMount(async () => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('dark')) {
@@ -61,7 +46,6 @@
       tags
     });
     $postStore = [...$postStore, newPost];
-    addPostModal = false;
   }
 </script>
 
@@ -72,67 +56,17 @@
       <Searchbar />
       <div class="flex mt-2 w-full md:w-1/2 md:pl-2 md:mt-0">
         <Filter />
-        <Button class="ml-2" on:click={() => (addPostModal = true)}>+</Button>
+        <Link to="/edit/-1"><Button class="ml-2">+</Button></Link>
       </div>
     </div>
-    <div class="relative grid grid-cols-1 md:grid-cols-2 w-full lg:grid-cols-3 grid-flow-row gap-4">
-      {#if $postStore.length == 0}
-        {#each new Array(12) as d}
-          <Card>
-            <Skeleton />
-          </Card>
-        {/each}
-      {/if}
-      {#each $postStore as post}
-        <Post {post} />
-      {/each}
-    </div>
-
-    <div class="mt-2 mb-4 flex w-full justify-center">
-      <div class="flex flex-col items-center justify-center">
-        <div class="text-sm text-gray-700 dark:text-gray-400">
-          Showing <span class="font-semibold text-gray-900 dark:text-white">{1 + 12 * ($filterStore.page - 1)}</span> to
-          <span class="font-semibold text-gray-900 dark:text-white"
-            >{1 + 12 * ($filterStore.page - 1) + $postStore.length - 1}</span
-          >
-          of <span class="font-semibold text-gray-900 dark:text-white">{$paginationStore.total}</span> Entries
-        </div>
-        <Pagination table>
-          <div slot="prev" class="flex items-center gap-2" on:click={previous}>
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-              ><path
-                fill-rule="evenodd"
-                d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
-                clip-rule="evenodd"
-              /></svg
-            >
-            Prev
-          </div>
-          <div slot="next" class="flex items-center gap-2" on:click={next}>
-            Next
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-              ><path
-                fill-rule="evenodd"
-                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              /></svg
-            >
-          </div>
-        </Pagination>
-      </div>
-      <div class="footer" />
-    </div>
+    <Route primary={false} path="/edit/:id" let:params>
+      <PostForm id={params.id} />
+    </Route>
+    <Route default primary={false} path="/posts/*" component={PostList} />
+    <div class="footer" />
   </main>
-  {#if addPostModal}
-    <PostModal post={undefined} title={'Create Post'} {submit} />
-  {/if}
-
-  <Route primary={false} path="/login">
-    <Login />
-  </Route>
-  <Route primary={false} path="/:id" let:params>
-    <Details id={params.id} />
-  </Route>
+  <Route component={Redirects} />
+  <Route primary={false} path="/login" component={Login} />
 </Router>
 
 <style>

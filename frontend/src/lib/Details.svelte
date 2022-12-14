@@ -5,15 +5,14 @@
   import { trpc } from '../variables';
   import Tags from './Tags.svelte';
   import Vote from './Vote.svelte';
-  import { useNavigate } from 'svelte-navigator';
+  import { Link, useNavigate } from 'svelte-navigator';
   import Fa from 'svelte-fa';
   import { faPen } from '@fortawesome/free-solid-svg-icons';
 
   import { writable } from 'svelte/store';
   import type { NewPostComment, PostComment, PostDetails } from '../types';
-  import { userStore, postStore, editStore } from '../stores';
+  import { userStore, editStore } from '../stores';
   import Comments from './Comments.svelte';
-  import PostModal from './PostModal.svelte';
 
   export let id;
   let post: PostDetails | undefined;
@@ -23,12 +22,11 @@
 
   let backdrop;
   let open = writable<boolean>(false);
-  let postModal = false;
   let commentError = '';
   const sub = open.subscribe(val => {
     if (!val && post) {
       setTimeout(() => {
-        navigate('/');
+        navigate('/posts');
       }, 0);
     }
   });
@@ -38,19 +36,6 @@
   async function loadPostDetails() {
     post = (await trpc.post.getById.query({ id: Number(id) })) as any as PostDetails;
     open.set(true);
-  }
-
-  async function updatePost({ tags, name, content }: { tags: string[]; name: string; content: string }) {
-    const newPost = await trpc.post.update.mutate({
-      content,
-      name,
-      tags,
-      id: post.id
-    });
-    post = { ...post, name: newPost.name, content: newPost.content, tags: newPost.tags };
-    const index = $postStore.findIndex(el => el.id == post.id);
-    $postStore[index] = post;
-    postModal = false;
   }
 
   async function submit() {
@@ -95,14 +80,11 @@
         <h3 class="m-0 text-3xl font-bold flex items-center">
           {post.name}
           {#if post.userId == $userStore.id}
-            <div
-              class="w-6 h-6"
-              on:click={() => {
-                postModal = true;
-              }}
+            <Link to="/edit/{post.id}">
+              <div class="w-6 h-6">
+                <Fa class="ml-4 w-4 cursor-pointer" icon={faPen} />
+              </div></Link
             >
-              <Fa class="ml-4 w-4 cursor-pointer" icon={faPen} />
-            </div>
           {/if}
         </h3>
         <Vote className="mr-6" votes={post.voteScore} postId={post.id} />
@@ -179,10 +161,6 @@
       </div>
     </div>
   </Modal>
-
-  {#if postModal}
-    <PostModal {post} title={'Update post'} submit={updatePost} />
-  {/if}
 {/if}
 
 <style>
