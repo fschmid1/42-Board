@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Button, Modal, Textarea, Toolbar, ToolbarButton } from 'flowbite-svelte';
   import { onDestroy, onMount } from 'svelte';
-  import SvelteMarkdown from 'svelte-markdown';
   import { trpc } from '../variables';
   import Tags from './Tags.svelte';
   import Vote from './Vote.svelte';
@@ -13,6 +12,7 @@
   import type { NewPostComment, PostComment, PostDetails } from '../types';
   import { userStore, editStore } from '../stores';
   import Comments from './Comments.svelte';
+  import MarkdownEditor from './MarkdownEditor.svelte';
 
   export let id;
   let post: PostDetails | undefined;
@@ -89,7 +89,7 @@
         </h3>
         <Vote className="mr-6" votes={post.voteScore} postId={post.id} />
       </div>
-      <SvelteMarkdown class="post-content" source={post.content} />
+      <MarkdownEditor readOnly value={post.content} />
       <div class="flex mt-2">
         <!-- <Reactions id={post.id} reactions={post.reactions} /> -->
         <Tags tags={post.tags} user={post.user.username} />

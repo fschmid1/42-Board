@@ -1,8 +1,8 @@
 @import 'bytemd/dist/index.css';
-@import 'bytemd/dist/index.css';
 @import 'github-markdown-css/github-markdown-dark.css';
 @import 'highlight.js/styles/atom-one-dark.css';
 @import 'katex/dist/katex.css';
+
 @tailwind base;
 
 @tailwind components;
@@ -14,11 +14,33 @@
 }
 
 .bytemd {
-  height: calc(100vh - 200px);
+  min-height: 500px;
+  @apply rounded;
+}
+.bytemd-toolbar {
+  @apply rounded;
+}
+
+.markdown-body {
+  @apply p-4 rounded;
 }
 
 .svelte-emoji-picker {
   z-index: 50;
+}
+
+.CodeMirror,
+.bytemd-preview,
+.bytemd,
+.bytemd-toolbar {
+  @apply bg-gray-50 dark:bg-gray-700 text-gray-900 dark:placeholder-gray-400 dark:text-white border-none;
+}
+
+.bytemd-split .bytemd-preview {
+  @apply border-l-2 border-gray-200 dark:border-gray-600;
+}
+.bytemd-status {
+  @apply border-t-2 border-gray-200 dark:border-gray-600;
 }
 
 p,

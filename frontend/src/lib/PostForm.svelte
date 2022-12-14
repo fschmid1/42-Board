@@ -19,7 +19,7 @@
       name = post.name;
       content = post.content;
       tags = post.tags.map(el => el.value);
-      curr_tag = tags[1];
+      curr_tag = tags.find(el => el == post.tags[0].value) || tags[0];
     }
   });
 

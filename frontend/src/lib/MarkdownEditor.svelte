@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Editor } from 'bytemd';
+  import { Editor, Viewer } from 'bytemd';
   import gfm from '@bytemd/plugin-gfm';
   import breaks from '@bytemd/plugin-breaks';
   import frontmatter from '@bytemd/plugin-frontmatter';
@@ -12,6 +12,7 @@
 
   const dispatch = createEventDispatcher();
   export let classes = '';
+  export let readOnly = false;
 
   export let value = '';
   let mode = 'split';
@@ -24,4 +25,8 @@
   }
 </script>
 
-<Editor class={classes} {value} {mode} {plugins} on:change={handleChange} />
+{#if !readOnly}
+  <Editor class={classes} editorConfig={{ theme: 'none' }} {value} {mode} {plugins} on:change={handleChange} />
+{:else}
+  <Viewer class={classes} {value} {mode} {plugins} />
+{/if}
