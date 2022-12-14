@@ -161,8 +161,11 @@ export const postRouter = router({
           content: data.content,
           tags: {
             createMany: {
-              data: data.tags.map((tag: string) => ({ value: tag })),
-              skipDuplicates: true
+              data: data.tags
+                .map((tag: string) => ({ value: tag }))
+                .filter(el => {
+                  el.value !== post?.tags.find((tag: any) => tag.value === el.value)?.value;
+                })
             }
           }
         }
