@@ -2,9 +2,11 @@
   import Post from '../lib/Post.svelte';
 
   import { postStore, filterStore, paginationStore } from '../stores';
-  import { Skeleton, Card, Pagination } from 'flowbite-svelte';
-  import { Route } from 'svelte-navigator';
+  import { Skeleton, Card, Pagination, Button } from 'flowbite-svelte';
+  import { Link, Route } from 'svelte-navigator';
   import Details from './Details.svelte';
+  import Searchbar from './Searchbar.svelte';
+  import Filter from './Filter.svelte';
 
   const previous = () => {
     const page = $filterStore.page;
@@ -19,6 +21,14 @@
     filterStore.set({ ...$filterStore, page: page + 1 });
   };
 </script>
+
+<div class="flex flex-col justify-between my-4 md:flex-row">
+  <Searchbar />
+  <div class="flex mt-2 w-full md:w-1/2 md:pl-2 md:mt-0">
+    <Filter />
+    <Link to="/edit/-1"><Button class="ml-2">+</Button></Link>
+  </div>
+</div>
 
 <div class="relative grid grid-cols-1 md:grid-cols-2 w-full lg:grid-cols-3 grid-flow-row gap-4">
   {#if $postStore.length == 0}

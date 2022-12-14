@@ -4,7 +4,7 @@
   import type { PostDetails } from '../types';
   import { trpc } from '../variables';
   import { postStore } from '../stores';
-  import { useNavigate } from 'svelte-navigator';
+  import { Link, useNavigate } from 'svelte-navigator';
   import MarkdownEditor from './MarkdownEditor.svelte';
 
   export let id = '';
@@ -52,7 +52,7 @@
   let tag_selection = ['workshop', 'rfc', 'event', 'marketplace'].map(el => ({ name: el, value: el }));
 </script>
 
-<Label for="select-lg"
+<Label for="select-lg" class="mt-4"
   >Tags:
   <Select
     id="select-lg"
@@ -72,4 +72,7 @@
     content = value.detail.value;
   }}
 />
-<Button class="submit mt-4" on:click={submit}>Submit</Button>
+<div class="flex mt-4">
+  <Button class="submit" on:click={submit}>Submit</Button>
+  <Link to={post?.id ? `/posts/${post.id}` : '-1'}><Button color="alternative" class="ml-4">Cancel</Button></Link>
+</div>

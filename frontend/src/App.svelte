@@ -43,13 +43,6 @@
 <Header />
 <Router>
   <main>
-    <div class="flex flex-col justify-between my-4 md:flex-row">
-      <Searchbar />
-      <div class="flex mt-2 w-full md:w-1/2 md:pl-2 md:mt-0">
-        <Filter />
-        <Link to="/edit/-1"><Button class="ml-2">+</Button></Link>
-      </div>
-    </div>
     <Route primary={false} path="/edit/:id" let:params>
       <PostForm id={params.id} />
     </Route>
