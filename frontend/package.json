@@ -38,6 +38,7 @@
     "@bytemd/plugin-medium-zoom": "^1.17.4",
     "@bytemd/plugin-mermaid": "^1.17.4",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@trpc/client": "^10.4.3",
     "bytemd": "^1.17.4",
     "github-markdown-css": "^5.1.0",

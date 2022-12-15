@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { apiBaseEndpoint, trpc } from '../variables';
+  import { trpc } from '../variables';
+  import Fa from 'svelte-fa';
+  import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
   import { postStore } from '../stores';
 
   export let votes = 0;
@@ -21,9 +23,9 @@
 </script>
 
 <div class="vote {className}">
-  <button on:click={voteUp}> ∧ </button>
+  <button on:click={voteUp}> <Fa icon={faChevronUp} /> </button>
   <span>{votes}</span>
-  <button on:click={voteDown}> ∨ </button>
+  <button on:click={voteDown}> <Fa icon={faChevronDown} /> </button>
 </div>
 
 <style>
@@ -35,5 +37,6 @@
 
   button {
     padding: 0;
+    margin: 0;
   }
 </style>

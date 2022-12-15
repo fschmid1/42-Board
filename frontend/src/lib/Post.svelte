@@ -32,7 +32,7 @@
 </script>
 
 {#if post}
-  <Card>
+  <Card size="lg" cla>
     <div class="flex justify-between">
       <Vote votes={post.voteScore} postId={post.id} />
       <Link to="/posts/{post.id}" class="truncate"
@@ -42,10 +42,12 @@
       >
       <Tags tags={post.tags} user={post.user.username} />
     </div>
-    <Link to="/posts/{post.id}">
-      <p class="content cursor-pointer" on:click={() => openDetails()}>{removeMd(post.content)}</p>
+    <Link to="/posts/{post.id}" class="h-26">
+      <p class="text-l pt-2 line-clamp-3 mx-1 overflow-hidden cursor-pointer mb-2" on:click={() => openDetails()}>
+        {removeMd(post.content)}
+      </p>
     </Link>
-    <div class="bottom-0 relative">
+    <div class=" relative">
       <Input class="border-none bg-gray-100 dark:bg-gray-700" type="text" name="text" bind:value={text} />
       <button
         class="h-8 w-8 bg-blue-500 rounded-full absolute"
@@ -60,13 +62,3 @@
     </div>
   </Card>
 {/if}
-
-<style>
-  .content {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin-bottom: 2.5rem;
-    min-height: 24px;
-  }
-</style>

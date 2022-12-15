@@ -30,7 +30,7 @@
   </div>
 </div>
 
-<div class="relative grid grid-cols-1 md:grid-cols-2 w-full lg:grid-cols-3 grid-flow-row gap-4">
+<div class="relative grid grid-cols-1 md:grid-cols-2 w-full grid-flow-row gap-4">
   {#if $postStore.length == 0}
     {#each new Array(12) as d}
       <Card>
