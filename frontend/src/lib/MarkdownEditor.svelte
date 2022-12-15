@@ -8,13 +8,18 @@
   import math from '@bytemd/plugin-math';
   import mediumZoom from '@bytemd/plugin-medium-zoom';
   import mermaid from '@bytemd/plugin-mermaid';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+
+  onMount(() => {
+    (document.querySelector('.bytemd') as HTMLDivElement).style.height = `${height}px`;
+  });
 
   const dispatch = createEventDispatcher();
   export let classes = '';
   export let readOnly = false;
 
   export let value = '';
+  export let height = 500;
   let mode = 'split';
 
   const plugins = [gfm(), breaks(), frontmatter(), gemoji(), highlight(), math(), mediumZoom(), mermaid()];

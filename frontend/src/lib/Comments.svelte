@@ -1,14 +1,14 @@
 <script lang="ts">
-  import type { NewPostComment, PostComment, PostDetails } from '../types';
+  import type { PostComment, PostDetails } from '../types';
   import Reactions from './Reactions.svelte';
   import { userStore, editStore } from '../stores';
   import Fa from 'svelte-fa';
   import { faTrash, faEllipsisVertical, faPen } from '@fortawesome/free-solid-svg-icons';
   import { Alert, Button, Dropdown, DropdownItem, Modal, Textarea } from 'flowbite-svelte';
   import Avatar from './Avatar.svelte';
-  import SvelteMarkdown from 'svelte-markdown';
   import { trpc } from '../variables';
   import Time from 'svelte-time/src/Time.svelte';
+  import MarkdownEditor from './MarkdownEditor.svelte';
 
   export let comments: PostDetails['comments'];
 
@@ -62,7 +62,7 @@
         <Time relative timestamp={comment.ts} />
       </div>
       <div class="ml-4">
-        <SvelteMarkdown source={comment?.text} />
+        <MarkdownEditor value={comment.text} readOnly />
       </div>
     </div>
   {/each}
