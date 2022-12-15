@@ -76,7 +76,7 @@
 {#if post}
   <Modal bind:open={$open} size="xl" class="relative pb-4" bind:permanent={$editStore}>
     <div class="details-content p-8">
-      <div class="flex justify-between" style="width: 100%;">
+      <div class="flex justify-between mb-2" style="width: 100%;">
         <h3 class="m-0 text-3xl font-bold flex items-center">
           {post.name}
           {#if post.userId == $userStore.id}

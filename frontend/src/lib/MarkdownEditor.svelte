@@ -11,7 +11,10 @@
   import { createEventDispatcher, onMount } from 'svelte';
 
   onMount(() => {
-    (document.querySelector('.bytemd') as HTMLDivElement).style.height = `${height}px`;
+    if (!readOnly) {
+      const element = document.querySelector<HTMLDivElement>('.bytemd');
+      if (element) element.style.height = `${height}px`;
+    }
   });
 
   const dispatch = createEventDispatcher();
