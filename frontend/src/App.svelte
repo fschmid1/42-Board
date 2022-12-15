@@ -46,11 +46,15 @@
     <Route primary={false} path="/edit/:id" let:params>
       <PostForm id={params.id} />
     </Route>
-    <Route default primary={false} path="/posts/*" component={PostList} />
+    <Route default primary={false} path="/posts/*"><PostList /></Route>
     <div class="footer" />
   </main>
-  <Route component={Redirects} />
-  <Route primary={false} path="/login" component={Login} />
+  <Route>
+    <Redirects />
+  </Route>
+  <Route primary={false} path="/login">
+    <Login />
+  </Route>
 </Router>
 
 <style>

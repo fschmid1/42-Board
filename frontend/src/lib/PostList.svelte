@@ -74,4 +74,6 @@
     </Pagination>
   </div>
 </div>
-<Route primary={false} path="/:id" component={Details} />
+<Route primary={false} path="/:id" let:params>
+  <Details id={params.id} />
+</Route>

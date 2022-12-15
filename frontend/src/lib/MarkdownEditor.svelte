@@ -18,9 +18,8 @@
   });
 
   const dispatch = createEventDispatcher();
-  export let classes = '';
-  export let readOnly = false;
 
+  export let readOnly = false;
   export let value = '';
   export let height = 500;
   let mode = 'split';
@@ -34,7 +33,7 @@
 </script>
 
 {#if !readOnly}
-  <Editor class={classes} editorConfig={{ theme: 'none' }} {value} {mode} {plugins} on:change={handleChange} />
+  <Editor editorConfig={{ theme: 'none' }} {value} {mode} {plugins} on:change={handleChange} />
 {:else}
-  <Viewer class={classes} {value} {mode} {plugins} />
+  <Viewer {value} {plugins} />
 {/if}
