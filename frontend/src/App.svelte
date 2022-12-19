@@ -3,11 +3,8 @@
   import { authStatusEndpoint, trpc } from './variables';
 
   import { onMount } from 'svelte';
-  import { postStore, userStore, authState } from './stores';
-  import { Button } from 'flowbite-svelte';
-  import Filter from './lib/Filter.svelte';
-  import Searchbar from './lib/Searchbar.svelte';
-  import { Router, Route, Link } from 'svelte-navigator';
+  import { userStore, authState } from './stores';
+  import { Router, Route } from 'svelte-navigator';
   import Login from './lib/Login.svelte';
   import PostForm from './lib/PostForm.svelte';
   import PostList from './lib/PostList.svelte';
@@ -26,7 +23,12 @@
     }
     try {
       if (location.pathname == '/login') return;
-      let response = await fetch(authStatusEndpoint, { credentials: 'include' });
+      let response;
+      for (let i = 0; i < 3; i++) {
+        response = await fetch(authStatusEndpoint, { credentials: 'include' });
+        if (response.status === 200) break;
+        await wait(200);
+      }
 
       if (response.status === 200) {
         authState.set(true);
@@ -38,6 +40,10 @@
       console.log(error);
     }
   });
+
+  const wait = async (delay: number) => {
+    return new Promise(resolve => setTimeout(resolve, delay));
+  };
 </script>
 
 <Header />
